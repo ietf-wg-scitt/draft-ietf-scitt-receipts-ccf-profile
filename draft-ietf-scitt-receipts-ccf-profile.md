@@ -5,7 +5,7 @@ docname: draft-ietf-scitt-receipts-ccf-profile-latest
 stand_alone: true
 ipr: trust200902
 area: Security
-wg: TBD
+wg: SCITT
 kw: Internet-Draft
 cat: std
 submissiontype: IETF
