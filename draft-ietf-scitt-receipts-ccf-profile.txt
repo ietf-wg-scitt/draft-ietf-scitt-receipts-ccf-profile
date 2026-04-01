@@ -76,12 +76,13 @@ Table of Contents
 1.  Introduction
 
    The COSE Receipts document [I-D.ietf-cose-merkle-tree-proofs] defines
-   a common framework for defining different types of proofs, such as
-   proof of inclusion, about verifiable data structures (VDS).  For
-   instance, inclusion proofs guarantee to a verifier that a given
-   serializable element is recorded at a given state of the VDS, while
-   consistency proofs are used to establish that an inclusion proof is
-   still consistent with the new state of the VDS at a later time.
+   a common framework for expressing different types of proofs about
+   verifiable data structures (VDS), providing a standardized way to
+   convey trust relevant evidence.  For instance, inclusion proofs
+   guarantee to a verifier that a given serializable element is recorded
+   at a given state of the VDS, while consistency proofs are used to
+   establish that an inclusion proof is still consistent with the new
+   state of the VDS at a later time.
 
    In this document, we define a new type of VDS, associated with an
    application of the Confidential Consortium Framework (CCF) ledger
