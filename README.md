@@ -1,4 +1,4 @@
-# A CoMETRE Profile and Tree Algorithm for the Confidential Consortium Framework
+# CCF Profile for COSE Receipts
 
 This is the working area for the individual Internet-Draft, "CCF Profile for COSE Receipts".
 
