@@ -68,7 +68,7 @@ normative:
 
 --- abstract
 
-This document defines a new verifiable data structure type for COSE Signed Merkle Tree Proofs specifically designed for transaction ledgers produced via Trusted Execution Environments (TEEs), such as the Confidential Consortium Framework ({{CCF}}) to provide stronger tamper-evidence guarantees.
+This document defines a new verifiable data structure type for COSE Receipts specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees.
 
 --- middle
 
