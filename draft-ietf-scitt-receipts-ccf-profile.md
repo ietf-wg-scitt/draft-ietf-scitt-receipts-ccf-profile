@@ -1,6 +1,6 @@
 ---
-title: COSE Receipts with CCF
-abbrev: COSE Receipts with CCF
+title: CCF Profile for COSE Receipts 
+abbrev: CCF Profile for COSE Receipts
 docname: draft-ietf-scitt-receipts-ccf-profile-latest
 stand_alone: true
 ipr: trust200902
