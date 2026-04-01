@@ -2,7 +2,7 @@
 
 
 
-TBD                                                          H. Birkholz
+SCITT                                                        H. Birkholz
 Internet-Draft                                            Fraunhofer SIT
 Intended status: Standards Track                      A. Delignat-Lavaud
 Expires: 3 October 2026                                       C. Fournet
