@@ -68,7 +68,7 @@ normative:
 
 --- abstract
 
-This document defines a new verifiable data structure type for COSE Receipts specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees.
+This document defines a new verifiable data structure type for COSE Receipts and inclusion proof specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees.
 
 --- middle
 
