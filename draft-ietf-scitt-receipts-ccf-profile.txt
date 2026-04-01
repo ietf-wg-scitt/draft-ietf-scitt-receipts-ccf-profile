@@ -86,13 +86,14 @@ Table of Contents
    In this document, we define a new type of VDS, associated with an
    application of the Confidential Consortium Framework (CCF) ledger
    that implements the SCITT Architecture defined in
-   [I-D.ietf-wg-scitt-architecture].  This VDS carries indexed
-   transaction information in a binary Merkle Tree, where new
-   transactions are appended to the right, so that the binary
-   decomposition of the index of a transaction can be interpreted as the
-   position in the tree if 0 represents the left branch and 1 the right
-   branch.  Compared to [RFC9162], the leaves of CCF trees carry
-   additional internal information for the following purposes:
+   [I-D.ietf-wg-scitt-architecture], and we define inclusion proofs for
+   CCF ledgers.  This VDS carries indexed transaction information in a
+   binary Merkle Tree, where new transactions are appended to the right,
+   so that the binary decomposition of the index of a transaction can be
+   interpreted as the position in the tree if 0 represents the left
+   branch and 1 the right branch.  Compared to [RFC9162], the leaves of
+   CCF trees carry additional internal information for the following
+   purposes:
 
    1.  To bind the full details of the transaction executed, which is a
        super-set of what is exposed in the proof and captures internal
