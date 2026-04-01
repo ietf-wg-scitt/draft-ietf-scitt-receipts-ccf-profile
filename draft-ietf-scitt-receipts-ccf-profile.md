@@ -74,7 +74,7 @@ This document defines a new verifiable data structure type for COSE Receipts spe
 
 # Introduction
 
-The COSE Receipts document {{-cose-receipts}} defines a common framework for defining different types of proofs, such as proof of inclusion, about verifiable data structures (VDS). For instance, inclusion proofs guarantee to a verifier that a given serializable element is recorded at a given state of the VDS, while consistency proofs are used to establish that an inclusion proof is still consistent with the new state of the VDS at a later time.
+The COSE Receipts document {{-cose-receipts}} defines a common framework for expressing different types of proofs about verifiable data structures (VDS), providing a standardized way to convey trust relevant evidence. For instance, inclusion proofs guarantee to a verifier that a given serializable element is recorded at a given state of the VDS, while consistency proofs are used to establish that an inclusion proof is still consistent with the new state of the VDS at a later time.
 
 In this document, we define a new type of VDS, associated with an application of the Confidential Consortium Framework (CCF) ledger that implements the SCITT Architecture defined in {{-scitt-architecture}}. This VDS carries indexed transaction information in a binary Merkle Tree, where new transactions are appended to the right, so that the binary decomposition of the index of a transaction can be interpreted as the position in the tree if 0 represents the left branch and 1 the right branch.
 Compared to {{RFC9162}}, the leaves of CCF trees carry additional internal information for the following purposes:
