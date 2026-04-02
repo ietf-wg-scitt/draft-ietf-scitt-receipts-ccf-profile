@@ -1052,7 +1052,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Birkholz, et al.</td>
-<td class="center">Expires 3 October 2026</td>
+<td class="center">Expires 4 October 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-scitt-receipts-ccf-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-04-01" class="published">1 April 2026</time>
+<time datetime="2026-04-02" class="published">2 April 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-10-03">3 October 2026</time></dd>
+<dd class="expires"><time datetime="2026-10-04">4 October 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1116,7 +1116,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 3 October 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 4 October 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1154,7 +1154,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-description-of-the-ccf-ledg" class="internal xref">Description of the CCF Ledger Verifiable Data Structure</a></p>
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-description-of-the-confiden" class="internal xref">Description of the Confidential Consortium Framework Ledger Verifiable Data Structure</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
                 <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-merkle-tree-shape" class="internal xref">Merkle Tree Shape</a></p>
@@ -1244,12 +1244,12 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 </div>
 </section>
 </div>
-<div id="description-of-the-ccf-ledger-verifiable-data-structure">
+<div id="description-of-the-confidential-consortium-framework-ledger-verifiable-data-structure">
 <section id="section-2">
-      <h2 id="name-description-of-the-ccf-ledg">
-<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-description-of-the-ccf-ledg" class="section-name selfRef">Description of the CCF Ledger Verifiable Data Structure</a>
+      <h2 id="name-description-of-the-confiden">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-description-of-the-confiden" class="section-name selfRef">Description of the Confidential Consortium Framework Ledger Verifiable Data Structure</a>
       </h2>
-<p id="section-2-1">This documents extends the verifiable data structure registry of <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span> with the following value:<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-1">This documents extends the VDS registry of <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span> with the following value:<a href="#section-2-1" class="pilcrow">¶</a></p>
 <span id="name-verifiable-data-structure-a"></span><div id="verifiable-data-structure-values">
 <table class="left" id="table-1">
         <caption>
@@ -1337,7 +1337,7 @@ ccf-leaf = [
 </div>
 <p id="section-2.2-3">The <code>internal-transaction-hash</code> and <code>internal-evidence</code> byte strings are internal to the CCF implementation. They can be safely ignored by receipt Verifiers, but they commit the TS to the whole tree contents and may be used for additional, CCF-specific auditing.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
 <p id="section-2.2-4"><code>internal-transaction-hash</code> is a hash over the complete entry in the <span>[<a href="#CCF-Ledger-Format" class="cite xref">CCF-Ledger-Format</a>]</span>, and <code>internal-evidence</code> is a revealable <span>[<a href="#CCF-Commit-Evidence" class="cite xref">CCF-Commit-Evidence</a>]</span> value that allows early persistence of ledger entries before distributed consensus can be established. This mechanism is useful to implement high-throughput transparency applications in Trusted Execution Environments that only provide a limited amount of memory, while maintaining high availability afforded by distributed consensus.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
-<p id="section-2.2-5"><code>data-hash</code> summarises the application data included in the ledger at this transaction, which is a Signed Statement as defined by <span>[<a href="#I-D.ietf-wg-scitt-architecture" class="cite xref">I-D.ietf-wg-scitt-architecture</a>]</span>.<a href="#section-2.2-5" class="pilcrow">¶</a></p>
+<p id="section-2.2-5"><code>data-hash</code> summarizes the application data included in the ledger at this transaction, which is a Signed Statement as defined by <span>[<a href="#I-D.ietf-wg-scitt-architecture" class="cite xref">I-D.ietf-wg-scitt-architecture</a>]</span>.<a href="#section-2.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1489,7 +1489,7 @@ unprotected-header-map = {
         <h3 id="name-trusted-execution-environme">
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-trusted-execution-environme" class="section-name selfRef">Trusted Execution Environments</a>
         </h3>
-<p id="section-6.1-1">CCF networks of nodes rely on executing in Trusted Execution Environments to secure their function, in particular:<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-1">CCF networks of nodes rely on executing in Trusted Execution Environments (TEEs) to secure their function, in particular:<a href="#section-6.1-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-6.1-2">
 <li id="section-6.1-2.1">
             <p id="section-6.1-2.1.1">The evaluation of registration policies<a href="#section-6.1-2.1.1" class="pilcrow">¶</a></p>
@@ -1498,7 +1498,7 @@ unprotected-header-map = {
             <p id="section-6.1-2.2.1">The creation and usage of receipt signing keys<a href="#section-6.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ol>
-<p id="section-6.1-3">A compromise in the Trusted Execution Environment platform used to execute the network may allow an attacker to produce invalid and incompatible ledger branches.
+<p id="section-6.1-3">A compromise in the TEE platform used to execute the network may allow an attacker to produce invalid and incompatible ledger branches.
 Clients can mitigate this risk in two ways: by regularly auditing the consistency of the CCF ledger; and by regularly fetching attestation information about the TEE instances, available in the ledger and from the network itself, and confirming that the nodes composing the network are running up-to-date, trusted platform components.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
