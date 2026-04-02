@@ -86,9 +86,9 @@ Compared to {{RFC9162}}, the leaves of CCF trees carry additional internal infor
 
 {::boilerplate bcp14-tagged}
 
-# Description of the CCF Ledger Verifiable Data Structure
+# Description of the Confidential Consortium Framework Ledger Verifiable Data Structure
 
-This document extends the verifiable data structure registry of {{-cose-receipts}} with the following value:
+This documents extends the VDS registry of {{-cose-receipts}} with the following value:
 
 | Name | Value | Description | Reference
 |---
@@ -148,7 +148,7 @@ The `internal-transaction-hash` and `internal-evidence` byte strings are interna
 
 `internal-transaction-hash` is a hash over the complete entry in the {{CCF-Ledger-Format}}, and `internal-evidence` is a revealable {{CCF-Commit-Evidence}} value that allows early persistence of ledger entries before distributed consensus can be established. This mechanism is useful to implement high-throughput transparency applications in Trusted Execution Environments (TEEs) that only provide a limited amount of memory, while maintaining high availability afforded by distributed consensus.
 
-`data-hash` summarises the application data included in the ledger at this transaction, which is a Signed Statement as defined by {{-scitt-architecture}}.
+`data-hash` summarizes the application data included in the ledger at this transaction, which is a Signed Statement as defined by {{-scitt-architecture}}.
 
 # CCF Inclusion Proofs
 
@@ -258,7 +258,7 @@ The security considerations of {{-cose-receipts}} apply.
 
 ## Trusted Execution Environments
 
-CCF networks of nodes rely on executing in Trusted Execution Environments to secure their function, in particular:
+CCF networks of nodes rely on executing in Trusted Execution Environments (TEEs) to secure their function, in particular:
 
 1. The evaluation of registration policies
 2. The creation and usage of receipt signing keys
