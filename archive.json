@@ -1,0 +1,392 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2026-04-02T01:05:32.929361+00:00",
+  "repo": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 3,
+      "id": "I_kwDORpjjVc75pv9x",
+      "title": "Introduction - edits for clarity",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/issues/3",
+      "state": "CLOSED",
+      "author": "nikcal",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Propose: The COSE Receipts document  [I-D.ietf-cose-merkle-tree-proofs] defines a common framework for expressing different types of proofs about verifiable data structures (VDS), providing a standardized way to convey trust relevant evidence. \n\nCurrent:  The COSE Receipts document [I-D.ietf-cose-merkle-tree-proofs] defines a common framework for defining different types of proofs, such as proof of inclusion, about verifiable data structures (VDS).  ",
+      "createdAt": "2026-04-01T17:01:06Z",
+      "updatedAt": "2026-04-01T23:04:33Z",
+      "closedAt": "2026-04-01T23:04:33Z",
+      "comments": []
+    },
+    {
+      "number": 4,
+      "id": "I_kwDORpjjVc75qM1q",
+      "title": "Introduction - purpose of document definitions",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/issues/4",
+      "state": "CLOSED",
+      "author": "nikcal",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Section 1 states:\n   In this document, we define a new type of VDS, associated with an\n   application of the Confidential Consortium Framework (CCF) ledger\n   that implements the SCITT Architecture defined in\n   [I-D.ietf-scitt-architecture]. \n\n\nSection 2 states: \n\n   This document defines inclusion proofs for CCF ledgers.\n\nShould we also state in the introduction that, this document defines a new type of VDS.....and the inclusion proofs?",
+      "createdAt": "2026-04-01T17:19:48Z",
+      "updatedAt": "2026-04-01T23:03:36Z",
+      "closedAt": "2026-04-01T23:03:36Z",
+      "comments": [
+        {
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yes!",
+          "createdAt": "2026-04-01T17:20:44Z",
+          "updatedAt": "2026-04-01T17:20:44Z"
+        }
+      ]
+    }
+  ],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDORpjjVc7PSBKe",
+      "title": "Initial setup",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/pull/1",
+      "state": "MERGED",
+      "author": "achamayou",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Content import from https://github.com/ietf-scitt/draft-birkholz-cose-cometre-ccf-profile following adoption by the SCITT WG.",
+      "createdAt": "2026-04-01T14:39:55Z",
+      "updatedAt": "2026-04-01T15:16:49Z",
+      "baseRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "baseRefName": "main",
+      "baseRefOid": "67df3edb2db0ba2726f5c5b67077b4931683b3a8",
+      "headRepository": "achamayou/draft-ietf-scitt-receipts-ccf-profile",
+      "headRefName": "init",
+      "headRefOid": "767da2c4ecaeadf8d1eea5798e23f7f5bd3e2d7d",
+      "closedAt": "2026-04-01T15:16:49Z",
+      "mergedAt": "2026-04-01T15:16:49Z",
+      "mergedBy": "achamayou",
+      "mergeCommit": {
+        "oid": "efac288a9f696561671c6fa6dbb0df165941e703"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORpjjVc7xGK3u",
+          "commit": {
+            "abbreviatedOid": "222f858"
+          },
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-04-01T15:09:42Z",
+          "updatedAt": "2026-04-01T15:09:42Z",
+          "comments": [
+            {
+              "originalPosition": 3,
+              "body": "```suggestion\ntitle: CCF Profile for COSE Receipts \nabbrev: CCF Profile for COSE Receipts\n```",
+              "createdAt": "2026-04-01T15:09:42Z",
+              "updatedAt": "2026-04-01T15:09:42Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORpjjVc7xGLaV",
+          "commit": {
+            "abbreviatedOid": "3f3941b"
+          },
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-04-01T15:10:02Z",
+          "updatedAt": "2026-04-01T15:10:02Z",
+          "comments": [
+            {
+              "originalPosition": 3,
+              "body": "```suggestion\n# CCF Profile for COSE Receipts\n```",
+              "createdAt": "2026-04-01T15:10:02Z",
+              "updatedAt": "2026-04-01T15:10:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORpjjVc7xGLvf",
+          "commit": {
+            "abbreviatedOid": "3f3941b"
+          },
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-04-01T15:10:14Z",
+          "updatedAt": "2026-04-01T15:10:15Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\nThis is the working area for the individual Internet-Draft, \"CCF Profile for COSE Receipts\".\n```",
+              "createdAt": "2026-04-01T15:10:15Z",
+              "updatedAt": "2026-04-01T15:10:15Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORpjjVc7xGVoU",
+          "commit": {
+            "abbreviatedOid": "931c759"
+          },
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-04-01T15:16:08Z",
+          "updatedAt": "2026-04-01T15:16:09Z",
+          "comments": [
+            {
+              "originalPosition": 3,
+              "body": "```suggestion\ndraft-ietf-scitt-receipts-ccf-profile.md henk.birkholz@ietf.contact antdl@microsoft.com fournet@microsoft.com amchamay@microsoft.com\n```",
+              "createdAt": "2026-04-01T15:16:08Z",
+              "updatedAt": "2026-04-01T15:16:09Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDORpjjVc7PS-oc",
+      "title": "Update GitHub Actions to latest versions in CI workflows",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/pull/2",
+      "state": "MERGED",
+      "author": "copilot-swe-agent",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "achamayou",
+        "Copilot"
+      ],
+      "labels": [],
+      "body": "## Summary\n\nUpdates all GitHub Actions in the CI workflow files to their latest stable versions.\n\n## Changes\n\n| Action | Previous Version | Updated Version | Files |\n|---|---|---|---|\n| `actions/checkout` | v2, v3 | **v6** | ghpages.yml, archive.yml, publish.yml, update.yml |\n| `actions/cache` | v3 | **v5** | ghpages.yml, publish.yml |\n| `actions/upload-artifact` | v4 | **v7** | ghpages.yml, archive.yml, publish.yml |\n| `martinthomson/i-d-template` | v1 | v1 *(no update needed \u2014 only version available)* | \u2014 |\n\n## Notes\n\n- No breaking changes expected for the existing workflow configurations\n- All updated actions have been checked against the GitHub Advisory Database with no known vulnerabilities\n- `actions/checkout@v6` includes improved credential security\n- `actions/cache@v5` uses the new cache backend service (v2 APIs)\n- `actions/upload-artifact@v7` adds support for direct uploads and ESM; existing `path`-based usage is fully compatible",
+      "createdAt": "2026-04-01T15:26:46Z",
+      "updatedAt": "2026-04-01T15:30:22Z",
+      "baseRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "baseRefName": "main",
+      "baseRefOid": "4ec0eb37d76ac4fcae698c9bb52f2f665dc8c586",
+      "headRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "headRefName": "copilot/update-github-actions-ci",
+      "headRefOid": "c6ebf91e2712a5ee1d142f99301273c99abd8448",
+      "closedAt": "2026-04-01T15:30:22Z",
+      "mergedAt": "2026-04-01T15:30:22Z",
+      "mergedBy": "achamayou",
+      "mergeCommit": {
+        "oid": "783a5b8081826a4481dc44ade674bb0e45b0cc1a"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORpjjVc7xGvWN",
+          "commit": {
+            "abbreviatedOid": "c6ebf91"
+          },
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-04-01T15:30:15Z",
+          "updatedAt": "2026-04-01T15:30:15Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDORpjjVc7PV8TD",
+      "title": "Introduction - edits for clarity",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/pull/5",
+      "state": "MERGED",
+      "author": "copilot-swe-agent",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "achamayou",
+        "Copilot"
+      ],
+      "labels": [],
+      "body": "Closes #3\n\nUpdates the introduction sentence describing the COSE Receipts document for improved clarity, changing from:\n\n> defines a common framework for defining different types of proofs, such as proof of inclusion, about verifiable data structures (VDS).\n\nto:\n\n> defines a common framework for expressing different types of proofs about verifiable data structures (VDS), providing a standardized way to convey trust relevant evidence.",
+      "createdAt": "2026-04-01T18:29:32Z",
+      "updatedAt": "2026-04-01T23:04:32Z",
+      "baseRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "baseRefName": "main",
+      "baseRefOid": "008a09f09e32f0e4e01e9c73d52f7c45125af175",
+      "headRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "headRefName": "copilot/fix-issue-3",
+      "headRefOid": "ab959b57f2140f5f02f82f499a7c6482da0807c0",
+      "closedAt": "2026-04-01T23:04:32Z",
+      "mergedAt": "2026-04-01T23:04:32Z",
+      "mergedBy": "nikcal",
+      "mergeCommit": {
+        "oid": "5171b35a3e3a043e334b620cef9cd7ad013811a8"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORpjjVc7xQJFo",
+          "commit": {
+            "abbreviatedOid": "ab959b5"
+          },
+          "author": "nikcal",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Looks good.",
+          "createdAt": "2026-04-01T23:04:26Z",
+          "updatedAt": "2026-04-01T23:04:26Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDORpjjVc7PV9HL",
+      "title": "fix: update Introduction to mention inclusion proofs",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/pull/6",
+      "state": "MERGED",
+      "author": "copilot-swe-agent",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "achamayou",
+        "Copilot"
+      ],
+      "labels": [],
+      "body": "Closes #4\n\nThe Introduction (Section 1) now explicitly states that the document defines both a new VDS type and inclusion proofs for CCF ledgers, rather than leaving the mention of inclusion proofs only in Section 2.\n\n**Before:**\n> In this document, we define a new type of VDS, associated with an application of the Confidential Consortium Framework (CCF) ledger...\n\n**After:**\n> In this document, we define a new type of VDS, associated with an application of the Confidential Consortium Framework (CCF) ledger..., and we define inclusion proofs for CCF ledgers.",
+      "createdAt": "2026-04-01T18:30:12Z",
+      "updatedAt": "2026-04-01T23:03:35Z",
+      "baseRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "baseRefName": "main",
+      "baseRefOid": "008a09f09e32f0e4e01e9c73d52f7c45125af175",
+      "headRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "headRefName": "copilot/fix-issue-4",
+      "headRefOid": "7b04d8353ee7e0f3367b92776512b7f79d584251",
+      "closedAt": "2026-04-01T23:03:35Z",
+      "mergedAt": "2026-04-01T23:03:34Z",
+      "mergedBy": "nikcal",
+      "mergeCommit": {
+        "oid": "71fa316a0a181d4fd18057bf77918ac53fe8b675"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORpjjVc7xQIBx",
+          "commit": {
+            "abbreviatedOid": "7b04d83"
+          },
+          "author": "nikcal",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Looks good.",
+          "createdAt": "2026-04-01T23:03:27Z",
+          "updatedAt": "2026-04-01T23:03:27Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "PR_kwDORpjjVc7PZ6JP",
+      "title": "Enhance COSE Receipts definition with inclusion proof",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/pull/7",
+      "state": "OPEN",
+      "author": "nikcal",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Expanded the definition of the verifiable data structure to include inclusion proof to align with edits in the introduction.",
+      "createdAt": "2026-04-01T23:21:54Z",
+      "updatedAt": "2026-04-01T23:22:25Z",
+      "baseRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "baseRefName": "main",
+      "baseRefOid": "5171b35a3e3a043e334b620cef9cd7ad013811a8",
+      "headRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "headRefName": "nikcal-patch-1",
+      "headRefOid": "71b372f499c8f588885253168e285b5d6daccd8b",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 8,
+      "id": "PR_kwDORpjjVc7Pajbu",
+      "title": "Improve clarity and consistency in CCF documentation",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/pull/8",
+      "state": "OPEN",
+      "author": "nikcal",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Refine language and clarify terms related to CCF and VDS. I've proposed changes throughout the text and subsequent patches will aim to specify sections.",
+      "createdAt": "2026-04-02T00:44:06Z",
+      "updatedAt": "2026-04-02T01:02:21Z",
+      "baseRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "baseRefName": "main",
+      "baseRefOid": "5171b35a3e3a043e334b620cef9cd7ad013811a8",
+      "headRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "headRefName": "nikcal-patch-2",
+      "headRefOid": "af31c491cabdb21adfc7dac5d46d1b289a64f9ad",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    }
+  ]
+}
