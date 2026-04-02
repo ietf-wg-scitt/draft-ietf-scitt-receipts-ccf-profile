@@ -56,7 +56,8 @@ Table of Contents
 
    1.  Introduction
      1.1.  Requirements Notation
-   2.  Description of the CCF Ledger Verifiable Data Structure
+   2.  Description of the Confidential Consortium Framework Ledger
+           Verifiable Data Structure
      2.1.  Merkle Tree Shape
      2.2.  Transaction Components
    3.  CCF Inclusion Proofs
@@ -113,9 +114,10 @@ Table of Contents
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-2.  Description of the CCF Ledger Verifiable Data Structure
+2.  Description of the Confidential Consortium Framework Ledger
+    Verifiable Data Structure
 
-   This document extends the verifiable data structure registry of
+   This documents extends the VDS registry of
    [I-D.ietf-cose-merkle-tree-proofs] with the following value:
 
    +===================+===============+==================+===========+
@@ -197,7 +199,7 @@ Table of Contents
    provide a limited amount of memory, while maintaining high
    availability afforded by distributed consensus.
 
-   data-hash summarises the application data included in the ledger at
+   data-hash summarizes the application data included in the ledger at
    this transaction, which is a Signed Statement as defined by
    [I-D.ietf-wg-scitt-architecture].
 
@@ -329,7 +331,7 @@ Table of Contents
 6.1.  Trusted Execution Environments
 
    CCF networks of nodes rely on executing in Trusted Execution
-   Environments to secure their function, in particular:
+   Environments (TEEs) to secure their function, in particular:
 
    1.  The evaluation of registration policies
 
