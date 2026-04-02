@@ -10,7 +10,7 @@
 <meta content="Cedric Fournet" name="author">
 <meta content="Amaury Chamayou" name="author">
 <meta content="
-       This document defines a new verifiable data structure type for COSE Receipts specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees. 
+       This document defines a new verifiable data structure (VDS) type for COSE Receipts specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees. 
     " name="description">
 <meta content="xml2rfc 3.32.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
@@ -1095,7 +1095,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">CCF Profile for COSE Receipts</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document defines a new verifiable data structure type for COSE Receipts specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document defines a new verifiable data structure (VDS) type for COSE Receipts specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1221,14 +1221,14 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
 <p id="section-1-1">The COSE Receipts document <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span> defines a common framework for expressing different types of proofs about verifiable data structures (VDS), providing a standardized way to convey trust relevant evidence. For instance, inclusion proofs guarantee to a verifier that a given serializable element is recorded at a given state of the VDS, while consistency proofs are used to establish that an inclusion proof is still consistent with the new state of the VDS at a later time.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">In this document, we define a new type of VDS, associated with an application of the Confidential Consortium Framework (CCF) ledger that implements the SCITT Architecture defined in <span>[<a href="#I-D.ietf-wg-scitt-architecture" class="cite xref">I-D.ietf-wg-scitt-architecture</a>]</span>, and we define inclusion proofs for CCF ledgers. This VDS carries indexed transaction information in a binary Merkle Tree, where new transactions are appended to the right, so that the binary decomposition of the index of a transaction can be interpreted as the position in the tree if 0 represents the left branch and 1 the right branch.
+<p id="section-1-2">In this document, we define a new type of VDS and inclusion proof associated with an application of the Confidential Consortium Framework (CCF) ledger that implements the SCITT Architecture defined in <span>[<a href="#I-D.ietf-wg-scitt-architecture" class="cite xref">I-D.ietf-wg-scitt-architecture</a>]</span>. This VDS carries indexed transaction information in a binary Merkle Tree, where new transactions are appended to the right, so that the binary decomposition of the index of a transaction can be interpreted as the position in the tree if 0 represents the left branch and 1 the right branch.
 Compared to <span>[<a href="#RFC9162" class="cite xref">RFC9162</a>]</span>, the leaves of CCF trees carry additional internal information for the following purposes:<a href="#section-1-2" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-1-3">
 <li id="section-1-3.1">
           <p id="section-1-3.1.1">To bind the full details of the transaction executed, which is a super-set of what is exposed in the proof and captures internal information details useful for detailed system audit, but not for application purposes.<a href="#section-1-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-1-3.2">
-          <p id="section-1-3.2.1">To allow the distributed system executing the application logic in Trusted Excecution Environments to persist signatures to storage early, but only enable receipt production once they are fully committed by the consensus protocol.<a href="#section-1-3.2.1" class="pilcrow">¶</a></p>
+          <p id="section-1-3.2.1">To allow the distributed system executing the application logic in Trusted Execution Environments (TEE) to persist signatures to storage early. Receipt production in only enabled once transactions are fully committed by the consensus protocol.<a href="#section-1-3.2.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
 <div id="requirements-notation">
@@ -1274,7 +1274,6 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
         </tbody>
       </table>
 </div>
-<p id="section-2-3">This document defines inclusion proofs for CCF ledgers.<a href="#section-2-3" class="pilcrow">¶</a></p>
 <div id="merkle-tree-shape">
 <section id="section-2.1">
         <h3 id="name-merkle-tree-shape">
@@ -1335,8 +1334,8 @@ ccf-leaf = [
 ]
 </pre><a href="#section-2.2-2" class="pilcrow">¶</a>
 </div>
-<p id="section-2.2-3">The <code>internal-transaction-hash</code> and <code>internal-evidence</code> byte strings are internal to the CCF implementation. They can be safely ignored by receipt Verifiers, but they commit the TS to the whole tree contents and may be used for additional, CCF-specific auditing.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
-<p id="section-2.2-4"><code>internal-transaction-hash</code> is a hash over the complete entry in the <span>[<a href="#CCF-Ledger-Format" class="cite xref">CCF-Ledger-Format</a>]</span>, and <code>internal-evidence</code> is a revealable <span>[<a href="#CCF-Commit-Evidence" class="cite xref">CCF-Commit-Evidence</a>]</span> value that allows early persistence of ledger entries before distributed consensus can be established. This mechanism is useful to implement high-throughput transparency applications in Trusted Execution Environments that only provide a limited amount of memory, while maintaining high availability afforded by distributed consensus.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
+<p id="section-2.2-3">The <code>internal-transaction-hash</code> and <code>internal-evidence</code> byte strings are internal to the CCF implementation. They can be safely ignored by receipt Verifiers, but they commit the transparency service (TS) to the whole tree contents and may be used for additional, CCF-specific auditing.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.2-4"><code>internal-transaction-hash</code> is a hash over the complete entry in the <span>[<a href="#CCF-Ledger-Format" class="cite xref">CCF-Ledger-Format</a>]</span>, and <code>internal-evidence</code> is a revealable <span>[<a href="#CCF-Commit-Evidence" class="cite xref">CCF-Commit-Evidence</a>]</span> value that allows early persistence of ledger entries before distributed consensus can be established. This mechanism is useful to implement high-throughput transparency applications in Trusted Execution Environments (TEEs) that only provide a limited amount of memory, while maintaining high availability afforded by distributed consensus.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
 <p id="section-2.2-5"><code>data-hash</code> summarizes the application data included in the ledger at this transaction, which is a Signed Statement as defined by <span>[<a href="#I-D.ietf-wg-scitt-architecture" class="cite xref">I-D.ietf-wg-scitt-architecture</a>]</span>.<a href="#section-2.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1483,7 +1482,7 @@ unprotected-header-map = {
       <h2 id="name-security-considerations">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-6-1">The security consideration of <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span> apply.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-1">The security considerations of <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span> apply.<a href="#section-6-1" class="pilcrow">¶</a></p>
 <div id="trusted-execution-environments">
 <section id="section-6.1">
         <h3 id="name-trusted-execution-environme">
@@ -1498,7 +1497,7 @@ unprotected-header-map = {
             <p id="section-6.1-2.2.1">The creation and usage of receipt signing keys<a href="#section-6.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ol>
-<p id="section-6.1-3">A compromise in the TEE platform used to execute the network may allow an attacker to produce invalid and incompatible ledger branches.
+<p id="section-6.1-3">A compromise in the Trusted Execution Environment platform used to execute the network may allow an attacker to produce invalid and divergent ledger branches.
 Clients can mitigate this risk in two ways: by regularly auditing the consistency of the CCF ledger; and by regularly fetching attestation information about the TEE instances, available in the ledger and from the network itself, and confirming that the nodes composing the network are running up-to-date, trusted platform components.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1507,9 +1506,7 @@ Clients can mitigate this risk in two ways: by regularly auditing the consistenc
         <h3 id="name-operators">
 <a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-operators" class="section-name selfRef">Operators</a>
         </h3>
-<p id="section-6.2-1">The operator of a CCF network has the ability to start successor networks, with a distinct identity, which endorse the receipts produced by a previous instance.
-This functionality is important to provide service continuity in the case of a catastrophic failure of a majority of nodes, but allows a potentially malicious operator to start from a prefix of an earlier ledger.
-Clients can mitigate this risk by auditing the successor ledger and its attestation information, as described above. In particular, clients can check that the latest receipt they hold is present in the successor ledger before they begin making use of it.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+<p id="section-6.2-1">An operator has the ability to start successor networks with a distinct identity. The operator of a CCF network can recover the service by starting a successor network, for example a new CCF network with its own service identity, that endorses the ledger state of the previous instance. This provides service continuity after a catastrophic failure of a majority of the nodes. However, a malicious operator could exploit this mechanism and truncate the ledger’s history by initializing the successor network from an earlier ledger prefix, thereby omitting some later entries. Clients can mitigate this risk by auditing the successor ledger and verifying that their latest known receipts from the prior service are included in the successor’s ledger.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>

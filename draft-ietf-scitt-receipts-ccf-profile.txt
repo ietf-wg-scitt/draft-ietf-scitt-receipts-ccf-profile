@@ -16,10 +16,10 @@ Expires: 4 October 2026                                       C. Fournet
 
 Abstract
 
-   This document defines a new verifiable data structure type for COSE
-   Receipts specifically designed for append-only logs produced by the
-   Confidential Consortium Framework (CCF) to provide stronger tamper-
-   evidence guarantees.
+   This document defines a new verifiable data structure (VDS) type for
+   COSE Receipts specifically designed for append-only logs produced by
+   the Confidential Consortium Framework (CCF) to provide stronger
+   tamper-evidence guarantees.
 
 Status of This Memo
 
@@ -85,17 +85,16 @@ Table of Contents
    establish that an inclusion proof is still consistent with the new
    state of the VDS at a later time.
 
-   In this document, we define a new type of VDS, associated with an
-   application of the Confidential Consortium Framework (CCF) ledger
-   that implements the SCITT Architecture defined in
-   [I-D.ietf-wg-scitt-architecture], and we define inclusion proofs for
-   CCF ledgers.  This VDS carries indexed transaction information in a
-   binary Merkle Tree, where new transactions are appended to the right,
-   so that the binary decomposition of the index of a transaction can be
-   interpreted as the position in the tree if 0 represents the left
-   branch and 1 the right branch.  Compared to [RFC9162], the leaves of
-   CCF trees carry additional internal information for the following
-   purposes:
+   In this document, we define a new type of VDS and inclusion proof
+   associated with an application of the Confidential Consortium
+   Framework (CCF) ledger that implements the SCITT Architecture defined
+   in [I-D.ietf-wg-scitt-architecture].  This VDS carries indexed
+   transaction information in a binary Merkle Tree, where new
+   transactions are appended to the right, so that the binary
+   decomposition of the index of a transaction can be interpreted as the
+   position in the tree if 0 represents the left branch and 1 the right
+   branch.  Compared to [RFC9162], the leaves of CCF trees carry
+   additional internal information for the following purposes:
 
    1.  To bind the full details of the transaction executed, which is a
        super-set of what is exposed in the proof and captures internal
@@ -103,9 +102,9 @@ Table of Contents
        application purposes.
 
    2.  To allow the distributed system executing the application logic
-       in Trusted Excecution Environments to persist signatures to
-       storage early, but only enable receipt production once they are
-       fully committed by the consensus protocol.
+       in Trusted Execution Environments (TEE) to persist signatures to
+       storage early.  Receipt production in only enabled once
+       transactions are fully committed by the consensus protocol.
 
 1.1.  Requirements Notation
 
@@ -131,8 +130,6 @@ Table of Contents
    +-------------------+---------------+------------------+-----------+
 
               Table 1: Verifiable Data Structure Algorithms
-
-   This document defines inclusion proofs for CCF ledgers.
 
 2.1.  Merkle Tree Shape
 
@@ -189,17 +186,18 @@ Table of Contents
 
    The internal-transaction-hash and internal-evidence byte strings are
    internal to the CCF implementation.  They can be safely ignored by
-   receipt Verifiers, but they commit the TS to the whole tree contents
-   and may be used for additional, CCF-specific auditing.
+   receipt Verifiers, but they commit the transparency service (TS) to
+   the whole tree contents and may be used for additional, CCF-specific
+   auditing.
 
    internal-transaction-hash is a hash over the complete entry in the
    [CCF-Ledger-Format], and internal-evidence is a revealable
    [CCF-Commit-Evidence] value that allows early persistence of ledger
    entries before distributed consensus can be established.  This
    mechanism is useful to implement high-throughput transparency
-   applications in Trusted Execution Environments that only provide a
-   limited amount of memory, while maintaining high availability
-   afforded by distributed consensus.
+   applications in Trusted Execution Environments (TEEs) that only
+   provide a limited amount of memory, while maintaining high
+   availability afforded by distributed consensus.
 
    data-hash summarizes the application data included in the ledger at
    this transaction, which is a Signed Statement as defined by
@@ -327,7 +325,7 @@ Table of Contents
 
 6.  Security Considerations
 
-   The security consideration of [I-D.ietf-cose-merkle-tree-proofs]
+   The security considerations of [I-D.ietf-cose-merkle-tree-proofs]
    apply.
 
 6.1.  Trusted Execution Environments
@@ -339,27 +337,29 @@ Table of Contents
 
    2.  The creation and usage of receipt signing keys
 
-   A compromise in the TEE platform used to execute the network may
-   allow an attacker to produce invalid and incompatible ledger
-   branches.  Clients can mitigate this risk in two ways: by regularly
-   auditing the consistency of the CCF ledger; and by regularly fetching
-   attestation information about the TEE instances, available in the
-   ledger and from the network itself, and confirming that the nodes
-   composing the network are running up-to-date, trusted platform
-   components.
+   A compromise in the Trusted Execution Environment platform used to
+   execute the network may allow an attacker to produce invalid and
+   divergent ledger branches.  Clients can mitigate this risk in two
+   ways: by regularly auditing the consistency of the CCF ledger; and by
+   regularly fetching attestation information about the TEE instances,
+   available in the ledger and from the network itself, and confirming
+   that the nodes composing the network are running up-to-date, trusted
+   platform components.
 
 6.2.  Operators
 
-   The operator of a CCF network has the ability to start successor
-   networks, with a distinct identity, which endorse the receipts
-   produced by a previous instance.  This functionality is important to
-   provide service continuity in the case of a catastrophic failure of a
-   majority of nodes, but allows a potentially malicious operator to
-   start from a prefix of an earlier ledger.  Clients can mitigate this
-   risk by auditing the successor ledger and its attestation
-   information, as described above.  In particular, clients can check
-   that the latest receipt they hold is present in the successor ledger
-   before they begin making use of it.
+   An operator has the ability to start successor networks with a
+   distinct identity.  The operator of a CCF network can recover the
+   service by starting a successor network, for example a new CCF
+   network with its own service identity, that endorses the ledger state
+   of the previous instance.  This provides service continuity after a
+   catastrophic failure of a majority of the nodes.  However, a
+   malicious operator could exploit this mechanism and truncate the
+   ledger’s history by initializing the successor network from an
+   earlier ledger prefix, thereby omitting some later entries.  Clients
+   can mitigate this risk by auditing the successor ledger and verifying
+   that their latest known receipts from the prior service are included
+   in the successor’s ledger.
 
 7.  IANA Considerations
 
