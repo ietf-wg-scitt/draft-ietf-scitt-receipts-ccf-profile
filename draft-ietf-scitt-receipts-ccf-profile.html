@@ -10,7 +10,7 @@
 <meta content="Cedric Fournet" name="author">
 <meta content="Amaury Chamayou" name="author">
 <meta content="
-       This document defines a new verifiable data structure type for COSE Receipts and inclusion proof specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees. 
+       This document defines a new verifiable data structure (VDS) type for COSE Receipts and inclusion proof specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees. 
     " name="description">
 <meta content="xml2rfc 3.32.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
@@ -1095,7 +1095,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">CCF Profile for COSE Receipts</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document defines a new verifiable data structure type for COSE Receipts and inclusion proof specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document defines a new verifiable data structure (VDS) type for COSE Receipts and inclusion proof specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1488,7 +1488,7 @@ unprotected-header-map = {
         <h3 id="name-trusted-execution-environme">
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-trusted-execution-environme" class="section-name selfRef">Trusted Execution Environments</a>
         </h3>
-<p id="section-6.1-1">CCF networks of nodes rely on executing in Trusted Execution Environments (TEEs) to secure their function, in particular:<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-1">CCF networks of nodes rely on executing in TEEs to secure their function, in particular:<a href="#section-6.1-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-6.1-2">
 <li id="section-6.1-2.1">
             <p id="section-6.1-2.1.1">The evaluation of registration policies<a href="#section-6.1-2.1.1" class="pilcrow">¶</a></p>
@@ -1497,7 +1497,7 @@ unprotected-header-map = {
             <p id="section-6.1-2.2.1">The creation and usage of receipt signing keys<a href="#section-6.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ol>
-<p id="section-6.1-3">A compromise in the Trusted Execution Environment platform used to execute the network may allow an attacker to produce invalid and divergent ledger branches.
+<p id="section-6.1-3">A compromise in the TEE platform used to execute the network may allow an attacker to produce invalid and divergent ledger branches.
 Clients can mitigate this risk in two ways: by regularly auditing the consistency of the CCF ledger; and by regularly fetching attestation information about the TEE instances, available in the ledger and from the network itself, and confirming that the nodes composing the network are running up-to-date, trusted platform components.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
