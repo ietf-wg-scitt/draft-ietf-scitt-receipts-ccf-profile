@@ -68,7 +68,7 @@ normative:
 
 --- abstract
 
-This document defines a new verifiable data structure type for COSE Receipts and inclusion proof specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees.
+This document defines a new verifiable data structure (VDS) type for COSE Receipts and inclusion proof specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees.
 
 --- middle
 
@@ -258,12 +258,12 @@ The security considerations of {{-cose-receipts}} apply.
 
 ## Trusted Execution Environments
 
-CCF networks of nodes rely on executing in Trusted Execution Environments (TEEs) to secure their function, in particular:
+CCF networks of nodes rely on executing in TEEs to secure their function, in particular:
 
 1. The evaluation of registration policies
 2. The creation and usage of receipt signing keys
 
-A compromise in the Trusted Execution Environment platform used to execute the network may allow an attacker to produce invalid and divergent ledger branches.
+A compromise in the TEE platform used to execute the network may allow an attacker to produce invalid and divergent ledger branches.
 Clients can mitigate this risk in two ways: by regularly auditing the consistency of the CCF ledger; and by regularly fetching attestation information about the TEE instances, available in the ledger and from the network itself, and confirming that the nodes composing the network are running up-to-date, trusted platform components.
 
 ## Operators
