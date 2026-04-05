@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-04-02T01:05:32.929361+00:00",
+  "timestamp": "2026-04-05T01:10:18.358131+00:00",
   "repo": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
   "labels": [
     {
@@ -341,52 +341,208 @@
       "id": "PR_kwDORpjjVc7PZ6JP",
       "title": "Enhance COSE Receipts definition with inclusion proof",
       "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/pull/7",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "nikcal",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Expanded the definition of the verifiable data structure to include inclusion proof to align with edits in the introduction.",
       "createdAt": "2026-04-01T23:21:54Z",
-      "updatedAt": "2026-04-01T23:22:25Z",
+      "updatedAt": "2026-04-02T15:33:52Z",
       "baseRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
       "baseRefName": "main",
-      "baseRefOid": "5171b35a3e3a043e334b620cef9cd7ad013811a8",
+      "baseRefOid": "3110e5c2128b4e8e5daa3f1befa9f240ddd60405",
       "headRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
       "headRefName": "nikcal-patch-1",
-      "headRefOid": "71b372f499c8f588885253168e285b5d6daccd8b",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "de19acd5efd61132c9c406e25e3f5e50e4028d34",
+      "closedAt": "2026-04-02T15:33:51Z",
+      "mergedAt": "2026-04-02T15:33:51Z",
+      "mergedBy": "nikcal",
+      "mergeCommit": {
+        "oid": "68da31d0370e5ffe65342423efd9bfa975fe3f5b"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDORpjjVc7xX-7E",
+          "commit": {
+            "abbreviatedOid": "71b372f"
+          },
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-04-02T09:52:14Z",
+          "updatedAt": "2026-04-02T09:52:14Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 8,
       "id": "PR_kwDORpjjVc7Pajbu",
       "title": "Improve clarity and consistency in CCF documentation",
       "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/pull/8",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "nikcal",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Refine language and clarify terms related to CCF and VDS. I've proposed changes throughout the text and subsequent patches will aim to specify sections.",
       "createdAt": "2026-04-02T00:44:06Z",
-      "updatedAt": "2026-04-02T01:02:21Z",
+      "updatedAt": "2026-04-02T15:31:51Z",
+      "baseRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "baseRefName": "main",
+      "baseRefOid": "e2004e11b3abf0f29b46e06595ecdfb913611f5e",
+      "headRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "headRefName": "nikcal-patch-2",
+      "headRefOid": "90d549e08d886adeb62ed7b6254972689100bb00",
+      "closedAt": "2026-04-02T15:31:51Z",
+      "mergedAt": "2026-04-02T15:31:51Z",
+      "mergedBy": "nikcal",
+      "mergeCommit": {
+        "oid": "3110e5c2128b4e8e5daa3f1befa9f240ddd60405"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORpjjVc7xX-iy",
+          "commit": {
+            "abbreviatedOid": "af31c49"
+          },
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-04-02T09:51:56Z",
+          "updatedAt": "2026-04-02T09:51:56Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "PR_kwDORpjjVc7Paxnk",
+      "title": "Revise CCF Ledger description and terminology",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/pull/9",
+      "state": "MERGED",
+      "author": "nikcal",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Reviewed all VDS and TEE usage for consistency per IETF guidelines. Standardized to American English spelling per RFC editor guidelines.",
+      "createdAt": "2026-04-02T01:10:43Z",
+      "updatedAt": "2026-04-02T15:27:31Z",
       "baseRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
       "baseRefName": "main",
       "baseRefOid": "5171b35a3e3a043e334b620cef9cd7ad013811a8",
       "headRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
-      "headRefName": "nikcal-patch-2",
-      "headRefOid": "af31c491cabdb21adfc7dac5d46d1b289a64f9ad",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefName": "nikcal-patch-3",
+      "headRefOid": "6e21362d99026f17fb68c9c13f7333060dc2297d",
+      "closedAt": "2026-04-02T15:27:31Z",
+      "mergedAt": "2026-04-02T15:27:31Z",
+      "mergedBy": "nikcal",
+      "mergeCommit": {
+        "oid": "e2004e11b3abf0f29b46e06595ecdfb913611f5e"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDORpjjVc7xXyqg",
+          "commit": {
+            "abbreviatedOid": "6e21362"
+          },
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-04-02T09:42:40Z",
+          "updatedAt": "2026-04-02T09:42:40Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "We have expanded the acronym in the abstract, and so I think it would make sense to use the acronym elsewhere as we do in the title. That would also be consistent with the VDS change below.",
+              "createdAt": "2026-04-02T09:42:40Z",
+              "updatedAt": "2026-04-02T09:43:07Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORpjjVc7xXzyj",
+          "commit": {
+            "abbreviatedOid": "6e21362"
+          },
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-04-02T09:43:35Z",
+          "updatedAt": "2026-04-02T09:43:36Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\n# Description of the CCF Ledger Verifiable Data Structure\n```",
+              "createdAt": "2026-04-02T09:43:35Z",
+              "updatedAt": "2026-04-02T09:43:36Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORpjjVc7xX5Kw",
+          "commit": {
+            "abbreviatedOid": "6e21362"
+          },
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-04-02T09:47:57Z",
+          "updatedAt": "2026-04-02T09:47:57Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "PR_kwDORpjjVc7PmVfp",
+      "title": "Refine language for clarity in CCF profile document",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/pull/10",
+      "state": "MERGED",
+      "author": "nikcal",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Reviewed VDS and TEE acronym standardization.",
+      "createdAt": "2026-04-02T15:38:03Z",
+      "updatedAt": "2026-04-02T15:50:50Z",
+      "baseRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "baseRefName": "main",
+      "baseRefOid": "68da31d0370e5ffe65342423efd9bfa975fe3f5b",
+      "headRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "headRefName": "nikcal-patch-4",
+      "headRefOid": "4ea83a80d697848fd6be28d9cbc1c6e9e2433b3e",
+      "closedAt": "2026-04-02T15:50:50Z",
+      "mergedAt": "2026-04-02T15:50:50Z",
+      "mergedBy": "achamayou",
+      "mergeCommit": {
+        "oid": "1e39420a946cc7ad932f970d51ce3b6414a6ea6c"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORpjjVc7xfllX",
+          "commit": {
+            "abbreviatedOid": "4ea83a8"
+          },
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-04-02T15:50:15Z",
+          "updatedAt": "2026-04-02T15:50:15Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
