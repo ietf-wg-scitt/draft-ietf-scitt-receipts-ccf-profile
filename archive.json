@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-04-05T01:10:18.358131+00:00",
+  "timestamp": "2026-04-30T01:28:38.150797+00:00",
   "repo": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
   "labels": [
     {
@@ -89,6 +89,22 @@
           "updatedAt": "2026-04-01T17:20:44Z"
         }
       ]
+    },
+    {
+      "number": 11,
+      "id": "I_kwDORpjjVc8AAAABA2GSkg",
+      "title": "Collect reviews from WG members",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/issues/11",
+      "state": "OPEN",
+      "author": "achamayou",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "https://datatracker.ietf.org/doc/draft-ietf-scitt-receipts-ccf-profile/01/ has received early reviews from GENART and SECIR (both Ready), but would benefit from reviews from the rest of the working group before progressing to WGLC.",
+      "createdAt": "2026-04-29T15:19:52Z",
+      "updatedAt": "2026-04-29T15:19:52Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
