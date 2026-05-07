@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-04-30T01:28:38.150797+00:00",
+  "timestamp": "2026-05-07T01:28:28.714326+00:00",
   "repo": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
   "labels": [
     {
@@ -102,9 +102,17 @@
       "labels": [],
       "body": "https://datatracker.ietf.org/doc/draft-ietf-scitt-receipts-ccf-profile/01/ has received early reviews from GENART and SECIR (both Ready), but would benefit from reviews from the rest of the working group before progressing to WGLC.",
       "createdAt": "2026-04-29T15:19:52Z",
-      "updatedAt": "2026-04-29T15:19:52Z",
+      "updatedAt": "2026-05-06T13:31:40Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Review in the group call of April 29 brought up the following points:\n\n1. References need to be tidied up (#12)\n2. Consider if the TEE paragraph needs to stay, it has no normative content/value\n3. Find a reference for the technique of adding a revealable commitment to allow delayed commit",
+          "createdAt": "2026-05-06T13:31:27Z",
+          "updatedAt": "2026-05-06T13:31:40Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -559,6 +567,58 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 12,
+      "id": "PR_kwDORpjjVc7YyKvK",
+      "title": "Tidy up references",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/pull/12",
+      "state": "OPEN",
+      "author": "achamayou",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "1. fix scitt-arch reference\r\n2. use RFCthis\r\n3. CCF references are correctly informative",
+      "createdAt": "2026-05-06T13:29:26Z",
+      "updatedAt": "2026-05-06T13:44:21Z",
+      "baseRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "baseRefName": "main",
+      "baseRefOid": "1e39420a946cc7ad932f970d51ce3b6414a6ea6c",
+      "headRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "headRefName": "tidy_up_references",
+      "headRefOid": "635df1bb13082ddded1e74638a34e0c95cd769ad",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 13,
+      "id": "PR_kwDORpjjVc7Yyh0S",
+      "title": "Fix typos, grammar and consistency mistakes",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/pull/13",
+      "state": "OPEN",
+      "author": "achamayou",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-05-06T13:44:03Z",
+      "updatedAt": "2026-05-06T13:44:34Z",
+      "baseRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "baseRefName": "main",
+      "baseRefOid": "1e39420a946cc7ad932f970d51ce3b6414a6ea6c",
+      "headRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "headRefName": "typos_and_consistency",
+      "headRefOid": "1625d3e97fcccb1833cee1e64adbfc47749b00d8",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
