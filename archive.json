@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-05-07T01:28:28.714326+00:00",
+  "timestamp": "2026-05-12T01:29:55.560426+00:00",
   "repo": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
   "labels": [
     {
@@ -113,6 +113,25 @@
           "updatedAt": "2026-05-06T13:31:40Z"
         }
       ]
+    },
+    {
+      "number": 14,
+      "id": "I_kwDORpjjVc8AAAABB3dNTg",
+      "title": "draft-birkholz-cose-receipts-ccf-profile-05: Missing hash for initial value of h",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/issues/14",
+      "state": "OPEN",
+      "author": "micromaomao",
+      "authorAssociation": "NONE",
+      "assignees": [
+        "achamayou",
+        "Copilot"
+      ],
+      "labels": [],
+      "body": "In https://www.ietf.org/archive/id/draft-birkholz-cose-receipts-ccf-profile-05.html, when it says\n\n```\n     h := proof.leaf.internal-transaction-hash\n          || HASH(proof.leaf.internal-evidence)\n          || proof.leaf.data-hash\n```\n\nit should say\n\n```\n     h := HASH(\n          proof.leaf.internal-transaction-hash\n              || HASH(proof.leaf.internal-evidence)\n              || proof.leaf.data-hash\n     )\n```\n\n(ref: https://github.com/microsoft/scitt-ccf-ledger/blob/main/pyscitt/pyscitt/receipt.py#L132-L134)",
+      "createdAt": "2026-05-11T10:57:53Z",
+      "updatedAt": "2026-05-11T10:58:45Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -619,6 +638,49 @@
       "mergeCommit": null,
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 15,
+      "id": "PR_kwDORpjjVc7aN5wQ",
+      "title": "Clarify inclusion proof algorithm: hash initial leaf concatenation",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/pull/15",
+      "state": "OPEN",
+      "author": "copilot-swe-agent",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "achamayou",
+        "Copilot"
+      ],
+      "labels": [],
+      "body": "The draft\u2019s inclusion verification pseudocode initialized `h` as a raw concatenation of leaf fields, but CCF verification computes `h` as the hash of that concatenation. This updates the algorithm text to match the intended behavior.\n\n- **Algorithm correction (Inclusion Proof Verification)**\n  - Updated `compute_root(proof)` so the initial `h` is derived as:\n    - `HASH(internal-transaction-hash || HASH(internal-evidence) || data-hash)`\n  - This aligns the draft pseudocode with the CCF receipt verification logic referenced in the issue.\n\n- **Updated pseudocode snippet**\n  ```text\n  h := HASH(\n       proof.leaf.internal-transaction-hash\n           || HASH(proof.leaf.internal-evidence)\n           || proof.leaf.data-hash\n       )\n  ```\n\n> [!WARNING]\n>\n> <details>\n> <summary>Firewall rules blocked me from connecting to one or more addresses (expand for details)</summary>\n>\n> #### I tried to connect to the following addresses, but was blocked by firewall rules:\n>\n> - `https://api.github.com/repos/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile`\n>   - Triggering command: `/usr/bin/python3 python3 lib/default-branch.py ietf-wg-scitt draft-ietf-scitt-receipts-ccf-profile ******` (http block)\n>\n> If you need me to access, download, or install something from one of these locations, you can either:\n>\n> - Configure [Actions setup steps](https://gh.io/copilot/actions-setup-steps) to set up my environment, which run before the firewall is enabled\n> - Add the appropriate URLs or hosts to the custom allowlist in this repository's [Copilot coding agent settings](https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/settings/copilot/coding_agent) (admins only)\n>\n> </details>",
+      "createdAt": "2026-05-11T10:58:50Z",
+      "updatedAt": "2026-05-11T12:39:50Z",
+      "baseRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "baseRefName": "main",
+      "baseRefOid": "1e39420a946cc7ad932f970d51ce3b6414a6ea6c",
+      "headRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "headRefName": "copilot/fix-missing-hash-in-initial-value",
+      "headRefOid": "c97c17f1dd736f7fb24727d10313eebcd441e817",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORpjjVc7-Ip9I",
+          "commit": {
+            "abbreviatedOid": "c97c17f"
+          },
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-05-11T12:39:50Z",
+          "updatedAt": "2026-05-11T12:39:50Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
