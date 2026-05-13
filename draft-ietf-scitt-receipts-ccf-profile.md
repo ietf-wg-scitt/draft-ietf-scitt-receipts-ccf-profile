@@ -48,8 +48,9 @@ author:
 normative:
   RFC9162:
   I-D.ietf-cose-merkle-tree-proofs: cose-receipts
-  I-D.ietf-wg-scitt-architecture: scitt-architecture
+  I-D.ietf-scitt-architecture: scitt-architecture
 
+informative:
   CCF:
     title: "Confidential Consortium Framework"
     target: "https://github.com/microsoft/ccf"
@@ -65,6 +66,9 @@ normative:
   CCF-Receipt-Verification:
     title: "CCF Receipt Verification"
     target: "https://microsoft.github.io/CCF/main/use_apps/verify_tx.html#receipt-verification"
+
+entity:
+  SELF: "RFCthis"
 
 --- abstract
 
@@ -281,6 +285,7 @@ This document requests IANA to add the following new value to the 'COSE Verifiab
 * Name: CCF_LEDGER_SHA256
 * Value: 2 (requested assignment)
 * Description: Append-only logs that are integrity-protected by a Merkle Tree and signatures produced via Trusted Execution Environments containing a mix of public and confidential information, as specified by the Confidential Consortium Framework.
-* Reference: This document
+* Reference: {{&SELF}}
+* Related information: {{-cose-receipts}}
 
 --- back
