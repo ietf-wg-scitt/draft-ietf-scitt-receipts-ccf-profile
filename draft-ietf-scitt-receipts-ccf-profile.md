@@ -71,6 +71,8 @@ informative:
   COIN-FLIPPING:
     title: "Coin Flipping By Telephone - A Protocol For Solving Impossible Problems"
     target: "https://dl.acm.org/doi/epdf/10.1145/1008908.1008911"
+    seriesinfo:
+      DOI: 10.1145/1323293.1294280
 
 entity:
   SELF: "RFCthis"
