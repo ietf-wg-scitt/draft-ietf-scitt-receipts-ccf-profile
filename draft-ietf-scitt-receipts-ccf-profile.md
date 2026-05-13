@@ -72,19 +72,19 @@ entity:
 
 --- abstract
 
-This document defines a new verifiable data structure (VDS) type for COSE Receipts and inclusion proof specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees.
+This document defines a new verifiable data structure (VDS) type for COSE Receipts and inclusion proofs specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees.
 
 --- middle
 
 # Introduction
 
-The COSE Receipts document {{-cose-receipts}} defines a common framework for expressing different types of proofs about verifiable data structures (VDS), providing a standardized way to convey trust relevant evidence. For instance, inclusion proofs guarantee to a verifier that a given serializable element is recorded at a given state of the VDS, while consistency proofs are used to establish that an inclusion proof is still consistent with the new state of the VDS at a later time.
+The COSE Receipts document {{-cose-receipts}} defines a common framework for expressing different types of proofs about verifiable data structures (VDS), providing a standardized way to convey trust-relevant evidence. For instance, inclusion proofs guarantee to a verifier that a given serializable element is recorded at a given state of the VDS, while consistency proofs are used to establish that an inclusion proof is still consistent with the new state of the VDS at a later time.
 
 In this document, we define a new type of VDS and inclusion proof associated with an application of the Confidential Consortium Framework (CCF) ledger that implements the SCITT Architecture defined in {{-scitt-architecture}}. This VDS carries indexed transaction information in a binary Merkle Tree, where new transactions are appended to the right, so that the binary decomposition of the index of a transaction can be interpreted as the position in the tree if 0 represents the left branch and 1 the right branch.
 Compared to {{RFC9162}}, the leaves of CCF trees carry additional internal information for the following purposes:
 
-1. To bind the full details of the transaction executed, which is a super-set of what is exposed in the proof and captures internal information details useful for detailed system audit, but not for application purposes.
-1. To allow the distributed system executing the application logic in Trusted Execution Environments (TEE) to persist signatures to storage early. Receipt production in only enabled once transactions are fully committed by the consensus protocol.
+1. To bind the full details of the transaction executed, which is a superset of what is exposed in the proof and captures internal details useful for detailed system audit, but not for application purposes.
+1. To allow the distributed system executing the application logic in Trusted Execution Environments (TEEs) to persist signatures to storage early. Receipt production is only enabled once transactions are fully committed by the consensus protocol.
 
 ## Requirements Notation
 
@@ -92,7 +92,7 @@ Compared to {{RFC9162}}, the leaves of CCF trees carry additional internal infor
 
 # Description of the Confidential Consortium Framework Ledger Verifiable Data Structure
 
-This documents extends the VDS registry of {{-cose-receipts}} with the following value:
+This document extends the VDS registry of {{-cose-receipts}} with the following value:
 
 | Name | Value | Description | Reference
 |---
@@ -103,7 +103,7 @@ This documents extends the VDS registry of {{-cose-receipts}} with the following
 
 A CCF ledger is a binary Merkle Tree constructed from a hash function H, which is defined from the log type. For instance, the hash function for `CCF_LEDGER_SHA256` is `SHA256`, whose `HASH_SIZE` is 32 bytes.
 
-The Merkle tree encodes an ordered list of `n` transactions T_n = \{T\[0\], T\[1\], ..., T\[n-1\]\}. We define the Merkle Tree Hash (MTH) function, which takes as input a list of serialized transactions (as byte strings), and outputs a single HASH_SIZE byte string called the Merkle root hash, by induction on the list.
+The Merkle Tree encodes an ordered list of `n` transactions T_n = \{T\[0\], T\[1\], ..., T\[n-1\]\}. We define the Merkle Tree Hash (MTH) function, which takes as input a list of serialized transactions (as byte strings), and outputs a single HASH_SIZE byte string called the Merkle root hash, by induction on the list.
 
 This function is defined as follows:
 
@@ -148,7 +148,7 @@ ccf-leaf = [
 ]
 ~~~
 
-The `internal-transaction-hash` and `internal-evidence` byte strings are internal to the CCF implementation. They can be safely ignored by receipt Verifiers, but they commit the transparency service (TS) to the whole tree contents and may be used for additional, CCF-specific auditing.
+The `internal-transaction-hash` and `internal-evidence` values are internal to the CCF implementation. They can be safely ignored by receipt Verifiers, but they commit the transparency service (TS) to the whole tree contents and may be used for additional, CCF-specific auditing.
 
 `internal-transaction-hash` is a hash over the complete entry in the {{CCF-Ledger-Format}}, and `internal-evidence` is a revealable {{CCF-Commit-Evidence}} value that allows early persistence of ledger entries before distributed consensus can be established. This mechanism is useful to implement high-throughput transparency applications in Trusted Execution Environments (TEEs) that only provide a limited amount of memory, while maintaining high availability afforded by distributed consensus.
 
@@ -181,7 +181,7 @@ The proof signature for a CCF inclusion proof is a COSE signature (encoded with 
 
 The protected header parameters for the CCF inclusion proof signature MUST include the following:
 
-* `verifiable-data-structure: int/tstr`. This header MUST be set to the verifiable data structure algorithm identifier for `ccf-ledger` (TBD_1).
+* `verifiable-data-structure: int/tstr`. This header MUST be set to the verifiable data structure algorithm identifier for `CCF_LEDGER_SHA256` (TBD_1).
 * `label: int`. This header MUST be set to the value of the `inclusion` proof type in the IANA registry of Verifiable Data Structure Proof Type (-1).
 
 The unprotected header for a CCF inclusion proof signature MUST include the following:
@@ -200,7 +200,7 @@ compute_root(proof):
        || HASH(proof.leaf.internal-evidence)
        || proof.leaf.data-hash
 
-  for [left, hash] in proof:
+  for [left, hash] in proof.path:
       h := HASH(hash + h) if left
            HASH(h + hash) else
   return h
@@ -231,7 +231,7 @@ protected-header-map = {
 ~~~
 
 - alg (label: 1): REQUIRED. Signature algorithm identifier. Value type: int.
-- vds (label: 395): REQUIRED. verifiable data structure algorithm identifier. Value type: int.
+- vds (label: 395): REQUIRED. Verifiable data structure algorithm identifier. Value type: int.
 
 The unprotected header for an inclusion proof signature is described by the following CDDL definition:
 
