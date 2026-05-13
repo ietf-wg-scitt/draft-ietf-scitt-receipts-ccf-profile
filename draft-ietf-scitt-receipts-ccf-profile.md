@@ -66,6 +66,11 @@ normative:
     title: "CCF Receipt Verification"
     target: "https://microsoft.github.io/CCF/main/use_apps/verify_tx.html#receipt-verification"
 
+informative:
+  COIN-FLIPPING:
+    title: "Coin Flipping By Telephone - A Protocol For Solving Impossible Problems"
+    target: "https://dl.acm.org/doi/epdf/10.1145/1008908.1008911"
+
 --- abstract
 
 This document defines a new verifiable data structure (VDS) type for COSE Receipts and inclusion proof specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees.
@@ -146,7 +151,7 @@ ccf-leaf = [
 
 The `internal-transaction-hash` and `internal-evidence` byte strings are internal to the CCF implementation. They can be safely ignored by receipt Verifiers, but they commit the transparency service (TS) to the whole tree contents and may be used for additional, CCF-specific auditing.
 
-`internal-transaction-hash` is a hash over the complete entry in the {{CCF-Ledger-Format}}, and `internal-evidence` is a revealable {{CCF-Commit-Evidence}} value that allows early persistence of ledger entries before distributed consensus can be established. This mechanism is useful to implement high-throughput transparency applications in Trusted Execution Environments (TEEs) that only provide a limited amount of memory, while maintaining high availability afforded by distributed consensus.
+`internal-transaction-hash` is a hash over the complete entry in the {{CCF-Ledger-Format}}, and `internal-evidence` is a revealable {{CCF-Commit-Evidence}} value that allows early persistence of ledger entries before distributed consensus can be established. This mechanism is useful to implement high-throughput transparency applications in Trusted Execution Environments (TEEs) that only provide a limited amount of memory, while maintaining high availability afforded by distributed consensus. Using a secure a one-way function `f` to publish an `f(x)` committment to an `x` value that can be revealed at a later time is common feature of distributed protocols ({{-COIN-FLIPPING}}).
 
 `data-hash` summarizes the application data included in the ledger at this transaction, which is a Signed Statement as defined by {{-scitt-architecture}}.
 
