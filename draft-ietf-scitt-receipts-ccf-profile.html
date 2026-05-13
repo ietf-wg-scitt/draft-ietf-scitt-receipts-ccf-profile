@@ -10,7 +10,7 @@
 <meta content="Cedric Fournet" name="author">
 <meta content="Amaury Chamayou" name="author">
 <meta content="
-       This document defines a new verifiable data structure (VDS) type for COSE Receipts and inclusion proof specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees. 
+       This document defines a new verifiable data structure (VDS) type for COSE Receipts and inclusion proofs specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees. 
     " name="description">
 <meta content="xml2rfc 3.33.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
@@ -1095,7 +1095,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">CCF Profile for COSE Receipts</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document defines a new verifiable data structure (VDS) type for COSE Receipts and inclusion proof specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document defines a new verifiable data structure (VDS) type for COSE Receipts and inclusion proofs specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1228,15 +1228,15 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">The COSE Receipts document <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span> defines a common framework for expressing different types of proofs about verifiable data structures (VDS), providing a standardized way to convey trust relevant evidence. For instance, inclusion proofs guarantee to a verifier that a given serializable element is recorded at a given state of the VDS, while consistency proofs are used to establish that an inclusion proof is still consistent with the new state of the VDS at a later time.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">The COSE Receipts document <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span> defines a common framework for expressing different types of proofs about verifiable data structures (VDS), providing a standardized way to convey trust-relevant evidence. For instance, inclusion proofs guarantee to a verifier that a given serializable element is recorded at a given state of the VDS, while consistency proofs are used to establish that an inclusion proof is still consistent with the new state of the VDS at a later time.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">In this document, we define a new type of VDS and inclusion proof associated with an application of the Confidential Consortium Framework (CCF) ledger that implements the SCITT Architecture defined in <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span>. This VDS carries indexed transaction information in a binary Merkle Tree, where new transactions are appended to the right, so that the binary decomposition of the index of a transaction can be interpreted as the position in the tree if 0 represents the left branch and 1 the right branch.
 Compared to <span>[<a href="#RFC9162" class="cite xref">RFC9162</a>]</span>, the leaves of CCF trees carry additional internal information for the following purposes:<a href="#section-1-2" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-1-3">
 <li id="section-1-3.1">
-          <p id="section-1-3.1.1">To bind the full details of the transaction executed, which is a super-set of what is exposed in the proof and captures internal information details useful for detailed system audit, but not for application purposes.<a href="#section-1-3.1.1" class="pilcrow">¶</a></p>
+          <p id="section-1-3.1.1">To bind the full details of the transaction executed, which is a superset of what is exposed in the proof and captures internal details useful for detailed system audit, but not for application purposes.<a href="#section-1-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-1-3.2">
-          <p id="section-1-3.2.1">To allow the distributed system executing the application logic in Trusted Execution Environments (TEE) to persist signatures to storage early. Receipt production in only enabled once transactions are fully committed by the consensus protocol.<a href="#section-1-3.2.1" class="pilcrow">¶</a></p>
+          <p id="section-1-3.2.1">To allow the distributed system executing the application logic in Trusted Execution Environments (TEEs) to persist signatures to storage early. Receipt production is only enabled once transactions are fully committed by the consensus protocol.<a href="#section-1-3.2.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
 <div id="requirements-notation">
@@ -1257,7 +1257,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
       <h2 id="name-description-of-the-confiden">
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-description-of-the-confiden" class="section-name selfRef">Description of the Confidential Consortium Framework Ledger Verifiable Data Structure</a>
       </h2>
-<p id="section-2-1">This documents extends the VDS registry of <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span> with the following value:<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-1">This document extends the VDS registry of <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span> with the following value:<a href="#section-2-1" class="pilcrow">¶</a></p>
 <span id="name-verifiable-data-structure-a"></span><div id="verifiable-data-structure-values">
 <table class="left" id="table-1">
         <caption>
@@ -1288,7 +1288,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-merkle-tree-shape" class="section-name selfRef">Merkle Tree Shape</a>
         </h3>
 <p id="section-2.1-1">A CCF ledger is a binary Merkle Tree constructed from a hash function H, which is defined from the log type. For instance, the hash function for <code>CCF_LEDGER_SHA256</code> is <code>SHA256</code>, whose <code>HASH_SIZE</code> is 32 bytes.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.1-2">The Merkle tree encodes an ordered list of <code>n</code> transactions T_n = {T[0], T[1], ..., T[n-1]}. We define the Merkle Tree Hash (MTH) function, which takes as input a list of serialized transactions (as byte strings), and outputs a single HASH_SIZE byte string called the Merkle root hash, by induction on the list.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1-2">The Merkle Tree encodes an ordered list of <code>n</code> transactions T_n = {T[0], T[1], ..., T[n-1]}. We define the Merkle Tree Hash (MTH) function, which takes as input a list of serialized transactions (as byte strings), and outputs a single HASH_SIZE byte string called the Merkle root hash, by induction on the list.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
 <p id="section-2.1-3">This function is defined as follows:<a href="#section-2.1-3" class="pilcrow">¶</a></p>
 <p id="section-2.1-4">The hash of an empty list is the hash of an empty string:<a href="#section-2.1-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-2.1-5">
@@ -1342,7 +1342,7 @@ ccf-leaf = [
 ]
 </pre><a href="#section-2.2-2" class="pilcrow">¶</a>
 </div>
-<p id="section-2.2-3">The <code>internal-transaction-hash</code> and <code>internal-evidence</code> byte strings are internal to the CCF implementation. They can be safely ignored by receipt Verifiers, but they commit the transparency service (TS) to the whole tree contents and may be used for additional, CCF-specific auditing.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.2-3">The <code>internal-transaction-hash</code> and <code>internal-evidence</code> values are internal to the CCF implementation. They can be safely ignored by receipt Verifiers, but they commit the transparency service (TS) to the whole tree contents and may be used for additional, CCF-specific auditing.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
 <p id="section-2.2-4"><code>internal-transaction-hash</code> is a hash over the complete entry in the <span>[<a href="#CCF-Ledger-Format" class="cite xref">CCF-Ledger-Format</a>]</span>, and <code>internal-evidence</code> is a revealable <span>[<a href="#CCF-Commit-Evidence" class="cite xref">CCF-Commit-Evidence</a>]</span> value that allows early persistence of ledger entries before distributed consensus can be established. This mechanism is useful to implement high-throughput transparency applications in Trusted Execution Environments (TEEs) that only provide a limited amount of memory, while maintaining high availability afforded by distributed consensus.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
 <p id="section-2.2-5"><code>data-hash</code> summarizes the application data included in the ledger at this transaction, which is a Signed Statement as defined by <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span>.<a href="#section-2.2-5" class="pilcrow">¶</a></p>
 </section>
@@ -1381,7 +1381,7 @@ ccf-inclusion-proof = bstr .cbor {
 <p id="section-3.1-2">The protected header parameters for the CCF inclusion proof signature <span class="bcp14">MUST</span> include the following:<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.1-3.1">
-            <p id="section-3.1-3.1.1"><code>verifiable-data-structure: int/tstr</code>. This header <span class="bcp14">MUST</span> be set to the verifiable data structure algorithm identifier for <code>ccf-ledger</code> (TBD_1).<a href="#section-3.1-3.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-3.1.1"><code>verifiable-data-structure: int/tstr</code>. This header <span class="bcp14">MUST</span> be set to the verifiable data structure algorithm identifier for <code>CCF_LEDGER_SHA256</code> (TBD_1).<a href="#section-3.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.1-3.2">
             <p id="section-3.1-3.2.1"><code>label: int</code>. This header <span class="bcp14">MUST</span> be set to the value of the <code>inclusion</code> proof type in the IANA registry of Verifiable Data Structure Proof Type (-1).<a href="#section-3.1-3.2.1" class="pilcrow">¶</a></p>
@@ -1409,7 +1409,7 @@ compute_root(proof):
        || HASH(proof.leaf.internal-evidence)
        || proof.leaf.data-hash
 
-  for [left, hash] in proof:
+  for [left, hash] in proof.path:
       h := HASH(hash + h) if left
            HASH(h + hash) else
   return h
@@ -1450,7 +1450,7 @@ protected-header-map = {
           <p id="section-4-3.1.1">alg (label: 1): <span class="bcp14">REQUIRED</span>. Signature algorithm identifier. Value type: int.<a href="#section-4-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-4-3.2">
-          <p id="section-4-3.2.1">vds (label: 395): <span class="bcp14">REQUIRED</span>. verifiable data structure algorithm identifier. Value type: int.<a href="#section-4-3.2.1" class="pilcrow">¶</a></p>
+          <p id="section-4-3.2.1">vds (label: 395): <span class="bcp14">REQUIRED</span>. Verifiable data structure algorithm identifier. Value type: int.<a href="#section-4-3.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-4-4">The unprotected header for an inclusion proof signature is described by the following CDDL definition:<a href="#section-4-4" class="pilcrow">¶</a></p>
