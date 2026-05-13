@@ -199,7 +199,10 @@ Table of Contents
    mechanism is useful to implement high-throughput transparency
    applications in Trusted Execution Environments (TEEs) that only
    provide a limited amount of memory, while maintaining high
-   availability afforded by distributed consensus.
+   availability afforded by distributed consensus.  Using a secure a
+   one-way function f to publish an f(x) committment to an x value that
+   can be revealed at a later time is common feature of distributed
+   protocols ([COIN-FLIPPING]).
 
    data-hash summarizes the application data included in the ledger at
    this transaction, which is a Signed Statement as defined by
@@ -439,6 +442,11 @@ Table of Contents
               "CCF Receipt Verification", n.d.,
               <https://microsoft.github.io/CCF/main/use_apps/
               verify_tx.html#receipt-verification>.
+
+   [COIN-FLIPPING]
+              "Coin Flipping By Telephone - A Protocol For Solving
+              Impossible Problems", DOI 10.1145/1323293.1294280, n.d.,
+              <https://dl.acm.org/doi/epdf/10.1145/1008908.1008911>.
 
 Authors' Addresses
 

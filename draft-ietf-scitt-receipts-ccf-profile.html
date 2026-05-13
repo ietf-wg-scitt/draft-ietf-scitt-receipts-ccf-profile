@@ -1343,7 +1343,7 @@ ccf-leaf = [
 </pre><a href="#section-2.2-2" class="pilcrow">¶</a>
 </div>
 <p id="section-2.2-3">The <code>internal-transaction-hash</code> and <code>internal-evidence</code> values are internal to the CCF implementation. They can be safely ignored by receipt Verifiers, but they commit the transparency service (TS) to the whole tree contents and may be used for additional, CCF-specific auditing.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
-<p id="section-2.2-4"><code>internal-transaction-hash</code> is a hash over the complete entry in the <span>[<a href="#CCF-Ledger-Format" class="cite xref">CCF-Ledger-Format</a>]</span>, and <code>internal-evidence</code> is a revealable <span>[<a href="#CCF-Commit-Evidence" class="cite xref">CCF-Commit-Evidence</a>]</span> value that allows early persistence of ledger entries before distributed consensus can be established. This mechanism is useful to implement high-throughput transparency applications in Trusted Execution Environments (TEEs) that only provide a limited amount of memory, while maintaining high availability afforded by distributed consensus.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
+<p id="section-2.2-4"><code>internal-transaction-hash</code> is a hash over the complete entry in the <span>[<a href="#CCF-Ledger-Format" class="cite xref">CCF-Ledger-Format</a>]</span>, and <code>internal-evidence</code> is a revealable <span>[<a href="#CCF-Commit-Evidence" class="cite xref">CCF-Commit-Evidence</a>]</span> value that allows early persistence of ledger entries before distributed consensus can be established. This mechanism is useful to implement high-throughput transparency applications in Trusted Execution Environments (TEEs) that only provide a limited amount of memory, while maintaining high availability afforded by distributed consensus. Using a secure a one-way function <code>f</code> to publish an <code>f(x)</code> committment to an <code>x</code> value that can be revealed at a later time is common feature of distributed protocols (<span>[<a href="#COIN-FLIPPING" class="cite xref">COIN-FLIPPING</a>]</span>).<a href="#section-2.2-4" class="pilcrow">¶</a></p>
 <p id="section-2.2-5"><code>data-hash</code> summarizes the application data included in the ledger at this transaction, which is a Signed Statement as defined by <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span>.<a href="#section-2.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1613,8 +1613,12 @@ Clients can mitigate this risk in two ways: by regularly auditing the consistenc
 <span class="refTitle">"CCF Ledger Format"</span>, <span>n.d.</span>, <span>&lt;<a href="https://microsoft.github.io/CCF/main/architecture/ledger.html">https://microsoft.github.io/CCF/main/architecture/ledger.html</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="CCF-Receipt-Verification">[CCF-Receipt-Verification]</dt>
-      <dd>
+        <dd>
 <span class="refTitle">"CCF Receipt Verification"</span>, <span>n.d.</span>, <span>&lt;<a href="https://microsoft.github.io/CCF/main/use_apps/verify_tx.html#receipt-verification">https://microsoft.github.io/CCF/main/use_apps/verify_tx.html#receipt-verification</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="COIN-FLIPPING">[COIN-FLIPPING]</dt>
+      <dd>
+<span class="refTitle">"Coin Flipping By Telephone - A Protocol For Solving Impossible Problems"</span>, <span class="seriesInfo">DOI 10.1145/1323293.1294280</span>, <span>n.d.</span>, <span>&lt;<a href="https://dl.acm.org/doi/epdf/10.1145/1008908.1008911">https://dl.acm.org/doi/epdf/10.1145/1008908.1008911</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
