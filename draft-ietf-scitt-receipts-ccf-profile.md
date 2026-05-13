@@ -196,9 +196,11 @@ CCF uses the following algorithm to verify an inclusion receipt:
 
 ~~~
 compute_root(proof):
-  h := proof.leaf.internal-transaction-hash
-       || HASH(proof.leaf.internal-evidence)
-       || proof.leaf.data-hash
+  h := HASH(
+       proof.leaf.internal-transaction-hash
+           || HASH(proof.leaf.internal-evidence)
+           || proof.leaf.data-hash
+       )
 
   for [left, hash] in proof.path:
       h := HASH(hash + h) if left
