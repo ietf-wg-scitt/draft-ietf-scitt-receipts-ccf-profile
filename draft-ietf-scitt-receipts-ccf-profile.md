@@ -67,7 +67,6 @@ informative:
     title: "CCF Receipt Verification"
     target: "https://microsoft.github.io/CCF/main/use_apps/verify_tx.html#receipt-verification"
 
-informative:
   COIN-FLIPPING:
     title: "Coin Flipping By Telephone - A Protocol For Solving Impossible Problems"
     target: "https://dl.acm.org/doi/epdf/10.1145/1008908.1008911"
