@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-05-14T01:51:36.782633+00:00",
+  "timestamp": "2026-05-28T01:30:54.224974+00:00",
   "repo": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
   "labels": [
     {
@@ -131,6 +131,22 @@
       "createdAt": "2026-05-11T10:57:53Z",
       "updatedAt": "2026-05-13T15:35:15Z",
       "closedAt": "2026-05-13T15:35:15Z",
+      "comments": []
+    },
+    {
+      "number": 18,
+      "id": "I_kwDORpjjVc8AAAABDdS9rg",
+      "title": "Hash algorithm for transaction components",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/issues/18",
+      "state": "OPEN",
+      "author": "micromaomao",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Section 2.1 says that\n\n> A CCF ledger is a binary Merkle Tree constructed from a hash function H, which is defined from the log type. For instance, the hash function for CCF_LEDGER_SHA256 is SHA256, whose HASH_SIZE is 32 bytes.\n\nWhich clarifies that the hash function _used for the merkle tree_ is sha256. However, section 2.2 does not have an equivalent clarification for the hash function used for internal-transaction-hash and (more crucially) data-hash (i.e. it's implied that when it says \"data-hash summarizes the application data...\" this summarization is done using the same function as the Merkle Tree, or done with sha256 as defined by CCF_LEDGER_SHA256)\n",
+      "createdAt": "2026-05-26T19:45:06Z",
+      "updatedAt": "2026-05-26T19:45:06Z",
+      "closedAt": null,
       "comments": []
     }
   ],
@@ -823,6 +839,32 @@
           ]
         }
       ]
+    },
+    {
+      "number": 17,
+      "id": "PR_kwDORpjjVc7fixbs",
+      "title": "Fix typo in internal-transaction-hash paragraph",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/pull/17",
+      "state": "OPEN",
+      "author": "micromaomao",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-05-26T19:20:32Z",
+      "updatedAt": "2026-05-26T19:20:32Z",
+      "baseRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "baseRefName": "main",
+      "baseRefOid": "12e252fe2b634d8f1d80fa5f8585edf723e3e94f",
+      "headRepository": "micromaomao/draft-ietf-scitt-receipts-ccf-profile",
+      "headRefName": "fix-typo",
+      "headRefOid": "302b1d54ec3eeaf27f384f2b14d9622f9ce6d30a",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
