@@ -202,11 +202,17 @@ Table of Contents
    availability afforded by distributed consensus.  Using a secure one-
    way function f to publish an f(x) commitment to an x value that can
    be revealed at a later time is a common feature of distributed
-   protocols ([COIN-FLIPPING]).
+   protocols ([COIN-FLIPPING]).  The hash function used for internal-
+   transaction-hash is the same hash function H as in the Merkle Tree
+   construction for the selected verifiable data structure algorithm.
+   For CCF_LEDGER_SHA256, this function is SHA256.
 
    data-hash summarizes the application data included in the ledger at
    this transaction, which is a Signed Statement as defined by
-   [I-D.ietf-scitt-architecture].
+   [I-D.ietf-scitt-architecture].  The hash function used for data-hash
+   is also the same hash function H as in the Merkle Tree construction
+   for the selected verifiable data structure algorithm.  For
+   CCF_LEDGER_SHA256, this function is SHA256.
 
 3.  CCF Inclusion Proofs
 
