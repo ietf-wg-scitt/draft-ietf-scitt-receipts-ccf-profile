@@ -199,9 +199,9 @@ Table of Contents
    mechanism is useful to implement high-throughput transparency
    applications in Trusted Execution Environments (TEEs) that only
    provide a limited amount of memory, while maintaining high
-   availability afforded by distributed consensus.  Using a secure a
-   one-way function f to publish an f(x) committment to an x value that
-   can be revealed at a later time is common feature of distributed
+   availability afforded by distributed consensus.  Using a secure one-
+   way function f to publish an f(x) commitment to an x value that can
+   be revealed at a later time is a common feature of distributed
    protocols ([COIN-FLIPPING]).  The hash function used for internal-
    transaction-hash is the same hash function H as in the Merkle Tree
    construction for the selected verifiable data structure algorithm.
