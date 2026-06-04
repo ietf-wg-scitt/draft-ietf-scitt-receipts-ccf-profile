@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-05-28T01:30:54.224974+00:00",
+  "timestamp": "2026-06-04T02:15:30.869039+00:00",
   "repo": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
   "labels": [
     {
@@ -95,15 +95,15 @@
       "id": "I_kwDORpjjVc8AAAABA2GSkg",
       "title": "Collect reviews from WG members",
       "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/issues/11",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "achamayou",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "https://datatracker.ietf.org/doc/draft-ietf-scitt-receipts-ccf-profile/01/ has received early reviews from GENART and SECIR (both Ready), but would benefit from reviews from the rest of the working group before progressing to WGLC.",
       "createdAt": "2026-04-29T15:19:52Z",
-      "updatedAt": "2026-05-13T15:45:05Z",
-      "closedAt": null,
+      "updatedAt": "2026-06-03T14:01:39Z",
+      "closedAt": "2026-06-03T14:01:39Z",
       "comments": [
         {
           "author": "achamayou",
@@ -111,6 +111,13 @@
           "body": "Review in the group call of April 29 brought up the following points:\n\n1. References need to be tidied up (#12)\n2. Consider if the TEE paragraph needs to stay, it has no normative content/value\n3. Find a reference for the technique of adding a revealable commitment to allow delayed commit (#16)",
           "createdAt": "2026-05-06T13:31:27Z",
           "updatedAt": "2026-05-13T15:45:05Z"
+        },
+        {
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "body": "These items have been addressed now.",
+          "createdAt": "2026-06-03T14:01:39Z",
+          "updatedAt": "2026-06-03T14:01:39Z"
         }
       ]
     },
@@ -138,15 +145,18 @@
       "id": "I_kwDORpjjVc8AAAABDdS9rg",
       "title": "Hash algorithm for transaction components",
       "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/issues/18",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "micromaomao",
       "authorAssociation": "NONE",
-      "assignees": [],
+      "assignees": [
+        "achamayou",
+        "Copilot"
+      ],
       "labels": [],
       "body": "Section 2.1 says that\n\n> A CCF ledger is a binary Merkle Tree constructed from a hash function H, which is defined from the log type. For instance, the hash function for CCF_LEDGER_SHA256 is SHA256, whose HASH_SIZE is 32 bytes.\n\nWhich clarifies that the hash function _used for the merkle tree_ is sha256. However, section 2.2 does not have an equivalent clarification for the hash function used for internal-transaction-hash and (more crucially) data-hash (i.e. it's implied that when it says \"data-hash summarizes the application data...\" this summarization is done using the same function as the Merkle Tree, or done with sha256 as defined by CCF_LEDGER_SHA256)\n",
       "createdAt": "2026-05-26T19:45:06Z",
-      "updatedAt": "2026-05-26T19:45:06Z",
-      "closedAt": null,
+      "updatedAt": "2026-06-03T15:19:22Z",
+      "closedAt": "2026-06-03T15:19:22Z",
       "comments": []
     }
   ],
@@ -845,26 +855,209 @@
       "id": "PR_kwDORpjjVc7fixbs",
       "title": "Fix typo in internal-transaction-hash paragraph",
       "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/pull/17",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "micromaomao",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2026-05-26T19:20:32Z",
-      "updatedAt": "2026-05-26T19:20:32Z",
+      "updatedAt": "2026-06-03T15:14:50Z",
       "baseRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
       "baseRefName": "main",
       "baseRefOid": "12e252fe2b634d8f1d80fa5f8585edf723e3e94f",
       "headRepository": "micromaomao/draft-ietf-scitt-receipts-ccf-profile",
       "headRefName": "fix-typo",
       "headRefOid": "302b1d54ec3eeaf27f384f2b14d9622f9ce6d30a",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "closedAt": "2026-06-03T15:14:49Z",
+      "mergedAt": "2026-06-03T15:14:49Z",
+      "mergedBy": "achamayou",
+      "mergeCommit": {
+        "oid": "205e73c5169d2d1c8cdad88c0f002b5d59fd3a4d"
+      },
+      "comments": [
+        {
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@micromaomao thank you for catching those!",
+          "createdAt": "2026-06-03T14:01:06Z",
+          "updatedAt": "2026-06-03T14:01:06Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDORpjjVc8AAAABB2ihQQ",
+          "commit": {
+            "abbreviatedOid": "302b1d5"
+          },
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-06-03T14:00:52Z",
+          "updatedAt": "2026-06-03T14:00:52Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDORpjjVc8AAAABB3Iq7A",
+          "commit": {
+            "abbreviatedOid": "302b1d5"
+          },
+          "author": "rjb4standards",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "no objection to change",
+          "createdAt": "2026-06-03T15:07:29Z",
+          "updatedAt": "2026-06-03T15:07:29Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDORpjjVc8AAAABB3LUMQ",
+          "commit": {
+            "abbreviatedOid": "302b1d5"
+          },
+          "author": "nikcal",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Thanks for the typo fix! @micromaomao ",
+          "createdAt": "2026-06-03T15:12:20Z",
+          "updatedAt": "2026-06-03T15:12:20Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "id": "PR_kwDORpjjVc7iQM7e",
+      "title": "Clarify transaction component hash algorithm semantics in Section 2.2",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/pull/19",
+      "state": "MERGED",
+      "author": "copilot-swe-agent",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "achamayou",
+        "Copilot"
+      ],
+      "labels": [],
+      "body": "Section 2.1 already defines `H` for the Merkle tree, but Section 2.2 left ambiguity about which hash function is used for `internal-transaction-hash` and `data-hash`. This update makes those hash semantics explicit and aligns component hashing with the selected VDS algorithm.\n\n- **Scope**\n  - Updates only the transaction-components prose in `draft-ietf-scitt-receipts-ccf-profile.md` (no structural/protocol changes).\n\n- **Spec clarification**\n  - States that `internal-transaction-hash` uses the same hash function `H` as the Merkle tree for the selected verifiable data structure algorithm.\n  - States that `data-hash` also uses the same `H`.\n  - Adds the concrete mapping for `CCF_LEDGER_SHA256`: `H = SHA256`.\n\n- **Resulting normative interpretation**\n  ```text\n  internal-transaction-hash -> H(...)\n  data-hash                 -> H(...)\n  CCF_LEDGER_SHA256         -> H = SHA256\n  ```",
+      "createdAt": "2026-06-03T13:58:34Z",
+      "updatedAt": "2026-06-03T15:20:17Z",
+      "baseRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "baseRefName": "main",
+      "baseRefOid": "205e73c5169d2d1c8cdad88c0f002b5d59fd3a4d",
+      "headRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "headRefName": "copilot/fix-hash-algorithm-clarification",
+      "headRefOid": "7c0dc5b61b813fb0e9c720a5cca51cf9c55159e9",
+      "closedAt": "2026-06-03T15:20:17Z",
+      "mergedAt": "2026-06-03T15:20:17Z",
+      "mergedBy": "achamayou",
+      "mergeCommit": {
+        "oid": "b5bdf1702095a447952a452447b076c246c01e86"
+      },
+      "comments": [
+        {
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@micromaomao does this address #18 correctly?",
+          "createdAt": "2026-06-03T14:41:42Z",
+          "updatedAt": "2026-06-03T14:41:42Z"
+        },
+        {
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@copilot resolve the merge conflicts in this pull request",
+          "createdAt": "2026-06-03T15:15:31Z",
+          "updatedAt": "2026-06-03T15:15:31Z"
+        },
+        {
+          "author": "copilot-swe-agent",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "\n> @copilot resolve the merge conflicts in this pull request\n\nDone \u2014 I resolved the merge conflict and pushed merge commit `7c0dc5b`.",
+          "createdAt": "2026-06-03T15:17:50Z",
+          "updatedAt": "2026-06-03T15:17:50Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDORpjjVc8AAAABB257CQ",
+          "commit": {
+            "abbreviatedOid": "58e6d68"
+          },
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-06-03T14:42:04Z",
+          "updatedAt": "2026-06-03T14:42:04Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDORpjjVc8AAAABB3ECpQ",
+          "commit": {
+            "abbreviatedOid": "58e6d68"
+          },
+          "author": "micromaomao",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-03T14:58:54Z",
+          "updatedAt": "2026-06-03T14:58:56Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "I feel like this is a bit verbose, and can be written in the following way, but @achamayou up to you which one you prefer:\n\n```suggestion\n`internal-transaction-hash` is a hash over the complete entry in the {{CCF-Ledger-Format}}, using the same hash function defined from the log type as for the Merkle Tree, and `internal-evidence` is a revealable {{CCF-Commit-Evidence}} value that allows early persistence of ledger entries before distributed consensus can be established. This mechanism is useful to implement high-throughput transparency applications in Trusted Execution Environments (TEEs) that only provide a limited amount of memory, while maintaining high availability afforded by distributed consensus. Using a secure a one-way function `f` to publish an `f(x)` committment to an `x` value that can be revealed at a later time is common feature of distributed protocols ({{COIN-FLIPPING}}).\n\n`data-hash` summarizes the application data included in the ledger at this transaction using the hash function defined from the log type, which is a Signed Statement as defined by {{-scitt-architecture}}.\n```",
+              "createdAt": "2026-06-03T14:58:54Z",
+              "updatedAt": "2026-06-03T14:58:56Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORpjjVc8AAAABB3E42g",
+          "commit": {
+            "abbreviatedOid": "58e6d68"
+          },
+          "author": "micromaomao",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-03T15:00:31Z",
+          "updatedAt": "2026-06-03T15:00:35Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "Actually nevermind, I think the original is fine and this might make the grammar more confusing.",
+              "createdAt": "2026-06-03T15:00:32Z",
+              "updatedAt": "2026-06-03T15:00:35Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORpjjVc8AAAABB3E-7Q",
+          "commit": {
+            "abbreviatedOid": "58e6d68"
+          },
+          "author": "micromaomao",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-06-03T15:00:41Z",
+          "updatedAt": "2026-06-03T15:00:41Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDORpjjVc8AAAABB3NVjw",
+          "commit": {
+            "abbreviatedOid": "58e6d68"
+          },
+          "author": "nikcal",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Edits clarify hash function for this section. ok.",
+          "createdAt": "2026-06-03T15:16:07Z",
+          "updatedAt": "2026-06-03T15:16:07Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
