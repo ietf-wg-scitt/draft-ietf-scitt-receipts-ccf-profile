@@ -10,24 +10,25 @@
 <meta content="Cedric Fournet" name="author">
 <meta content="Amaury Chamayou" name="author">
 <meta content="
-       This document defines a new verifiable data structure (VDS) type for COSE Receipts and inclusion proof specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees. 
+       This document defines a new verifiable data structure (VDS) type for COSE Receipts and inclusion proofs specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees. 
     " name="description">
-<meta content="xml2rfc 3.32.0" name="generator">
+<meta content="xml2rfc 3.34.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-scitt-receipts-ccf-profile-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.32.0
-    Python 3.12.12
-    ConfigArgParse 1.7
+  xml2rfc 3.34.0
+    Python 3.14.5
+    ConfigArgParse 1.7.5
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
-    lxml 6.0.2
-    platformdirs 4.9.4
+    lxml 6.1.1
+    natsort 8.4.0
+    platformdirs 4.10.0
     pycountry 24.6.1
     PyYAML 6.0.3
-    requests 2.32.5
-    wcwidth 0.6.0
+    requests 2.33.1
+    wcwidth 0.8.1
 -->
 <link href="draft-ietf-scitt-receipts-ccf-profile.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -294,16 +295,19 @@ h1, h2, h3, h4, h5, h6 {
   font-size-adjust: 0.5;
   color: var(--title-color);
 }
-h1#title {
-  font-size: 32px;
-  line-height: 40px;
-  clear: both;
-}
-h1#title, h1#rfcnum {
-  margin: 1.5em 0 0.2em;
-}
-h1#rfcnum + h1#title {
-  margin: 0.2em 0;
+h1 {
+  &#title {
+    font-size: 32px;
+    line-height: 40px;
+    clear: both;
+    margin: 1.5em 0 0.2em;
+  }
+  &#rfcnum {
+    margin: 1.5em 0 0.2em;
+    & + h1#title {
+      margin: 0.2em 0;
+    }
+  }
 }
 
 h1, h2, h3 {
@@ -323,10 +327,10 @@ h4, h5, h6 {
 #abstract+p {
   font-size: 18px;
   line-height: 24px;
-}
-#abstract+p code, #abstract+p samp, #abstract+p tt {
-  font-size: 16px;
-  line-height: 0;
+  & code, & samp, & tt {
+    font-size: 16px;
+    line-height: 0;
+  }
 }
 
 p {
@@ -337,59 +341,59 @@ p {
 div {
   margin: 0;
 }
-.alignRight.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignRight.art-text pre {
-  padding: 0;
-  width: auto;
-}
 .alignRight {
   margin: 1em 0;
-}
-.alignRight > *:first-child {
-  border: none;
-  margin: 0;
-  float: right;
-  clear: both;
-}
-.alignRight > *:nth-child(2) {
-  clear: both;
-  display: block;
-  border: none;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    margin: 0;
+    float: right;
+    clear: both;
+  }
+  & > *:nth-child(2) {
+    clear: both;
+    display: block;
+    border: none;
+  }
 }
 svg {
   display: block;
-}
-/* font-family isn't space-separated, but =~ will have to do */
-svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
-  font-family: var(--font-mono);
-}
-.alignCenter.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignCenter.art-text pre {
-  padding: 0;
-  width: auto;
+  /* font-family isn't space-separated, but =~ will have to do */
+  &[font-family~="monospace" i], & [font-family~="monospace" i] {
+    font-family: var(--font-mono);
+  }
 }
 .alignCenter {
   margin: 1em 0;
-}
-.alignCenter > *:first-child {
-  border: none;
-  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
-     support flexbox yet.
-  */
-  display: table;
-  margin: 0 auto;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+       support flexbox yet.
+    */
+    display: table;
+    margin: 0 auto;
+  }
 }
 
 /* lists */
@@ -427,26 +431,25 @@ dl {
     --indent: 5ch;
     & > dt {
       min-width: calc(var(--indent) - 2ch);
+      float: none;
     }
-  }
-  &.olPercent > dt {
-    float: none;
   }
 
   dl > dd > & {
     margin-top: 0.5em;
     margin-bottom: 0;
   }
-}
-dl:not(.dlNewline) > dt {
-  float: left;
-  margin-right: 2ch;
-  min-width: 8ch;
-}
-dl > dd {
-  margin-bottom: .8em;
-  margin-left: var(--indent) !important; /* stupid element overrides */
-  min-height: 2ex;
+
+  &:not(.dlNewline) > dt {
+    float: left;
+    margin-right: 2ch;
+    min-width: 8ch;
+  }
+  & > dd {
+    margin-bottom: .8em;
+    margin-left: var(--indent) !important; /* stupid element overrides */
+    min-height: 2ex;
+  }
 }
 :is(dl.compact, .dlCompact) > dd {
   margin-bottom: 0;
@@ -462,20 +465,22 @@ dl > dd {
 }
 
 /* links */
-a, a[href].selfRef:hover {
+a {
   text-decoration: none;
+  &[href] {
+    color: var(--link-color);
+    &:hover { text-decoration: underline; }
+    &.selfRef {
+      color: var(--text-color);
+      &:hover {
+        text-decoration: none;
+        background-color: var(--highlight-color);
+      }
+    }
+  }
 }
-a[href] {
-  color: var(--link-color);
-}
-a[href].selfRef, .iref + a[href].internal {
+.iref + a[href].internal {
   color: var(--text-color);
-}
-a[href]:hover {
-  text-decoration: underline;
-}
-a[href].selfRef:hover {
-  background-color: var(--highlight-color);
 }
 a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
   white-space: nowrap;
@@ -511,9 +516,9 @@ img {
 figure {
   margin: 0.5em 0;
   padding: 0;
-}
-figure blockquote {
-  margin: 0.8em 0.4em 0.4em;
+  & blockquote {
+    margin: 0.8em 0.4em 0.4em;
+  }
 }
 figcaption, caption {
   font-style: italic;
@@ -523,17 +528,19 @@ figcaption, caption {
 }
 @media screen {
   /* Auto-collapse boilerplate. */
-  :is(#status-of-memo, #copyright) p {
-    margin: -2px 0;
-    max-height: 0;
-    transition: max-height 2s ease, margin 0.5s ease 0.5s;
-    overflow: hidden;
-  }
-  :is(#status-of-memo, #copyright):hover p,
-  :is(#status-of-memo, #copyright) h2:target ~ p {
-    margin: 0.5em 0;
-    max-height: 500px;
-    overflow: auto;
+  :is(#status-of-memo, #copyright) {
+    & p {
+      margin: -2px 0;
+      max-height: 0;
+      transition: max-height 2s ease, margin 0.5s ease 0.5s;
+      overflow: hidden;
+    }
+    &:hover p,
+    & h2:target ~ p {
+      margin: 0.5em 0;
+      max-height: 500px;
+      overflow: auto;
+    }
   }
   pre, svg {
     display: inline-block;
@@ -583,25 +590,17 @@ table {
   max-width: 100%;
   margin: 0 0 1em;
   border-collapse: collapse;
-}
-table.right {
-  margin-left: auto;
-}
-table.center {
-  margin-left: auto;
-  margin-right: auto;
-}
-table.left {
-  margin-right: auto;
-}
-table .text-left {
-  text-align: left;
-}
-table .text-center {
-  text-align: center;
-}
-table .text-right {
-  text-align: right;
+  &.right { margin-left: auto; }
+  &.center { margin-left: auto; margin-right: auto; }
+  &.left { margin-right: auto; }
+  & .text-left { text-align: left; }
+  & .text-center { text-align: center; }
+  & .text-right { text-align: right; }
+  & caption {
+    margin: 0;
+    padding: 3px 0 3px 1em;
+  }
+  & p { margin: 0; }
 }
 
 thead, tbody {
@@ -621,13 +620,6 @@ th {
 :is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
   background-color: var(--highlight-color);
 }
-table caption {
-  margin: 0;
-  padding: 3px 0 3px 1em;
-}
-table p {
-  margin: 0;
-}
 
 /* pilcrow */
 a.pilcrow {
@@ -638,18 +630,16 @@ a.pilcrow {
     color: var(--pilcrow-weak);
     &:hover { text-decoration: none; }
   }
-}
-@media not print {
-  :hover > a.pilcrow, a.pilcrow:focus {
-    opacity: 1;
+  @media not print {
+    :hover > &, &:focus {
+      opacity: 1;
+    }
+    &[href]:hover {
+      color: var(--pilcrow-strong);
+      background-color: transparent;
+    }
   }
-  a.pilcrow[href]:hover {
-    color: var(--pilcrow-strong);
-    background-color: transparent;
-  }
-}
-@media print {
-  a.pilcrow {
+  @media print {
     display: none;
   }
 }
@@ -708,9 +698,9 @@ sub, sup {
   font-size: 0.9em;
   font-style: italic;
   margin-top: 2em;
-}
-.docInfo .prepared {
-  float: right;
+  & .prepared {
+    float: right;
+  }
 }
 
 /* table of contents */
@@ -800,23 +790,27 @@ hr.addr {
   max-width: calc(100% - 16px);
 }
 @media (min-width: 500px) {
-  #authors-addresses > section {
-    column-count: 2;
-    column-gap: 20px;
-  }
-  #authors-addresses > section > h2 {
-    column-span: all;
-  }
-  /* hack for break-inside: avoid-column */
-  #authors-addresses address {
-    display: inline-block;
-    break-inside: avoid-column;
+  #authors-addresses {
+    & > section {
+      column-count: 2;
+      column-gap: 20px;
+    }
+    & > section > h2 {
+      column-span: all;
+    }
+    /* hack for break-inside: avoid-column */
+    & address {
+      display: inline-block;
+      break-inside: avoid-column;
+    }
   }
 }
 
 /* Comments */
-.rfcEditorRemove p:first-of-type {
-  font-style: italic;
+.rfcEditorRemove {
+  & p:first-of-type {
+    font-style: italic;
+  }
 }
 .cref {
   background-color: rgba(249, 232, 105, 0.3);
@@ -827,19 +821,21 @@ hr.addr {
 }
 
 @media screen {
-  #toc nav {
-    font-family: var(--font-title);
-    font-weight: 360;
-    & > ul { margin-bottom: 2em; }
-    & ul {
-      margin: 0 0 0 4px;
-      & :is(p, li) {
-        margin: 2px 0;
+  #toc {
+    & nav {
+      font-family: var(--font-title);
+      font-weight: 360;
+      & > ul { margin-bottom: 2em; }
+      & ul {
+        margin: 0 0 0 4px;
+        & :is(p, li) {
+          margin: 2px 0;
+        }
       }
     }
-  }
-  #toc a.toplink {
-    float: right;
+    & a.toplink {
+      float: right;
+    }
   }
 }
 @media not screen {
@@ -860,54 +856,54 @@ hr.addr {
     margin: 0;
     border-bottom: 1px solid #ccc;
     opacity: 0.6;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 2px 0 2px 6px;
-    padding-right: 1em;
-    font-size: 18px;
-    line-height: 24px;
-    min-width: 190px;
-    text-align: right;
-    background-color: #444;
-    color: white;
-    cursor: pointer;
-    &::before { /* css hamburger */
-      float: right;
-      position: relative;
-      width: 1em;
-      height: 1px;
-      left: -164px;
-      margin: 8px 0 0 0;
-      background: white none repeat scroll 0 0;
-      box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
-      content: "";
+    & h2 {
+      margin: 0;
+      padding: 2px 0 2px 6px;
+      padding-right: 1em;
+      font-size: 18px;
+      line-height: 24px;
+      min-width: 190px;
+      text-align: right;
+      background-color: #444;
+      color: white;
+      cursor: pointer;
+      &::before { /* css hamburger */
+        float: right;
+        position: relative;
+        width: 1em;
+        height: 1px;
+        left: -164px;
+        margin: 8px 0 0 0;
+        background: white none repeat scroll 0 0;
+        box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+        content: "";
+      }
     }
-  }
-  #toc nav {
-    display: none;
-    background-color: var(--background-color);
-    padding: 0.5em 1em 1em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    height: calc(100vh - 48px);
-    border-left: 1px solid #ddd;
-  }
-  #toc.active {
-    opacity: 1;
-    & nav { display: block; }
-  }
-  /* Make the collapsed ToC header render white on gray also when it's a link */
-  #toc h2 a,
-  #toc h2 a:is(:link, :focus, :hover),
-  #toc a.toplink,
-  #toc a.toplink:hover {
-    color: white;
-    background-color: #444;
-    text-decoration: none;
-  }
-  #toc a.toplink {
-    margin: 2px 0.5em 0;
+    & nav {
+      display: none;
+      background-color: var(--background-color);
+      padding: 0.5em 1em 1em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      height: calc(100vh - 48px);
+      border-left: 1px solid #ddd;
+    }
+    &.active {
+      opacity: 1;
+      & nav { display: block; }
+    }
+    /* Make the collapsed ToC header render white on gray also when it's a link */
+    & h2 a,
+    & h2 a:is(:link, :focus, :hover),
+    & a.toplink,
+    & a.toplink:hover {
+      color: white;
+      background-color: #444;
+      text-decoration: none;
+    }
+    & a.toplink {
+      margin: 2px 0.5em 0;
+    }
   }
 }
 
@@ -926,26 +922,26 @@ hr.addr {
     margin: 0;
     padding: 0;
     z-index: 1;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 0.25em 1em 1em 0;
-  }
-  #toc nav {
-    display: block;
-    height: calc(90vh - 84px);
-    bottom: 0;
-    padding: 0.5em 0 2em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
+    & h2 {
+      margin: 0;
+      padding: 0.25em 1em 1em 0;
+    }
+    & nav {
+      display: block;
+      height: calc(90vh - 84px);
+      bottom: 0;
+      padding: 0.5em 0 2em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+    & a.toplink {
+      margin: 8px 0.5em 0;
+    }
   }
   img { /* future proofing */
     max-width: 100%;
     height: auto;
-  }
-  #toc a.toplink {
-    margin: 8px 0.5em 0;
   }
 }
 
@@ -961,12 +957,13 @@ hr.addr {
   #n-copyright-notice {
     border-bottom: none;
   }
-  #toc, #n-introduction {
-    page-break-before: always;
-  }
   #toc {
+    page-break-before: always;
     border-top: none;
     padding-top: 0;
+  }
+  #n-introduction {
+    page-break-before: always;
   }
   figure, pre, .vcard {
     page-break-inside: avoid;
@@ -1028,17 +1025,19 @@ hr.addr {
 }
 
 /* SVG Trick: a prefix match works because only black and white are allowed */
-svg :is([stroke="black"], [stroke^="#000"]) {
-  stroke: var(--text-color);
-}
-svg :is([stroke="white"], [stroke^="#fff"]) {
-  stroke: var(--background-color);
-}
-svg :is([fill="black"], [fill^="#000"], :not([fill])) {
-  fill: var(--text-color);
-}
-svg :is([fill="white"], [fill^="#fff"]) {
-  fill: var(--background-color);
+svg {
+  & :is([stroke="black"], [stroke^="#000"]) {
+    stroke: var(--text-color);
+  }
+  & :is([stroke="white"], [stroke^="#fff"]) {
+    stroke: var(--background-color);
+  }
+  & :is([fill="black"], [fill^="#000"], :not([fill])) {
+    fill: var(--text-color);
+  }
+  & :is([fill="white"], [fill^="#fff"]) {
+    fill: var(--background-color);
+  }
 }
 </style>
 
@@ -1048,11 +1047,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">CCF Profile for COSE Receipts</td>
-<td class="right">April 2026</td>
+<td class="right">June 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Birkholz, et al.</td>
-<td class="center">Expires 4 October 2026</td>
+<td class="center">Expires 26 December 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1064,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-scitt-receipts-ccf-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-04-02" class="published">2 April 2026</time>
+<time datetime="2026-06-24" class="published">24 June 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-10-04">4 October 2026</time></dd>
+<dd class="expires"><time datetime="2026-12-26">26 December 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1095,7 +1094,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">CCF Profile for COSE Receipts</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document defines a new verifiable data structure (VDS) type for COSE Receipts and inclusion proof specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document defines a new verifiable data structure (VDS) type for COSE Receipts and inclusion proofs specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1116,7 +1115,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 4 October 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 26 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1206,7 +1205,15 @@ svg :is([fill="white"], [fill^="#fff"]) {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
             <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
@@ -1220,15 +1227,15 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">The COSE Receipts document <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span> defines a common framework for expressing different types of proofs about verifiable data structures (VDS), providing a standardized way to convey trust relevant evidence. For instance, inclusion proofs guarantee to a verifier that a given serializable element is recorded at a given state of the VDS, while consistency proofs are used to establish that an inclusion proof is still consistent with the new state of the VDS at a later time.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">In this document, we define a new type of VDS and inclusion proof associated with an application of the Confidential Consortium Framework (CCF) ledger that implements the SCITT Architecture defined in <span>[<a href="#I-D.ietf-wg-scitt-architecture" class="cite xref">I-D.ietf-wg-scitt-architecture</a>]</span>. This VDS carries indexed transaction information in a binary Merkle Tree, where new transactions are appended to the right, so that the binary decomposition of the index of a transaction can be interpreted as the position in the tree if 0 represents the left branch and 1 the right branch.
+<p id="section-1-1">The COSE Receipts document <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span> defines a common framework for expressing different types of proofs about verifiable data structures (VDS), providing a standardized way to convey trust-relevant evidence. For instance, inclusion proofs guarantee to a verifier that a given serializable element is recorded at a given state of the VDS, while consistency proofs are used to establish that an inclusion proof is still consistent with the new state of the VDS at a later time.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">In this document, we define a new type of VDS and inclusion proof associated with an application of the Confidential Consortium Framework (CCF) ledger that implements the SCITT Architecture defined in <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span>. This VDS carries indexed transaction information in a binary Merkle Tree, where new transactions are appended to the right, so that the binary decomposition of the index of a transaction can be interpreted as the position in the tree if 0 represents the left branch and 1 the right branch.
 Compared to <span>[<a href="#RFC9162" class="cite xref">RFC9162</a>]</span>, the leaves of CCF trees carry additional internal information for the following purposes:<a href="#section-1-2" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-1-3">
 <li id="section-1-3.1">
-          <p id="section-1-3.1.1">To bind the full details of the transaction executed, which is a super-set of what is exposed in the proof and captures internal information details useful for detailed system audit, but not for application purposes.<a href="#section-1-3.1.1" class="pilcrow">¶</a></p>
+          <p id="section-1-3.1.1">To bind the full details of the transaction executed, which is a superset of what is exposed in the proof and captures internal details useful for detailed system audit, but not for application purposes.<a href="#section-1-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-1-3.2">
-          <p id="section-1-3.2.1">To allow the distributed system executing the application logic in Trusted Execution Environments (TEE) to persist signatures to storage early. Receipt production in only enabled once transactions are fully committed by the consensus protocol.<a href="#section-1-3.2.1" class="pilcrow">¶</a></p>
+          <p id="section-1-3.2.1">To allow the distributed system executing the application logic in Trusted Execution Environments (TEEs) to persist signatures to storage early. Receipt production is only enabled once transactions are fully committed by the consensus protocol.<a href="#section-1-3.2.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
 <div id="requirements-notation">
@@ -1249,7 +1256,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
       <h2 id="name-description-of-the-confiden">
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-description-of-the-confiden" class="section-name selfRef">Description of the Confidential Consortium Framework Ledger Verifiable Data Structure</a>
       </h2>
-<p id="section-2-1">This documents extends the VDS registry of <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span> with the following value:<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-1">This document extends the VDS registry of <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span> with the following value:<a href="#section-2-1" class="pilcrow">¶</a></p>
 <span id="name-verifiable-data-structure-a"></span><div id="verifiable-data-structure-values">
 <table class="left" id="table-1">
         <caption>
@@ -1280,25 +1287,43 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-merkle-tree-shape" class="section-name selfRef">Merkle Tree Shape</a>
         </h3>
 <p id="section-2.1-1">A CCF ledger is a binary Merkle Tree constructed from a hash function H, which is defined from the log type. For instance, the hash function for <code>CCF_LEDGER_SHA256</code> is <code>SHA256</code>, whose <code>HASH_SIZE</code> is 32 bytes.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.1-2">The Merkle tree encodes an ordered list of <code>n</code> transactions T_n = {T[0], T[1], ..., T[n-1]}. We define the Merkle Tree Hash (MTH) function, which takes as input a list of serialized transactions (as byte strings), and outputs a single HASH_SIZE byte string called the Merkle root hash, by induction on the list.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1-2">The Merkle Tree encodes an ordered list of <code>n</code> transactions T_n = {T[0], T[1], ..., T[n-1]}. We define the Merkle Tree Hash (MTH) function, which takes as input a list of serialized transactions (as byte strings), and outputs a single HASH_SIZE byte string called the Merkle root hash, by induction on the list.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
 <p id="section-2.1-3">This function is defined as follows:<a href="#section-2.1-3" class="pilcrow">¶</a></p>
 <p id="section-2.1-4">The hash of an empty list is the hash of an empty string:<a href="#section-2.1-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-2.1-5">
+<span id="name-merkle-tree-hash-of-empty-l"></span><div id="empty-list-merkle-tree-hash">
+<figure id="figure-1">
+          <div class="alignLeft art-text artwork" id="section-2.1-5.1">
 <pre>
 MTH({}) = HASH().
-</pre><a href="#section-2.1-5" class="pilcrow">¶</a>
+</pre>
+</div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-merkle-tree-hash-of-empty-l" class="selfRef">Merkle Tree Hash of Empty List</a>
+          </figcaption></figure>
 </div>
 <p id="section-2.1-6">The hash of a list with one entry (also known as a leaf hash) is:<a href="#section-2.1-6" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-2.1-7">
+<span id="name-merkle-tree-hash-of-a-singl"></span><div id="single-entry-merkle-tree-hash">
+<figure id="figure-2">
+          <div class="alignLeft art-text artwork" id="section-2.1-7.1">
 <pre>
 MTH({d[0]}) = HASH(d[0]).
-</pre><a href="#section-2.1-7" class="pilcrow">¶</a>
+</pre>
+</div>
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<a href="#name-merkle-tree-hash-of-a-singl" class="selfRef">Merkle Tree Hash of a Single Entry</a>
+          </figcaption></figure>
 </div>
 <p id="section-2.1-8">For n &gt; 1, let k be the largest power of two smaller than n (i.e., k &lt; n &lt;= 2k). The Merkle Tree Hash of an n-element list D_n is then defined recursively as:<a href="#section-2.1-8" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-2.1-9">
+<span id="name-recursive-merkle-tree-hash"></span><div id="recursive-merkle-tree-hash">
+<figure id="figure-3">
+          <div class="alignLeft art-text artwork" id="section-2.1-9.1">
 <pre>
 MTH(D_n) = HASH(MTH(D[0:k]) || MTH(D[k:n])),
-</pre><a href="#section-2.1-9" class="pilcrow">¶</a>
+</pre>
+</div>
+<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
+<a href="#name-recursive-merkle-tree-hash" class="selfRef">Recursive Merkle Tree Hash</a>
+          </figcaption></figure>
 </div>
 <p id="section-2.1-10">where:<a href="#section-2.1-10" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -1320,7 +1345,9 @@ MTH(D_n) = HASH(MTH(D[0:k]) || MTH(D[k:n])),
 <a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-transaction-components" class="section-name selfRef">Transaction Components</a>
         </h3>
 <p id="section-2.2-1">Each leaf in a CCF ledger carries the following components:<a href="#section-2.2-1" class="pilcrow">¶</a></p>
-<div class="lang-cddl sourcecode" id="section-2.2-2">
+<span id="name-ccf-leaf-cddl"></span><div id="ccf-leaf-cddl">
+<figure id="figure-4">
+          <div class="lang-cddl sourcecode" id="section-2.2-2.1">
 <pre>
 ccf-leaf = [
   ; Byte string of size HASH_SIZE(32)
@@ -1332,11 +1359,15 @@ ccf-leaf = [
   ; Byte string of size HASH_SIZE(32)
   data-hash: bstr .size 32
 ]
-</pre><a href="#section-2.2-2" class="pilcrow">¶</a>
+</pre>
 </div>
-<p id="section-2.2-3">The <code>internal-transaction-hash</code> and <code>internal-evidence</code> byte strings are internal to the CCF implementation. They can be safely ignored by receipt Verifiers, but they commit the transparency service (TS) to the whole tree contents and may be used for additional, CCF-specific auditing.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
-<p id="section-2.2-4"><code>internal-transaction-hash</code> is a hash over the complete entry in the <span>[<a href="#CCF-Ledger-Format" class="cite xref">CCF-Ledger-Format</a>]</span>, and <code>internal-evidence</code> is a revealable <span>[<a href="#CCF-Commit-Evidence" class="cite xref">CCF-Commit-Evidence</a>]</span> value that allows early persistence of ledger entries before distributed consensus can be established. This mechanism is useful to implement high-throughput transparency applications in Trusted Execution Environments (TEEs) that only provide a limited amount of memory, while maintaining high availability afforded by distributed consensus.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
-<p id="section-2.2-5"><code>data-hash</code> summarizes the application data included in the ledger at this transaction, which is a Signed Statement as defined by <span>[<a href="#I-D.ietf-wg-scitt-architecture" class="cite xref">I-D.ietf-wg-scitt-architecture</a>]</span>.<a href="#section-2.2-5" class="pilcrow">¶</a></p>
+<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
+<a href="#name-ccf-leaf-cddl" class="selfRef">CCF Leaf CDDL</a>
+          </figcaption></figure>
+</div>
+<p id="section-2.2-3">The <code>internal-transaction-hash</code> and <code>internal-evidence</code> values are internal to the CCF implementation. They can be safely ignored by receipt Verifiers, but they commit the transparency service (TS) to the whole tree contents and may be used for additional, CCF-specific auditing.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.2-4"><code>internal-transaction-hash</code> is a hash over the complete entry in the <span>[<a href="#CCF-Ledger-Format" class="cite xref">CCF-Ledger-Format</a>]</span>, and <code>internal-evidence</code> is a revealable <span>[<a href="#CCF-Commit-Evidence" class="cite xref">CCF-Commit-Evidence</a>]</span> value that allows early persistence of ledger entries before distributed consensus can be established. This mechanism is useful to implement high-throughput transparency applications in Trusted Execution Environments (TEEs) that only provide a limited amount of memory, while maintaining high availability afforded by distributed consensus. Using a secure one-way function <code>f</code> to publish an <code>f(x)</code> commitment to an <code>x</code> value that can be revealed at a later time is a common feature of distributed protocols (<span>[<a href="#COIN-FLIPPING" class="cite xref">COIN-FLIPPING</a>]</span>). The hash function used for <code>internal-transaction-hash</code> is the same hash function <code>H</code> as in the Merkle Tree construction for the selected verifiable data structure algorithm. For <code>CCF_LEDGER_SHA256</code>, this function is <code>SHA256</code>.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
+<p id="section-2.2-5"><code>data-hash</code> summarizes the application data included in the ledger at this transaction, which is a Signed Statement as defined by <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span>. The hash function used for <code>data-hash</code> is also the same hash function <code>H</code> as in the Merkle Tree construction for the selected verifiable data structure algorithm. For <code>CCF_LEDGER_SHA256</code>, this function is <code>SHA256</code>.<a href="#section-2.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1347,7 +1378,9 @@ ccf-leaf = [
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-ccf-inclusion-proofs" class="section-name selfRef">CCF Inclusion Proofs</a>
       </h2>
 <p id="section-3-1">CCF inclusion proofs consist of a list of digests tagged with a single left-or-right bit.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<div class="lang-cddl sourcecode" id="section-3-2">
+<span id="name-ccf-inclusion-proof-cddl"></span><div id="ccf-inclusion-proof-cddl">
+<figure id="figure-5">
+        <div class="lang-cddl sourcecode" id="section-3-2.1">
 <pre>
 ccf-proof-element = [
   ; Position of the element
@@ -1361,7 +1394,11 @@ ccf-inclusion-proof = bstr .cbor {
   &amp;(leaf: 1) =&gt; ccf-leaf
   &amp;(path: 2) =&gt; [+ ccf-proof-element]
 }
-</pre><a href="#section-3-2" class="pilcrow">¶</a>
+</pre>
+</div>
+<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
+<a href="#name-ccf-inclusion-proof-cddl" class="selfRef">CCF Inclusion Proof CDDL</a>
+        </figcaption></figure>
 </div>
 <p id="section-3-3">Unlike some other tree algorithms, the index of the element in the tree is not explicit in the inclusion proof, but the list of left-or-right bits can be treated as the binary decomposition of the index, from the least significant (leaf) to the most significant (root).<a href="#section-3-3" class="pilcrow">¶</a></p>
 <div id="ccf-inclusion-proof-signature">
@@ -1373,7 +1410,7 @@ ccf-inclusion-proof = bstr .cbor {
 <p id="section-3.1-2">The protected header parameters for the CCF inclusion proof signature <span class="bcp14">MUST</span> include the following:<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.1-3.1">
-            <p id="section-3.1-3.1.1"><code>verifiable-data-structure: int/tstr</code>. This header <span class="bcp14">MUST</span> be set to the verifiable data structure algorithm identifier for <code>ccf-ledger</code> (TBD_1).<a href="#section-3.1-3.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-3.1.1"><code>verifiable-data-structure: int/tstr</code>. This header <span class="bcp14">MUST</span> be set to the verifiable data structure algorithm identifier for <code>CCF_LEDGER_SHA256</code> (TBD_1).<a href="#section-3.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.1-3.2">
             <p id="section-3.1-3.2.1"><code>label: int</code>. This header <span class="bcp14">MUST</span> be set to the value of the <code>inclusion</code> proof type in the IANA registry of Verifiable Data Structure Proof Type (-1).<a href="#section-3.1-3.2.1" class="pilcrow">¶</a></p>
@@ -1394,14 +1431,18 @@ ccf-inclusion-proof = bstr .cbor {
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-inclusion-proof-verificatio" class="section-name selfRef">Inclusion Proof Verification Algorithm</a>
         </h3>
 <p id="section-3.2-1">CCF uses the following algorithm to verify an inclusion receipt:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3.2-2">
+<span id="name-ccf-inclusion-receipt-verif"></span><div id="ccf-inclusion-receipt-verification">
+<figure id="figure-6">
+          <div class="alignLeft art-text artwork" id="section-3.2-2.1">
 <pre>
 compute_root(proof):
-  h := proof.leaf.internal-transaction-hash
-       || HASH(proof.leaf.internal-evidence)
-       || proof.leaf.data-hash
+  h := HASH(
+       proof.leaf.internal-transaction-hash
+           || HASH(proof.leaf.internal-evidence)
+           || proof.leaf.data-hash
+       )
 
-  for [left, hash] in proof:
+  for [left, hash] in proof.path:
       h := HASH(hash + h) if left
            HASH(h + hash) else
   return h
@@ -1415,7 +1456,11 @@ verify_inclusion_receipt(inclusion_receipt):
 
   # Use the Merkle Root as the detached payload
   return verify_cose(inclusion_receipt, payload)
-</pre><a href="#section-3.2-2" class="pilcrow">¶</a>
+</pre>
+</div>
+<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<a href="#name-ccf-inclusion-receipt-verif" class="selfRef">CCF Inclusion Receipt Verification</a>
+          </figcaption></figure>
 </div>
 <p id="section-3.2-3">A description can also be found at <span>[<a href="#CCF-Receipt-Verification" class="cite xref">CCF-Receipt-Verification</a>]</span>.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
 </section>
@@ -1428,25 +1473,33 @@ verify_inclusion_receipt(inclusion_receipt):
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-usage-in-cose-receipts" class="section-name selfRef">Usage in COSE Receipts</a>
       </h2>
 <p id="section-4-1">A COSE Receipt with a CCF inclusion proof is described by the following CDDL definition:<a href="#section-4-1" class="pilcrow">¶</a></p>
-<div class="lang-cddl sourcecode" id="section-4-2">
+<span id="name-protected-header-map-cddl"></span><div id="protected-header-map-cddl">
+<figure id="figure-7">
+        <div class="lang-cddl sourcecode" id="section-4-2.1">
 <pre>
 protected-header-map = {
   &amp;(alg: 1) =&gt; int
   &amp;(vds: 395) =&gt; 2
   * cose-label =&gt; cose-value
 }
-</pre><a href="#section-4-2" class="pilcrow">¶</a>
+</pre>
+</div>
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<a href="#name-protected-header-map-cddl" class="selfRef">Protected Header Map CDDL</a>
+        </figcaption></figure>
 </div>
 <ul class="normal">
 <li class="normal" id="section-4-3.1">
           <p id="section-4-3.1.1">alg (label: 1): <span class="bcp14">REQUIRED</span>. Signature algorithm identifier. Value type: int.<a href="#section-4-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-4-3.2">
-          <p id="section-4-3.2.1">vds (label: 395): <span class="bcp14">REQUIRED</span>. verifiable data structure algorithm identifier. Value type: int.<a href="#section-4-3.2.1" class="pilcrow">¶</a></p>
+          <p id="section-4-3.2.1">vds (label: 395): <span class="bcp14">REQUIRED</span>. Verifiable data structure algorithm identifier. Value type: int.<a href="#section-4-3.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-4-4">The unprotected header for an inclusion proof signature is described by the following CDDL definition:<a href="#section-4-4" class="pilcrow">¶</a></p>
-<div class="lang-cddl sourcecode" id="section-4-5">
+<span id="name-unprotected-header-map-cddl"></span><div id="unprotected-header-map-cddl">
+<figure id="figure-8">
+        <div class="lang-cddl sourcecode" id="section-4-5.1">
 <pre>
 inclusion-proof = ccf-inclusion-proof
 
@@ -1460,7 +1513,11 @@ unprotected-header-map = {
   &amp;(vdp: 396) =&gt; verifiable-proofs
   * cose-label =&gt; cose-value
 }
-</pre><a href="#section-4-5" class="pilcrow">¶</a>
+</pre>
+</div>
+<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
+<a href="#name-unprotected-header-map-cddl" class="selfRef">Unprotected Header Map CDDL</a>
+        </figcaption></figure>
 </div>
 </section>
 </div>
@@ -1538,7 +1595,10 @@ Clients can mitigate this risk in two ways: by regularly auditing the consistenc
               <p id="section-7.1.1-2.3.1">Description: Append-only logs that are integrity-protected by a Merkle Tree and signatures produced via Trusted Execution Environments containing a mix of public and confidential information, as specified by the Confidential Consortium Framework.<a href="#section-7.1.1-2.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.1.1-2.4">
-              <p id="section-7.1.1-2.4.1">Reference: This document<a href="#section-7.1.1-2.4.1" class="pilcrow">¶</a></p>
+              <p id="section-7.1.1-2.4.1">Reference: RFCthis<a href="#section-7.1.1-2.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.1-2.5">
+              <p id="section-7.1.1-2.5.1">Related information: <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span><a href="#section-7.1.1-2.5.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -1547,49 +1607,69 @@ Clients can mitigate this risk in two ways: by regularly auditing the consistenc
 </div>
 </section>
 </div>
-<div id="sec-normative-references">
+<div id="sec-combined-references">
 <section id="section-8">
-      <h2 id="name-normative-references">
-<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+      <h2 id="name-references">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
+<div id="sec-normative-references">
+<section id="section-8.1">
+        <h3 id="name-normative-references">
+<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
 <dl class="references">
-<dt id="CCF">[CCF]</dt>
-      <dd>
-<span class="refTitle">"Confidential Consortium Framework"</span>, <span>n.d.</span>, <span>&lt;<a href="https://github.com/microsoft/ccf">https://github.com/microsoft/ccf</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="CCF-Commit-Evidence">[CCF-Commit-Evidence]</dt>
-      <dd>
-<span class="refTitle">"CCF Commit Evidence"</span>, <span>n.d.</span>, <span>&lt;<a href="https://microsoft.github.io/CCF/main/use_apps/verify_tx.html#commit-evidence">https://microsoft.github.io/CCF/main/use_apps/verify_tx.html#commit-evidence</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="CCF-Ledger-Format">[CCF-Ledger-Format]</dt>
-      <dd>
-<span class="refTitle">"CCF Ledger Format"</span>, <span>n.d.</span>, <span>&lt;<a href="https://microsoft.github.io/CCF/main/architecture/ledger.html">https://microsoft.github.io/CCF/main/architecture/ledger.html</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="CCF-Receipt-Verification">[CCF-Receipt-Verification]</dt>
-      <dd>
-<span class="refTitle">"CCF Receipt Verification"</span>, <span>n.d.</span>, <span>&lt;<a href="https://microsoft.github.io/CCF/main/use_apps/verify_tx.html#receipt-verification">https://microsoft.github.io/CCF/main/use_apps/verify_tx.html#receipt-verification</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="I-D.ietf-cose-merkle-tree-proofs">[I-D.ietf-cose-merkle-tree-proofs]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Steele, O.</span>, <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Delignat-Lavaud, A.</span>, and <span class="refAuthor">C. Fournet</span>, <span class="refTitle">"COSE (CBOR Object Signing and Encryption) Receipts"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cose-merkle-tree-proofs-18</span>, <time datetime="2025-12-02" class="refDate">2 December 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-merkle-tree-proofs-18">https://datatracker.ietf.org/doc/html/draft-ietf-cose-merkle-tree-proofs-18</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="I-D.ietf-wg-scitt-architecture">[I-D.ietf-wg-scitt-architecture]</dt>
-      <dd>
-<span class="refTitle">"*** BROKEN REFERENCE ***"</span>. </dd>
+<dt id="I-D.ietf-scitt-architecture">[I-D.ietf-scitt-architecture]</dt>
+        <dd>
+<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Delignat-Lavaud, A.</span>, <span class="refAuthor">Fournet, C.</span>, <span class="refAuthor">Deshpande, Y.</span>, and <span class="refAuthor">S. Lasker</span>, <span class="refTitle">"An Architecture for Trustworthy and Transparent Digital Supply Chains"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-scitt-architecture-22</span>, <time datetime="2025-10-10" class="refDate">10 October 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-scitt-architecture-22">https://datatracker.ietf.org/doc/html/draft-ietf-scitt-architecture-22</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9162">[RFC9162]</dt>
-    <dd>
+      <dd>
 <span class="refAuthor">Laurie, B.</span>, <span class="refAuthor">Messeri, E.</span>, and <span class="refAuthor">R. Stradling</span>, <span class="refTitle">"Certificate Transparency Version 2.0"</span>, <span class="seriesInfo">RFC 9162</span>, <span class="seriesInfo">DOI 10.17487/RFC9162</span>, <time datetime="2021-12" class="refDate">December 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9162">https://www.rfc-editor.org/rfc/rfc9162</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
+</section>
+</div>
+<div id="sec-informative-references">
+<section id="section-8.2">
+        <h3 id="name-informative-references">
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="CCF">[CCF]</dt>
+        <dd>
+<span class="refTitle">"Confidential Consortium Framework"</span>, <span>n.d.</span>, <span>&lt;<a href="https://github.com/microsoft/ccf">https://github.com/microsoft/ccf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="CCF-Commit-Evidence">[CCF-Commit-Evidence]</dt>
+        <dd>
+<span class="refTitle">"CCF Commit Evidence"</span>, <span>n.d.</span>, <span>&lt;<a href="https://microsoft.github.io/CCF/main/use_apps/verify_tx.html#commit-evidence">https://microsoft.github.io/CCF/main/use_apps/verify_tx.html#commit-evidence</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="CCF-Ledger-Format">[CCF-Ledger-Format]</dt>
+        <dd>
+<span class="refTitle">"CCF Ledger Format"</span>, <span>n.d.</span>, <span>&lt;<a href="https://microsoft.github.io/CCF/main/architecture/ledger.html">https://microsoft.github.io/CCF/main/architecture/ledger.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="CCF-Receipt-Verification">[CCF-Receipt-Verification]</dt>
+        <dd>
+<span class="refTitle">"CCF Receipt Verification"</span>, <span>n.d.</span>, <span>&lt;<a href="https://microsoft.github.io/CCF/main/use_apps/verify_tx.html#receipt-verification">https://microsoft.github.io/CCF/main/use_apps/verify_tx.html#receipt-verification</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="COIN-FLIPPING">[COIN-FLIPPING]</dt>
+      <dd>
+<span class="refTitle">"Coin Flipping By Telephone - A Protocol For Solving Impossible Problems"</span>, <span class="seriesInfo">DOI 10.1145/1323293.1294280</span>, <span>n.d.</span>, <span>&lt;<a href="https://dl.acm.org/doi/epdf/10.1145/1008908.1008911">https://dl.acm.org/doi/epdf/10.1145/1008908.1008911</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
 </section>
 </div>
 <div id="authors-addresses">
