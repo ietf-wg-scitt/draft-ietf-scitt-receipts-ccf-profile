@@ -32,7 +32,7 @@ jobs:
       run: |
         set -eo pipefail
         gem install kramdown-rfc cddlc cddl edn-abnf
-        pip install xml2rfc cbor2
+        pip install xml2rfc
 
     - name: "Validate CDDL and CBOR Examples from Draft XML"
       shell: bash
