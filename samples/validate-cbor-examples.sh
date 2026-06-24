@@ -54,7 +54,7 @@ cat \
   chk/cddl/unprotected-header-map-cddl.cddl \
   >chk/ccf-receipt.cddl
 
-cddlc -tcddl -2rTverifiable-proofs chk/ccf-receipt.cddl -SCCF_Receipt >chk/all.cddl
+cddlc -tcddl -2r chk/ccf-receipt.cddl -SCCF_Receipt >chk/all.cddl
 
 echo "Validating $sample_path against extracted CDDL"
 cddl chk/all.cddl validate "$sample_path"
