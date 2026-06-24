@@ -12,22 +12,23 @@
 <meta content="
        This document defines a new verifiable data structure (VDS) type for COSE Receipts and inclusion proofs specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees. 
     " name="description">
-<meta content="xml2rfc 3.33.0" name="generator">
+<meta content="xml2rfc 3.34.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-scitt-receipts-ccf-profile-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.33.0
-    Python 3.12.13
-    ConfigArgParse 1.7
+  xml2rfc 3.34.0
+    Python 3.14.5
+    ConfigArgParse 1.7.5
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
-    lxml 6.0.2
-    platformdirs 4.9.6
+    lxml 6.1.1
+    natsort 8.4.0
+    platformdirs 4.10.0
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.7.0
+    wcwidth 0.8.1
 -->
 <link href="draft-ietf-scitt-receipts-ccf-profile.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1050,7 +1051,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Birkholz, et al.</td>
-<td class="center">Expires 5 December 2026</td>
+<td class="center">Expires 26 December 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1063,12 +1064,12 @@ svg {
 <dd class="internet-draft">draft-ietf-scitt-receipts-ccf-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-06-03" class="published">3 June 2026</time>
+<time datetime="2026-06-24" class="published">24 June 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-12-05">5 December 2026</time></dd>
+<dd class="expires"><time datetime="2026-12-26">26 December 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1114,7 +1115,7 @@ svg {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 5 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 26 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1289,22 +1290,40 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-2.1-2">The Merkle Tree encodes an ordered list of <code>n</code> transactions T_n = {T[0], T[1], ..., T[n-1]}. We define the Merkle Tree Hash (MTH) function, which takes as input a list of serialized transactions (as byte strings), and outputs a single HASH_SIZE byte string called the Merkle root hash, by induction on the list.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
 <p id="section-2.1-3">This function is defined as follows:<a href="#section-2.1-3" class="pilcrow">¶</a></p>
 <p id="section-2.1-4">The hash of an empty list is the hash of an empty string:<a href="#section-2.1-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-2.1-5">
+<span id="name-merkle-tree-hash-of-empty-l"></span><div id="empty-list-merkle-tree-hash">
+<figure id="figure-1">
+          <div class="alignLeft art-text artwork" id="section-2.1-5.1">
 <pre>
 MTH({}) = HASH().
-</pre><a href="#section-2.1-5" class="pilcrow">¶</a>
+</pre>
+</div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-merkle-tree-hash-of-empty-l" class="selfRef">Merkle Tree Hash of Empty List</a>
+          </figcaption></figure>
 </div>
 <p id="section-2.1-6">The hash of a list with one entry (also known as a leaf hash) is:<a href="#section-2.1-6" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-2.1-7">
+<span id="name-merkle-tree-hash-of-a-singl"></span><div id="single-entry-merkle-tree-hash">
+<figure id="figure-2">
+          <div class="alignLeft art-text artwork" id="section-2.1-7.1">
 <pre>
 MTH({d[0]}) = HASH(d[0]).
-</pre><a href="#section-2.1-7" class="pilcrow">¶</a>
+</pre>
+</div>
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<a href="#name-merkle-tree-hash-of-a-singl" class="selfRef">Merkle Tree Hash of a Single Entry</a>
+          </figcaption></figure>
 </div>
 <p id="section-2.1-8">For n &gt; 1, let k be the largest power of two smaller than n (i.e., k &lt; n &lt;= 2k). The Merkle Tree Hash of an n-element list D_n is then defined recursively as:<a href="#section-2.1-8" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-2.1-9">
+<span id="name-recursive-merkle-tree-hash"></span><div id="recursive-merkle-tree-hash">
+<figure id="figure-3">
+          <div class="alignLeft art-text artwork" id="section-2.1-9.1">
 <pre>
 MTH(D_n) = HASH(MTH(D[0:k]) || MTH(D[k:n])),
-</pre><a href="#section-2.1-9" class="pilcrow">¶</a>
+</pre>
+</div>
+<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
+<a href="#name-recursive-merkle-tree-hash" class="selfRef">Recursive Merkle Tree Hash</a>
+          </figcaption></figure>
 </div>
 <p id="section-2.1-10">where:<a href="#section-2.1-10" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -1326,7 +1345,9 @@ MTH(D_n) = HASH(MTH(D[0:k]) || MTH(D[k:n])),
 <a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-transaction-components" class="section-name selfRef">Transaction Components</a>
         </h3>
 <p id="section-2.2-1">Each leaf in a CCF ledger carries the following components:<a href="#section-2.2-1" class="pilcrow">¶</a></p>
-<div class="lang-cddl sourcecode" id="section-2.2-2">
+<span id="name-ccf-leaf-cddl"></span><div id="ccf-leaf-cddl">
+<figure id="figure-4">
+          <div class="lang-cddl sourcecode" id="section-2.2-2.1">
 <pre>
 ccf-leaf = [
   ; Byte string of size HASH_SIZE(32)
@@ -1338,7 +1359,11 @@ ccf-leaf = [
   ; Byte string of size HASH_SIZE(32)
   data-hash: bstr .size 32
 ]
-</pre><a href="#section-2.2-2" class="pilcrow">¶</a>
+</pre>
+</div>
+<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
+<a href="#name-ccf-leaf-cddl" class="selfRef">CCF Leaf CDDL</a>
+          </figcaption></figure>
 </div>
 <p id="section-2.2-3">The <code>internal-transaction-hash</code> and <code>internal-evidence</code> values are internal to the CCF implementation. They can be safely ignored by receipt Verifiers, but they commit the transparency service (TS) to the whole tree contents and may be used for additional, CCF-specific auditing.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
 <p id="section-2.2-4"><code>internal-transaction-hash</code> is a hash over the complete entry in the <span>[<a href="#CCF-Ledger-Format" class="cite xref">CCF-Ledger-Format</a>]</span>, and <code>internal-evidence</code> is a revealable <span>[<a href="#CCF-Commit-Evidence" class="cite xref">CCF-Commit-Evidence</a>]</span> value that allows early persistence of ledger entries before distributed consensus can be established. This mechanism is useful to implement high-throughput transparency applications in Trusted Execution Environments (TEEs) that only provide a limited amount of memory, while maintaining high availability afforded by distributed consensus. Using a secure one-way function <code>f</code> to publish an <code>f(x)</code> commitment to an <code>x</code> value that can be revealed at a later time is a common feature of distributed protocols (<span>[<a href="#COIN-FLIPPING" class="cite xref">COIN-FLIPPING</a>]</span>). The hash function used for <code>internal-transaction-hash</code> is the same hash function <code>H</code> as in the Merkle Tree construction for the selected verifiable data structure algorithm. For <code>CCF_LEDGER_SHA256</code>, this function is <code>SHA256</code>.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
@@ -1353,7 +1378,9 @@ ccf-leaf = [
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-ccf-inclusion-proofs" class="section-name selfRef">CCF Inclusion Proofs</a>
       </h2>
 <p id="section-3-1">CCF inclusion proofs consist of a list of digests tagged with a single left-or-right bit.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<div class="lang-cddl sourcecode" id="section-3-2">
+<span id="name-ccf-inclusion-proof-cddl"></span><div id="ccf-inclusion-proof-cddl">
+<figure id="figure-5">
+        <div class="lang-cddl sourcecode" id="section-3-2.1">
 <pre>
 ccf-proof-element = [
   ; Position of the element
@@ -1367,7 +1394,11 @@ ccf-inclusion-proof = bstr .cbor {
   &amp;(leaf: 1) =&gt; ccf-leaf
   &amp;(path: 2) =&gt; [+ ccf-proof-element]
 }
-</pre><a href="#section-3-2" class="pilcrow">¶</a>
+</pre>
+</div>
+<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
+<a href="#name-ccf-inclusion-proof-cddl" class="selfRef">CCF Inclusion Proof CDDL</a>
+        </figcaption></figure>
 </div>
 <p id="section-3-3">Unlike some other tree algorithms, the index of the element in the tree is not explicit in the inclusion proof, but the list of left-or-right bits can be treated as the binary decomposition of the index, from the least significant (leaf) to the most significant (root).<a href="#section-3-3" class="pilcrow">¶</a></p>
 <div id="ccf-inclusion-proof-signature">
@@ -1400,7 +1431,9 @@ ccf-inclusion-proof = bstr .cbor {
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-inclusion-proof-verificatio" class="section-name selfRef">Inclusion Proof Verification Algorithm</a>
         </h3>
 <p id="section-3.2-1">CCF uses the following algorithm to verify an inclusion receipt:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3.2-2">
+<span id="name-ccf-inclusion-receipt-verif"></span><div id="ccf-inclusion-receipt-verification">
+<figure id="figure-6">
+          <div class="alignLeft art-text artwork" id="section-3.2-2.1">
 <pre>
 compute_root(proof):
   h := HASH(
@@ -1423,7 +1456,11 @@ verify_inclusion_receipt(inclusion_receipt):
 
   # Use the Merkle Root as the detached payload
   return verify_cose(inclusion_receipt, payload)
-</pre><a href="#section-3.2-2" class="pilcrow">¶</a>
+</pre>
+</div>
+<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<a href="#name-ccf-inclusion-receipt-verif" class="selfRef">CCF Inclusion Receipt Verification</a>
+          </figcaption></figure>
 </div>
 <p id="section-3.2-3">A description can also be found at <span>[<a href="#CCF-Receipt-Verification" class="cite xref">CCF-Receipt-Verification</a>]</span>.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
 </section>
@@ -1436,14 +1473,20 @@ verify_inclusion_receipt(inclusion_receipt):
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-usage-in-cose-receipts" class="section-name selfRef">Usage in COSE Receipts</a>
       </h2>
 <p id="section-4-1">A COSE Receipt with a CCF inclusion proof is described by the following CDDL definition:<a href="#section-4-1" class="pilcrow">¶</a></p>
-<div class="lang-cddl sourcecode" id="section-4-2">
+<span id="name-protected-header-map-cddl"></span><div id="protected-header-map-cddl">
+<figure id="figure-7">
+        <div class="lang-cddl sourcecode" id="section-4-2.1">
 <pre>
 protected-header-map = {
   &amp;(alg: 1) =&gt; int
   &amp;(vds: 395) =&gt; 2
   * cose-label =&gt; cose-value
 }
-</pre><a href="#section-4-2" class="pilcrow">¶</a>
+</pre>
+</div>
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<a href="#name-protected-header-map-cddl" class="selfRef">Protected Header Map CDDL</a>
+        </figcaption></figure>
 </div>
 <ul class="normal">
 <li class="normal" id="section-4-3.1">
@@ -1454,7 +1497,9 @@ protected-header-map = {
 </li>
       </ul>
 <p id="section-4-4">The unprotected header for an inclusion proof signature is described by the following CDDL definition:<a href="#section-4-4" class="pilcrow">¶</a></p>
-<div class="lang-cddl sourcecode" id="section-4-5">
+<span id="name-unprotected-header-map-cddl"></span><div id="unprotected-header-map-cddl">
+<figure id="figure-8">
+        <div class="lang-cddl sourcecode" id="section-4-5.1">
 <pre>
 inclusion-proof = ccf-inclusion-proof
 
@@ -1468,7 +1513,11 @@ unprotected-header-map = {
   &amp;(vdp: 396) =&gt; verifiable-proofs
   * cose-label =&gt; cose-value
 }
-</pre><a href="#section-4-5" class="pilcrow">¶</a>
+</pre>
+</div>
+<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
+<a href="#name-unprotected-header-map-cddl" class="selfRef">Unprotected Header Map CDDL</a>
+        </figcaption></figure>
 </div>
 </section>
 </div>
