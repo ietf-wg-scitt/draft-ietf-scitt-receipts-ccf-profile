@@ -118,18 +118,21 @@ The hash of an empty list is the hash of an empty string:
 ~~~
 MTH({}) = HASH().
 ~~~
+{: #empty-list-merkle-tree-hash title="Merkle Tree Hash of Empty List"}
 
 The hash of a list with one entry (also known as a leaf hash) is:
 
 ~~~
 MTH({d[0]}) = HASH(d[0]).
 ~~~
+{: #single-entry-merkle-tree-hash title="Merkle Tree Hash of a Single Entry"}
 
 For n > 1, let k be the largest power of two smaller than n (i.e., k < n <= 2k). The Merkle Tree Hash of an n-element list D_n is then defined recursively as:
 
 ~~~
 MTH(D_n) = HASH(MTH(D[0:k]) || MTH(D[k:n])),
 ~~~
+{: #recursive-merkle-tree-hash title="Recursive Merkle Tree Hash"}
 
 where:
 
@@ -153,6 +156,7 @@ ccf-leaf = [
   data-hash: bstr .size 32
 ]
 ~~~
+{: #ccf-leaf-cddl title="CCF Leaf CDDL"}
 
 The `internal-transaction-hash` and `internal-evidence` values are internal to the CCF implementation. They can be safely ignored by receipt Verifiers, but they commit the transparency service (TS) to the whole tree contents and may be used for additional, CCF-specific auditing.
 
@@ -178,6 +182,7 @@ ccf-inclusion-proof = bstr .cbor {
   &(path: 2) => [+ ccf-proof-element]
 }
 ~~~
+{: #ccf-inclusion-proof-cddl title="CCF Inclusion Proof CDDL"}
 
 Unlike some other tree algorithms, the index of the element in the tree is not explicit in the inclusion proof, but the list of left-or-right bits can be treated as the binary decomposition of the index, from the least significant (leaf) to the most significant (root).
 
@@ -223,6 +228,7 @@ verify_inclusion_receipt(inclusion_receipt):
   # Use the Merkle Root as the detached payload
   return verify_cose(inclusion_receipt, payload)
 ~~~
+{: #ccf-inclusion-receipt-verification title="CCF Inclusion Receipt Verification"}
 
 A description can also be found at {{CCF-Receipt-Verification}}.
 
@@ -237,6 +243,7 @@ protected-header-map = {
   * cose-label => cose-value
 }
 ~~~
+{: #protected-header-map-cddl title="Protected Header Map CDDL"}
 
 - alg (label: 1): REQUIRED. Signature algorithm identifier. Value type: int.
 - vds (label: 395): REQUIRED. Verifiable data structure algorithm identifier. Value type: int.
@@ -257,6 +264,7 @@ unprotected-header-map = {
   * cose-label => cose-value
 }
 ~~~
+{: #unprotected-header-map-cddl title="Unprotected Header Map CDDL"}
 
 # Privacy Considerations
 
