@@ -72,6 +72,7 @@ cddlc -tcddl -2rTverifiable-proofs chk/ccf-receipt.cddl -SCCF_Receipt >chk/all.c
 
 python3 - "$sample_path" "$workdir" <<'PY'
 import sys
+from collections.abc import Mapping, Sequence
 from pathlib import Path
 
 import cbor2
@@ -83,11 +84,11 @@ value = cbor2.loads(sample_path.read_bytes())
 if not isinstance(value, cbor2.CBORTag) or value.tag != 18:
     raise SystemExit(f"{sample_path} is not a COSE_Sign1 message")
 
-if not isinstance(value.value, list) or len(value.value) != 4:
+if not isinstance(value.value, Sequence) or isinstance(value.value, (bytes, bytearray, str)) or len(value.value) != 4:
     raise SystemExit(f"{sample_path} is not a COSE_Sign1 array")
 
 unprotected = value.value[1]
-if not isinstance(unprotected, dict):
+if not isinstance(unprotected, Mapping):
     raise SystemExit(f"{sample_path} has no COSE_Sign1 unprotected header map")
 
 if 396 in unprotected:
