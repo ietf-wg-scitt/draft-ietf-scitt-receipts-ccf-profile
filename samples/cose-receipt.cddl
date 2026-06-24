@@ -1,0 +1,19 @@
+; Generic COSE receipt envelope vendored for CI validation from:
+; https://github.com/cose-wg/draft-ietf-cose-merkle-tree-proofs/blob/df5113e94e6b6788de0bfb112db63726516b88ab/draft-ietf-cose-merkle-tree-proofs.md#fig-receipts-cddl
+
+CCF_Receipt = Receipt_For_Inclusion
+
+cose.label = int / text
+cose.values = any
+
+cose-label = cose.label
+cose-value = cose.values
+
+Receipt_For_Inclusion = #6.18(Signed_Inclusion_Proof)
+
+Signed_Inclusion_Proof = [
+  protected   : bstr .cbor protected-header-map
+  unprotected : unprotected-header-map
+  payload     : nil
+  signature   : bstr
+]

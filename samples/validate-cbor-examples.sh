@@ -47,7 +47,7 @@ cd "$workdir"
 kramdown-rfc-extract-sourcecode -dchk "$xml_path"
 
 cat \
-  chk/cddl/ccf-receipt-cddl.cddl \
+  "$script_dir/cose-receipt.cddl" \
   chk/cddl/ccf-leaf-cddl.cddl \
   chk/cddl/ccf-inclusion-proof-cddl.cddl \
   chk/cddl/protected-header-map-cddl.cddl \

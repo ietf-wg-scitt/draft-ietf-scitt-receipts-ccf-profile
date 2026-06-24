@@ -237,21 +237,6 @@ A description can also be found at {{CCF-Receipt-Verification}}.
 A COSE Receipt with a CCF inclusion proof is described by the following CDDL definition:
 
 ~~~ cddl
-CCF_Receipt = #6.18(Signed_CCF_Inclusion_Proof)
-
-Signed_CCF_Inclusion_Proof = [
-  protected: bstr .cbor protected-header-map,
-  unprotected: unprotected-header-map,
-  payload: nil,
-  signature: bstr,
-]
-
-cose-label = int / tstr
-cose-value = any
-~~~
-{: #ccf-receipt-cddl title="CCF Receipt CDDL"}
-
-~~~ cddl
 protected-header-map = {
   &(alg: 1) => int
   &(vds: 395) => 2
