@@ -98,12 +98,12 @@ Compared to {{RFC9162}}, the leaves of CCF trees carry additional internal infor
 
 # Description of the Confidential Consortium Framework Ledger Verifiable Data Structure
 
-This document extends the VDS registry of {{-cose-receipts}} with the following value:
+This document extends the "COSE Verifiable Data Structure Algorithms" registry of {{-cose-receipts}} with the following value:
 
 | Name | Value | Description | Reference
 |---
 |CCF_LEDGER_SHA256 | TBD_1 (requested assignment 2) | Historical transaction ledgers, such as the CCF ledger | RFCthis
-{: #verifiable-data-structure-values align="left" title="Verifiable Data Structure Algorithms"}
+{: #verifiable-data-structure-values align="left" title="COSE Verifiable Data Structure Algorithms"}
 
 ## Merkle Tree Shape
 
@@ -193,7 +193,7 @@ The proof signature for a CCF inclusion proof is a COSE signature (encoded with 
 The protected header parameters for the CCF inclusion proof signature MUST include the following:
 
 * `verifiable-data-structure: int/tstr`. This header MUST be set to the verifiable data structure algorithm identifier for `CCF_LEDGER_SHA256` (TBD_1).
-* `label: int`. This header MUST be set to the value of the `inclusion` proof type in the IANA registry of Verifiable Data Structure Proof Type (-1).
+* `label: int`. This header MUST be set to the value of the `inclusion` proof type in the IANA "COSE Verifiable Data Structure Proofs" registry (-1).
 
 The unprotected header for a CCF inclusion proof signature MUST include the following:
 
@@ -294,9 +294,9 @@ An operator has the ability to start successor networks with a distinct identity
 
 ## Additions to Existing Registries
 
-### Tree Algorithms {#tree-alg-registry}
+### COSE Verifiable Data Structure Algorithms {#tree-alg-registry}
 
-This document requests IANA to add the following new value to the 'COSE Verifiable Data Structures' registry:
+This document requests IANA to add the following new value to the "COSE Verifiable Data Structure Algorithms" registry:
 
 * Name: CCF_LEDGER_SHA256
 * Value: 2 (requested assignment)
