@@ -22,6 +22,26 @@ jobs:
     - name: "Checkout"
       uses: actions/checkout@v6
 
+    - name: "Setup Ruby"
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: "3.3"
+
+    - name: "Install Dependencies"
+      shell: bash
+      run: |
+        set -eo pipefail
+        gem install kramdown-rfc cddlc cddl edn-abnf
+        pip install xml2rfc
+
+    - name: "Validate CDDL and CBOR Examples from Draft XML"
+      shell: bash
+      run: |
+        set -eo pipefail
+
+        make draft-ietf-scitt-receipts-ccf-profile.xml
+        ./samples/validate-cbor-examples.sh draft-ietf-scitt-receipts-ccf-profile.xml
+
     - name: "Setup"
       id: setup
       run: date -u "+date=%FT%T" >>"$GITHUB_OUTPUT"
