@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-06-04T02:15:30.869039+00:00",
+  "timestamp": "2026-06-25T01:56:43.711871+00:00",
   "repo": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
   "labels": [
     {
@@ -1055,6 +1055,203 @@
           "body": "Edits clarify hash function for this section. ok.",
           "createdAt": "2026-06-03T15:16:07Z",
           "updatedAt": "2026-06-03T15:16:07Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "id": "PR_kwDORpjjVc7qBFt2",
+      "title": "Name all draft figures",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/pull/20",
+      "state": "MERGED",
+      "author": "copilot-swe-agent",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "achamayou",
+        "Copilot"
+      ],
+      "labels": [],
+      "body": "The draft contained multiple figure/sourcecode blocks without names, making generated references and rendered output less clear.\n\n- **Figure metadata**\n  - Added stable anchors and concise titles to each fenced figure/sourcecode block.\n  - Preserved the existing titled VDS registry table.\n\n- **Example**\n  ```markdown\n  ~~~\n  MTH({}) = HASH().\n  ~~~\n  {: #empty-list-merkle-tree-hash title=\"Merkle Tree Hash of Empty List\"}\n  ```",
+      "createdAt": "2026-06-24T08:33:16Z",
+      "updatedAt": "2026-06-24T15:37:16Z",
+      "baseRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "baseRefName": "main",
+      "baseRefOid": "b5bdf1702095a447952a452447b076c246c01e86",
+      "headRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "headRefName": "copilot/check-figure-names",
+      "headRefOid": "6f6e1ae4e3f87d502af35c8eccf170b701b45c36",
+      "closedAt": "2026-06-24T15:37:16Z",
+      "mergedAt": "2026-06-24T15:37:16Z",
+      "mergedBy": "achamayou",
+      "mergeCommit": {
+        "oid": "d2cf199c437d5258a7b45e6cbc3fb643190ec832"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORpjjVc8AAAABD9RGZw",
+          "commit": {
+            "abbreviatedOid": "6f6e1ae"
+          },
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-06-24T08:41:30Z",
+          "updatedAt": "2026-06-24T08:41:30Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDORpjjVc8AAAABD-ELkg",
+          "commit": {
+            "abbreviatedOid": "6f6e1ae"
+          },
+          "author": "rjb4standards",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM",
+          "createdAt": "2026-06-24T10:39:11Z",
+          "updatedAt": "2026-06-24T10:39:11Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDORpjjVc8AAAABEAKnaA",
+          "commit": {
+            "abbreviatedOid": "6f6e1ae"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "labels are always good, referenced labels are even better",
+          "createdAt": "2026-06-24T15:24:44Z",
+          "updatedAt": "2026-06-24T15:24:44Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "id": "PR_kwDORpjjVc7qBT-2",
+      "title": "Correct COSE registry names",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/pull/21",
+      "state": "MERGED",
+      "author": "copilot-swe-agent",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "achamayou",
+        "Copilot"
+      ],
+      "labels": [],
+      "body": "The draft referenced COSE/IANA registries with names that did not match the current registry titles. This aligns registry references with the COSE Receipts definitions.\n\n- **Algorithm registry**\n  - Replaced ambiguous/mismatched references with `COSE Verifiable Data Structure Algorithms`.\n  - Updated the related table title and IANA subsection heading.\n\n- **Proof registry**\n  - Replaced `Verifiable Data Structure Proof Type` with `COSE Verifiable Data Structure Proofs`.",
+      "createdAt": "2026-06-24T08:42:48Z",
+      "updatedAt": "2026-06-24T15:38:01Z",
+      "baseRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "baseRefName": "main",
+      "baseRefOid": "b5bdf1702095a447952a452447b076c246c01e86",
+      "headRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "headRefName": "copilot/check-registry-names",
+      "headRefOid": "487b2c654e14b9a950f75fc7e1a6d6336c1e5316",
+      "closedAt": "2026-06-24T15:38:00Z",
+      "mergedAt": "2026-06-24T15:38:00Z",
+      "mergedBy": "achamayou",
+      "mergeCommit": {
+        "oid": "84ca4abe5f2d155a5d097f243db8a14a12746dc9"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORpjjVc8AAAABD9qheA",
+          "commit": {
+            "abbreviatedOid": "487b2c6"
+          },
+          "author": "achamayou",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-06-24T09:40:37Z",
+          "updatedAt": "2026-06-24T09:40:37Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDORpjjVc8AAAABD-ElwA",
+          "commit": {
+            "abbreviatedOid": "487b2c6"
+          },
+          "author": "rjb4standards",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM",
+          "createdAt": "2026-06-24T10:40:19Z",
+          "updatedAt": "2026-06-24T10:40:19Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDORpjjVc8AAAABEALJZA",
+          "commit": {
+            "abbreviatedOid": "487b2c6"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "bot is correct",
+          "createdAt": "2026-06-24T15:25:49Z",
+          "updatedAt": "2026-06-24T15:25:49Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "id": "PR_kwDORpjjVc7qEpaW",
+      "title": "Validate CCF receipt sample in CI",
+      "url": "https://github.com/ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile/pull/22",
+      "state": "MERGED",
+      "author": "achamayou",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Adds CI validation for a checked-in CCF receipt sample against the CDDL extracted from the generated draft XML.\n\nThis PR includes the CDDL sourcecode anchors needed by the extractor (`ccf-leaf-cddl`, `ccf-inclusion-proof-cddl`, `protected-header-map-cddl`, and `unprotected-header-map-cddl`) so it can validate independently against `main`.\n\nThe sample receipt in `samples/microsoft-mst-receipt.cbor` was extracted from the SCITT examples transparent statement: https://github.com/ietf-wg-scitt/examples/blob/main/transparent-statements/cose-hash-envelope-0-with-microsoft-mst-receipt.scitt\n\nFor CI only, `samples/cose-receipt.cddl` vendors the generic COSE receipt envelope from the COSE Merkle Tree proofs draft and binds it to this profile's extracted CCF-specific CDDL rules. This avoids adding the generic receipt definition to this draft.\n\nThe workflow follows the COSE Merkle Tree proofs repository pattern: install the CDDL tooling, build the draft XML, extract the CDDL blocks from that XML, combine them with the vendored COSE receipt envelope, convert the CDDL to validator-compatible form, and validate the CBOR receipt sample before publishing the editor's copy.\n\nThe original CI failure in run 28093999131 came from parsing the transparent statement in the validation script: GitHub Actions installed cbor2 6.x, which decodes CBOR arrays/maps differently than the local cbor2 5.x environment. The script no longer parses transparent statements or depends on cbor2; it validates the checked-in receipt directly.\n\nValidation run locally:\n\n```sh\nbash -n samples/validate-cbor-examples.sh\nmake draft-ietf-scitt-receipts-ccf-profile.xml\n./samples/validate-cbor-examples.sh draft-ietf-scitt-receipts-ccf-profile.xml\n```",
+      "createdAt": "2026-06-24T11:04:40Z",
+      "updatedAt": "2026-06-24T15:40:01Z",
+      "baseRepository": "ietf-wg-scitt/draft-ietf-scitt-receipts-ccf-profile",
+      "baseRefName": "main",
+      "baseRefOid": "84ca4abe5f2d155a5d097f243db8a14a12746dc9",
+      "headRepository": "achamayou/draft-ietf-scitt-receipts-ccf-profile",
+      "headRefName": "cddl_ci",
+      "headRefOid": "5a01dfa5b372659970bfea02505ba05c22933217",
+      "closedAt": "2026-06-24T15:40:01Z",
+      "mergedAt": "2026-06-24T15:40:01Z",
+      "mergedBy": "achamayou",
+      "mergeCommit": {
+        "oid": "54f887f0eef26bdac4e667d63b10d328b54a5442"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORpjjVc8AAAABEAEBaw",
+          "commit": {
+            "abbreviatedOid": "5a01dfa"
+          },
+          "author": "nikcal",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Great improvement for spec process. ",
+          "createdAt": "2026-06-24T15:10:54Z",
+          "updatedAt": "2026-06-24T15:38:18Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDORpjjVc8AAAABEAJ_lw",
+          "commit": {
+            "abbreviatedOid": "5a01dfa"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "+1 to CI!",
+          "createdAt": "2026-06-24T15:23:30Z",
+          "updatedAt": "2026-06-24T15:38:18Z",
           "comments": []
         }
       ]
