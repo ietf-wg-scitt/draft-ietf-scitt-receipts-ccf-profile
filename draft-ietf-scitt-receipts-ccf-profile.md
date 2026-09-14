@@ -98,12 +98,9 @@ Compared to {{RFC9162}}, the leaves of CCF trees carry additional internal infor
 
 # Description of the Confidential Consortium Framework Ledger Verifiable Data Structure
 
-This document extends the "COSE Verifiable Data Structure Algorithms" registry of {{-cose-receipts}} with the following value:
+This document defines `CCF_LEDGER_SHA256` for append-only CCF transaction ledgers containing a mix of public and confidential information. These ledgers are integrity-protected by a Merkle Tree and signatures produced via Trusted Execution Environments. The registration request for this verifiable data structure is specified in {{tree-alg-registry}}.
 
-| Name | Value | Description | Reference
-|---
-|CCF_LEDGER_SHA256 | TBD_1 (requested assignment 2) | Historical transaction ledgers, such as the CCF ledger | RFCthis
-{: #verifiable-data-structure-values align="left" title="COSE Verifiable Data Structure Algorithms"}
+The placeholder `TBD_1` denotes the algorithm identifier, with requested assignment `2`. The CDDL and examples use this requested value pending IANA allocation; it is not an assigned value.
 
 ## Merkle Tree Shape
 
@@ -164,7 +161,7 @@ The `internal-transaction-hash` and `internal-evidence` values are internal to t
 
 `data-hash` summarizes the application data included in the ledger at this transaction, which is a Signed Statement as defined by {{-scitt-architecture}}. The hash function used for `data-hash` is also the same hash function `H` as in the Merkle Tree construction for the selected verifiable data structure algorithm. For `CCF_LEDGER_SHA256`, this function is `SHA256`.
 
-# CCF Inclusion Proofs
+# CCF Inclusion Proofs {#ccf-inclusion-proofs}
 
 CCF inclusion proofs consist of a list of digests tagged with a single left-or-right bit.
 
@@ -192,7 +189,7 @@ The proof signature for a CCF inclusion proof is a COSE signature (encoded with 
 
 The protected header parameters for the CCF inclusion proof signature MUST include the following:
 
-* `verifiable-data-structure: int/tstr`. This header MUST be set to the verifiable data structure algorithm identifier for `CCF_LEDGER_SHA256` (TBD_1).
+* `verifiable-data-structure: int/tstr`. This header MUST be set to the verifiable data structure algorithm identifier for `CCF_LEDGER_SHA256` (`TBD_1`).
 * `label: int`. This header MUST be set to the value of the `inclusion` proof type in the IANA "COSE Verifiable Data Structure Proofs" registry (-1).
 
 The unprotected header for a CCF inclusion proof signature MUST include the following:
@@ -232,16 +229,18 @@ verify_inclusion_receipt(inclusion_receipt):
 
 A description can also be found at {{CCF-Receipt-Verification}}.
 
-# Usage in COSE Receipts
+# Usage in COSE Receipts {#receipt-usage}
 
 A COSE Receipt with a CCF inclusion proof is described by the following CDDL definition:
 
 ~~~ cddl
 protected-header-map = {
   &(alg: 1) => int
-  &(vds: 395) => 2
+  &(vds: 395) => TBD_1
   * cose-label => cose-value
 }
+
+TBD_1 = 2 ; Requested assignment for CCF_LEDGER_SHA256
 ~~~
 {: #protected-header-map-cddl title="Protected Header Map CDDL"}
 
@@ -294,14 +293,28 @@ An operator has the ability to start successor networks with a distinct identity
 
 ## Additions to Existing Registries
 
+The registries in this section are defined by {{-cose-receipts}}.
+
 ### COSE Verifiable Data Structure Algorithms {#tree-alg-registry}
 
 This document requests IANA to add the following new value to the "COSE Verifiable Data Structure Algorithms" registry:
 
 * Name: CCF_LEDGER_SHA256
-* Value: 2 (requested assignment)
-* Description: Append-only logs that are integrity-protected by a Merkle Tree and signatures produced via Trusted Execution Environments containing a mix of public and confidential information, as specified by the Confidential Consortium Framework.
+* Value: TBD_1 (requested assignment 2)
+* Description: Append-only CCF transaction ledgers protected by SHA-256 Merkle Trees and signatures produced via Trusted Execution Environments.
 * Reference: {{&SELF}}
-* Related information: {{-cose-receipts}}
+* Change Controller: IETF
+
+### COSE Verifiable Data Structure Proofs {#tree-proof-registry}
+
+This document requests IANA to add the following new entry to the "COSE Verifiable Data Structure Proofs" registry:
+
+* Verifiable Data Structure: TBD_1 (requested assignment 2)
+* Name: inclusion proofs
+* Label: -1
+* CBOR Type: array (of bstr)
+* Description: Proof of inclusion
+* Reference: {{&SELF}}, {{ccf-inclusion-proofs}} and {{receipt-usage}}
+* Change Controller: IETF
 
 --- back
