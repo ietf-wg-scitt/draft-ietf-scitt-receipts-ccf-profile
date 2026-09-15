@@ -17,9 +17,7 @@ node    = SHA-256(left || right)
 | `invalid/cddl-<case>.cbor` | 15 vectors that do not conform to the CDDL |
 | `invalid/older-root-<case>.cbor` | 5 tampered vectors whose recomputed older root differs from `R_m` |
 | `invalid/newer-root-<case>.cbor` | 3 tampered vectors whose older root still matches but whose newer root differs from `R_n` |
-| `manifest.json` | Sizes, tags, and expected outcome for every vector |
-| `EDN.md` | The valid vectors in diagnostic notation |
-| `verify.py` | Recomputes `R_m` and `R_n` from the leaf derivation and checks every vector |
+| `verify.py` | Recomputes `R_m` and `R_n` from the leaf derivation and checks every non-`cddl-` vector |
 
 ## Checks
 
@@ -28,7 +26,6 @@ node    = SHA-256(left || right)
 - CDDL: every `valid/*.cbor` conforms to `ccf-consistency-proof` as extracted from the draft; every `invalid/cddl-*.cbor` does not.
 - Roots: `verify.py` applies the draft's `compute_roots` to each vector. Valid vectors must yield `(R_m, R_n)`; `older-root-*` must not yield `R_m`; `newer-root-*` must yield `R_m` but not `R_n`.
 
-The `newer-root-*` class is the one worth noting: `truncated-path` is in fact the valid proof 23 → 64, so it passes the older-root comparison and is caught only by the signature over the detached payload.
 
 ## Valid cases
 
@@ -55,3 +52,23 @@ Tags read anchor → root; `R` is a right sibling (newer tree only), `L` a left 
 | 17 | 8 → 12 | `LR` | Constructed: non-canonical anchor `[4,8)` with an extra shared sibling; sound and accepted, but longer than canonical |
 
 Cases 05, 06, 08 and 09 share the tag string `RL`: the tags do not determine the tree sizes, which is why none are carried.
+
+## Invalid cases
+
+All derived from case 11 (23 → 68).
+
+| File | Tampering |
+|---|---|
+| `older-root-flipped-tag-first-element` | First element re-tagged as left |
+| `older-root-flipped-tag-left-to-right` | A shared left sibling re-tagged as right |
+| `older-root-reversed-path` | Elements listed root → anchor |
+| `older-root-zeroed-anchor` | Anchor replaced by zeros |
+| `older-root-zeroed-left-sibling` | A shared left sibling replaced by zeros |
+| `newer-root-extended-path` | Extra right sibling appended |
+| `newer-root-truncated-path` | Last element dropped: this is the valid proof 23 → 64, caught only by the signature over the detached payload |
+| `newer-root-zeroed-right-sibling` | A newer-only right sibling replaced by zeros |
+| `cddl-anchor-31-bytes`, `cddl-anchor-33-bytes`, `cddl-anchor-text` | Anchor of the wrong size or type |
+| `cddl-element-hash-33-bytes`, `cddl-element-three-items`, `cddl-element-as-map`, `cddl-left-not-bool` | Malformed path element |
+| `cddl-missing-anchor`, `cddl-missing-path`, `cddl-empty-path` | Missing or empty required key |
+| `cddl-unknown-key-3`, `cddl-text-keys`, `cddl-array-not-map` | Wrong map shape (the map is closed) |
+| `cddl-not-bstr-wrapped`, `cddl-double-bstr-wrapped` | Wrong `bstr .cbor` wrapping |

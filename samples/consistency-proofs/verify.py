@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
 """Check the sample consistency proofs against the draft's verification algorithm.
 
-Roots are recomputed from the leaf derivation in manifest.json rather than read
-from it, so the vectors are checked independently of the tool that produced them.
-CDDL conformance is checked separately by validate-cbor-examples.sh.
+Every vector comes from one tree whose leaves are derived below, so R_m and R_n
+are recomputed here rather than trusted from the tool that produced the vectors.
+Valid vectors are named NN-<case>-<m>-<n>.cbor. Tampered vectors derive from
+11-doc-example-23-68 and are named by the check that catches them:
+older-root-* must not fold to R_23; newer-root-* must fold to R_23 but not to
+R_68. cddl-* vectors are checked by validate-cbor-examples.sh, not here.
 
   pip install cbor2
   python3 verify.py [samples/consistency-proofs]
 """
+import glob
 import hashlib
-import json
 import os
+import re
 import sys
 
 import cbor2
@@ -54,30 +58,33 @@ def load(path):
         return cbor2.loads(cbor2.loads(f.read()))
 
 
+def check(ok, path):
+    print(f"{'ok  ' if ok else 'FAIL'} {os.path.relpath(path)}")
+    return not ok
+
+
+def vectors(root, subdir, pattern):
+    paths = sorted(glob.glob(os.path.join(root, subdir, pattern)))
+    if not paths:
+        sys.exit(f"no vectors matching {subdir}/{pattern} under {root}")
+    return paths
+
+
 def main(root):
-    manifest = json.load(open(os.path.join(root, "manifest.json")))
     failures = 0
 
-    for v in manifest["valid"]:
-        older, newer = compute_roots(load(os.path.join(root, "valid", v["file"])))
-        ok = older == mth(0, v["m"]) and newer == mth(0, v["n"])
-        failures += not ok
-        print(f"{'ok  ' if ok else 'FAIL'} valid/{v['file']}")
+    for path in vectors(root, "valid", "*.cbor"):
+        m, n = map(int, re.search(r"-(\d+)-(\d+)\.cbor$", path).groups())
+        older, newer = compute_roots(load(path))
+        failures += check(older == mth(0, m) and newer == mth(0, n), path)
 
-    for v in manifest["invalid"]:
-        if v["expected"] == "cddl":
-            continue
-        older, newer = compute_roots(load(os.path.join(root, "invalid", v["file"])))
-        older_matches = older == mth(0, v["m"])
-        newer_matches = newer == mth(0, v["n"])
-        if v["expected"] == "older-root-mismatch":
-            ok = not older_matches
-        elif v["expected"] == "newer-root-mismatch":
-            ok = older_matches and not newer_matches
-        else:
-            ok = False
-        failures += not ok
-        print(f"{'ok  ' if ok else 'FAIL'} invalid/{v['file']} ({v['expected']})")
+    r23, r68 = mth(0, 23), mth(0, 68)
+    for path in vectors(root, "invalid", "older-root-*.cbor"):
+        older, _ = compute_roots(load(path))
+        failures += check(older != r23, path)
+    for path in vectors(root, "invalid", "newer-root-*.cbor"):
+        older, newer = compute_roots(load(path))
+        failures += check(older == r23 and newer != r68, path)
 
     print(f"{failures} failure(s)")
     return 1 if failures else 0
