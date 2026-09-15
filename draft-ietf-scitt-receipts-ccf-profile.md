@@ -102,11 +102,11 @@ This document defines `CCF_LEDGER_SHA256` for append-only CCF transaction ledger
 
 The placeholder `TBD_1` denotes the algorithm identifier, with requested assignment `2`. The CDDL and examples use this requested value pending IANA allocation; it is not an assigned value.
 
-## Merkle Tree Shape
+## Merkle Tree Shape {#merkle-tree-shape}
 
 A CCF ledger is a binary Merkle Tree constructed from a hash function H, which is defined from the log type. For instance, the hash function for `CCF_LEDGER_SHA256` is `SHA256`, whose `HASH_SIZE` is 32 bytes.
 
-The Merkle Tree encodes an ordered list of `n` transactions T_n = \{T\[0\], T\[1\], ..., T\[n-1\]\}. We define the Merkle Tree Hash (MTH) function, which takes as input a list of serialized transactions (as byte strings), and outputs a single HASH_SIZE byte string called the Merkle root hash, by induction on the list.
+The Merkle Tree encodes an ordered list of `n` transactions T_n = \{T\[0\], T\[1\], ..., T\[n-1\]\}. Each transaction T\[i\] is serialized to a byte string d\[i\] as defined in {{transaction-components}}, giving the list D_n = \{d\[0\], d\[1\], ..., d\[n-1\]\}. We define the Merkle Tree Hash (MTH) function, which takes as input such a list of serialized transactions, and outputs a single HASH_SIZE byte string called the Merkle root hash, by induction on the list.
 
 This function is defined as follows:
 
@@ -137,7 +137,7 @@ where:
 - : denotes concatenation of lists
 - D\[k1:k2\] = D'_(k2-k1) denotes the list \{d'\[0\] = d\[k1\], d'\[1\] = d\[k1+1\], ..., d'\[k2-k1-1\] = d\[k2-1\]\} of length (k2 - k1).
 
-## Transaction Components
+## Transaction Components {#transaction-components}
 
 Each leaf in a CCF ledger carries the following components:
 
@@ -154,6 +154,17 @@ ccf-leaf = [
 ]
 ~~~
 {: #ccf-leaf-cddl title="CCF Leaf CDDL"}
+
+The `ccf-leaf` array is the representation of these components in an inclusion proof ({{ccf-inclusion-proofs}}). It is not what is hashed into the tree. The serialized transaction d\[i\] that is input to MTH in {{merkle-tree-shape}} is the byte string of length 3 * HASH_SIZE obtained by concatenating the internal transaction hash, the hash of the internal evidence, and the data hash:
+
+~~~
+d[i] = internal-transaction-hash
+       || HASH(internal-evidence)
+       || data-hash
+~~~
+{: #transaction-serialization title="Transaction Serialization"}
+
+where HASH(internal-evidence) is the digest of the UTF-8 encoding of the `internal-evidence` text string. The leaf hash MTH(\{d\[i\]\}) = HASH(d\[i\]) is therefore HASH(internal-transaction-hash \|\| HASH(internal-evidence) \|\| data-hash), which is the value computed by the first step of `compute_root` in {{ccf-inclusion-receipt-verification}}. Note that the proof carries `internal-evidence` itself rather than its digest: revealing the evidence is what demonstrates that the transaction was committed (see below).
 
 The `internal-transaction-hash` and `internal-evidence` values are internal to the CCF implementation. They can be safely ignored by receipt Verifiers, but they commit the transparency service (TS) to the whole tree contents and may be used for additional, CCF-specific auditing.
 
