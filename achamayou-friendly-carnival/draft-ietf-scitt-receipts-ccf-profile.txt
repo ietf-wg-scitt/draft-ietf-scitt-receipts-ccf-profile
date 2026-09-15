@@ -71,6 +71,7 @@ Table of Contents
    7.  IANA Considerations
      7.1.  Additions to Existing Registries
        7.1.1.  COSE Verifiable Data Structure Algorithms
+       7.1.2.  COSE Verifiable Data Structure Proofs
    8.  References
      8.1.  Normative References
      8.2.  Informative References
@@ -119,20 +120,16 @@ Table of Contents
 2.  Description of the Confidential Consortium Framework Ledger
     Verifiable Data Structure
 
-   This document extends the "COSE Verifiable Data Structure Algorithms"
-   registry of [I-D.ietf-cose-merkle-tree-proofs] with the following
-   value:
+   This document defines CCF_LEDGER_SHA256 for append-only CCF
+   transaction ledgers containing a mix of public and confidential
+   information.  These ledgers are integrity-protected by a Merkle Tree
+   and signatures produced via Trusted Execution Environments.  The
+   registration request for this verifiable data structure is specified
+   in Section 7.1.1.
 
-   +===================+===============+==================+===========+
-   | Name              | Value         | Description      | Reference |
-   +===================+===============+==================+===========+
-   | CCF_LEDGER_SHA256 | TBD_1         | Historical       | RFCthis   |
-   |                   | (requested    | transaction      |           |
-   |                   | assignment 2) | ledgers, such as |           |
-   |                   |               | the CCF ledger   |           |
-   +-------------------+---------------+------------------+-----------+
-
-            Table 1: COSE Verifiable Data Structure Algorithms
+   The placeholder TBD_1 denotes the algorithm identifier, with
+   requested assignment 2.  The CDDL and examples use this requested
+   value pending IANA allocation; it is not an assigned value.
 
 2.1.  Merkle Tree Shape
 
@@ -330,9 +327,11 @@ Table of Contents
 
    protected-header-map = {
      &(alg: 1) => int
-     &(vds: 395) => 2
+     &(vds: 395) => TBD_1
      * cose-label => cose-value
    }
+
+   TBD_1 = 2 ; Requested assignment for CCF_LEDGER_SHA256
 
                     Figure 7: Protected Header Map CDDL
 
@@ -417,6 +416,9 @@ Table of Contents
 
 7.1.  Additions to Existing Registries
 
+   The registries in this section are defined by
+   [I-D.ietf-cose-merkle-tree-proofs].
+
 7.1.1.  COSE Verifiable Data Structure Algorithms
 
    This document requests IANA to add the following new value to the
@@ -424,17 +426,34 @@ Table of Contents
 
    *  Name: CCF_LEDGER_SHA256
 
-   *  Value: 2 (requested assignment)
+   *  Value: TBD_1 (requested assignment 2)
 
-   *  Description: Append-only logs that are integrity-protected by a
-      Merkle Tree and signatures produced via Trusted Execution
-      Environments containing a mix of public and confidential
-      information, as specified by the Confidential Consortium
-      Framework.
+   *  Description: Append-only CCF transaction ledgers protected by
+      SHA-256 Merkle Trees and signatures produced via Trusted Execution
+      Environments.
 
    *  Reference: RFCthis
 
-   *  Related information: [I-D.ietf-cose-merkle-tree-proofs]
+   *  Change Controller: IETF
+
+7.1.2.  COSE Verifiable Data Structure Proofs
+
+   This document requests IANA to add the following new entry to the
+   "COSE Verifiable Data Structure Proofs" registry:
+
+   *  Verifiable Data Structure: TBD_1 (requested assignment 2)
+
+   *  Name: inclusion proofs
+
+   *  Label: -1
+
+   *  CBOR Type: array (of bstr)
+
+   *  Description: Proof of inclusion
+
+   *  Reference: RFCthis, Section 3 and Section 4
+
+   *  Change Controller: IETF
 
 8.  References
 

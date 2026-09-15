@@ -1195,7 +1195,10 @@ svg {
                 <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-additions-to-existing-regis" class="internal xref">Additions to Existing Registries</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.1">
-                    <p id="section-toc.1-1.7.2.1.2.1.1"><a href="#section-7.1.1" class="auto internal xref">7.1.1</a>.  <a href="#name-cose-verifiable-data-structu" class="internal xref">COSE Verifiable Data Structure Algorithms</a></p>
+                    <p id="section-toc.1-1.7.2.1.2.1.1"><a href="#section-7.1.1" class="auto internal xref">7.1.1</a>.  <a href="#name-cose-verifiable-data-struct" class="internal xref">COSE Verifiable Data Structure Algorithms</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.2">
+                    <p id="section-toc.1-1.7.2.1.2.2.1"><a href="#section-7.1.2" class="auto internal xref">7.1.2</a>.  <a href="#name-cose-verifiable-data-structu" class="internal xref">COSE Verifiable Data Structure Proofs</a></p>
 </li>
                 </ul>
 </li>
@@ -1253,31 +1256,8 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
       <h2 id="name-description-of-the-confiden">
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-description-of-the-confiden" class="section-name selfRef">Description of the Confidential Consortium Framework Ledger Verifiable Data Structure</a>
       </h2>
-<p id="section-2-1">This document extends the "COSE Verifiable Data Structure Algorithms" registry of <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span> with the following value:<a href="#section-2-1" class="pilcrow">¶</a></p>
-<span id="name-cose-verifiable-data-struct"></span><div id="verifiable-data-structure-values">
-<table class="left" id="table-1">
-        <caption>
-<a href="#table-1" class="selfRef">Table 1</a>:
-<a href="#name-cose-verifiable-data-struct" class="selfRef">COSE Verifiable Data Structure Algorithms</a>
-        </caption>
-<thead>
-          <tr>
-            <th class="text-left" rowspan="1" colspan="1">Name</th>
-            <th class="text-left" rowspan="1" colspan="1">Value</th>
-            <th class="text-left" rowspan="1" colspan="1">Description</th>
-            <th class="text-left" rowspan="1" colspan="1">Reference</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="text-left" rowspan="1" colspan="1">CCF_LEDGER_SHA256</td>
-            <td class="text-left" rowspan="1" colspan="1">TBD_1 (requested assignment 2)</td>
-            <td class="text-left" rowspan="1" colspan="1">Historical transaction ledgers, such as the CCF ledger</td>
-            <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
-          </tr>
-        </tbody>
-      </table>
-</div>
+<p id="section-2-1">This document defines <code>CCF_LEDGER_SHA256</code> for append-only CCF transaction ledgers containing a mix of public and confidential information. These ledgers are integrity-protected by a Merkle Tree and signatures produced via Trusted Execution Environments. The registration request for this verifiable data structure is specified in <a href="#tree-alg-registry" class="auto internal xref">Section 7.1.1</a>.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-2">The placeholder <code>TBD_1</code> denotes the algorithm identifier, with requested assignment <code>2</code>. The CDDL and examples use this requested value pending IANA allocation; it is not an assigned value.<a href="#section-2-2" class="pilcrow">¶</a></p>
 <div id="merkle-tree-shape">
 <section id="section-2.1">
         <h3 id="name-merkle-tree-shape">
@@ -1407,7 +1387,7 @@ ccf-inclusion-proof = bstr .cbor {
 <p id="section-3.1-2">The protected header parameters for the CCF inclusion proof signature <span class="bcp14">MUST</span> include the following:<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.1-3.1">
-            <p id="section-3.1-3.1.1"><code>vds</code> (label 395): <code>int</code>. This header <span class="bcp14">MUST</span> be set to the verifiable data structure algorithm identifier for <code>CCF_LEDGER_SHA256</code> (TBD_1).<a href="#section-3.1-3.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-3.1.1"><code>vds</code> (label 395): <code>int</code>. This header <span class="bcp14">MUST</span> be set to the verifiable data structure algorithm identifier for <code>CCF_LEDGER_SHA256</code> (<code>TBD_1</code>).<a href="#section-3.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-3.1-4">The unprotected header for a CCF inclusion proof signature <span class="bcp14">MUST</span> include the following:<a href="#section-3.1-4" class="pilcrow">¶</a></p>
@@ -1478,9 +1458,11 @@ verify_inclusion_receipt(inclusion_receipt):
 <pre>
 protected-header-map = {
   &amp;(alg: 1) =&gt; int
-  &amp;(vds: 395) =&gt; 2
+  &amp;(vds: 395) =&gt; TBD_1
   * cose-label =&gt; cose-value
 }
+
+TBD_1 = 2 ; Requested assignment for CCF_LEDGER_SHA256
 </pre>
 </div>
 <figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
@@ -1586,10 +1568,11 @@ Clients can mitigate this risk in two ways: by regularly auditing the consistenc
         <h3 id="name-additions-to-existing-regis">
 <a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-additions-to-existing-regis" class="section-name selfRef">Additions to Existing Registries</a>
         </h3>
+<p id="section-7.1-1">The registries in this section are defined by <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span>.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
 <div id="tree-alg-registry">
 <section id="section-7.1.1">
-          <h4 id="name-cose-verifiable-data-structu">
-<a href="#section-7.1.1" class="section-number selfRef">7.1.1. </a><a href="#name-cose-verifiable-data-structu" class="section-name selfRef">COSE Verifiable Data Structure Algorithms</a>
+          <h4 id="name-cose-verifiable-data-struct">
+<a href="#section-7.1.1" class="section-number selfRef">7.1.1. </a><a href="#name-cose-verifiable-data-struct" class="section-name selfRef">COSE Verifiable Data Structure Algorithms</a>
           </h4>
 <p id="section-7.1.1-1">This document requests IANA to add the following new value to the "COSE Verifiable Data Structure Algorithms" registry:<a href="#section-7.1.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -1597,16 +1580,47 @@ Clients can mitigate this risk in two ways: by regularly auditing the consistenc
               <p id="section-7.1.1-2.1.1">Name: CCF_LEDGER_SHA256<a href="#section-7.1.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.1.1-2.2">
-              <p id="section-7.1.1-2.2.1">Value: 2 (requested assignment)<a href="#section-7.1.1-2.2.1" class="pilcrow">¶</a></p>
+              <p id="section-7.1.1-2.2.1">Value: TBD_1 (requested assignment 2)<a href="#section-7.1.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.1.1-2.3">
-              <p id="section-7.1.1-2.3.1">Description: Append-only logs that are integrity-protected by a Merkle Tree and signatures produced via Trusted Execution Environments containing a mix of public and confidential information, as specified by the Confidential Consortium Framework.<a href="#section-7.1.1-2.3.1" class="pilcrow">¶</a></p>
+              <p id="section-7.1.1-2.3.1">Description: Append-only CCF transaction ledgers protected by SHA-256 Merkle Trees and signatures produced via Trusted Execution Environments.<a href="#section-7.1.1-2.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.1.1-2.4">
               <p id="section-7.1.1-2.4.1">Reference: RFCthis<a href="#section-7.1.1-2.4.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.1.1-2.5">
-              <p id="section-7.1.1-2.5.1">Related information: <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span><a href="#section-7.1.1-2.5.1" class="pilcrow">¶</a></p>
+              <p id="section-7.1.1-2.5.1">Change Controller: IETF<a href="#section-7.1.1-2.5.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="tree-proof-registry">
+<section id="section-7.1.2">
+          <h4 id="name-cose-verifiable-data-structu">
+<a href="#section-7.1.2" class="section-number selfRef">7.1.2. </a><a href="#name-cose-verifiable-data-structu" class="section-name selfRef">COSE Verifiable Data Structure Proofs</a>
+          </h4>
+<p id="section-7.1.2-1">This document requests IANA to add the following new entry to the "COSE Verifiable Data Structure Proofs" registry:<a href="#section-7.1.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7.1.2-2.1">
+              <p id="section-7.1.2-2.1.1">Verifiable Data Structure: TBD_1 (requested assignment 2)<a href="#section-7.1.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.2-2.2">
+              <p id="section-7.1.2-2.2.1">Name: inclusion proofs<a href="#section-7.1.2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.2-2.3">
+              <p id="section-7.1.2-2.3.1">Label: -1<a href="#section-7.1.2-2.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.2-2.4">
+              <p id="section-7.1.2-2.4.1">CBOR Type: array (of bstr)<a href="#section-7.1.2-2.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.2-2.5">
+              <p id="section-7.1.2-2.5.1">Description: Proof of inclusion<a href="#section-7.1.2-2.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.2-2.6">
+              <p id="section-7.1.2-2.6.1">Reference: RFCthis, <a href="#ccf-inclusion-proofs" class="auto internal xref">Section 3</a> and <a href="#receipt-usage" class="auto internal xref">Section 4</a><a href="#section-7.1.2-2.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.2-2.7">
+              <p id="section-7.1.2-2.7.1">Change Controller: IETF<a href="#section-7.1.2-2.7.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
