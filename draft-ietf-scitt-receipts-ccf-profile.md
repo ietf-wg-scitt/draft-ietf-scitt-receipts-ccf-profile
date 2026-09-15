@@ -192,7 +192,7 @@ ccf-inclusion-proof = bstr .cbor {
 ~~~
 {: #ccf-inclusion-proof-cddl title="CCF Inclusion Proof CDDL"}
 
-Unlike some other tree algorithms, the index of the element in the tree is not explicit in the inclusion proof, but the list of left-or-right bits can be treated as the binary decomposition of the index, from the least significant (leaf) to the most significant (root).
+Unlike some other tree algorithms, neither the index of the element nor the size of the tree is explicit in the inclusion proof. Read from the leaf up, the left-or-right bits are the binary decomposition of the index for the first `k` elements, where `k` is the largest power of two not greater than the tree size; for later elements the proof has fewer elements than the depth of the index, and the index cannot be read from the proof alone.
 
 ## CCF Inclusion Proof Signature {#ccf-inclusion-proof-signature}
 
