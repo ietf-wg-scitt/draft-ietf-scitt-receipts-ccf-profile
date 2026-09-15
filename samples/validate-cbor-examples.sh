@@ -50,6 +50,7 @@ cat \
   "$script_dir/cose-receipt.cddl" \
   chk/cddl/ccf-leaf-cddl.cddl \
   chk/cddl/ccf-inclusion-proof-cddl.cddl \
+  chk/cddl/ccf-consistency-proof-cddl.cddl \
   chk/cddl/protected-header-map-cddl.cddl \
   chk/cddl/unprotected-header-map-cddl.cddl \
   >chk/ccf-receipt.cddl
