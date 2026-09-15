@@ -59,3 +59,21 @@ cddlc -tcddl -2r chk/ccf-receipt.cddl -SCCF_Receipt >chk/all.cddl
 
 echo "Validating $sample_path against extracted CDDL"
 cddl chk/all.cddl validate "$sample_path"
+
+cddlc -tcddl -2r chk/ccf-receipt.cddl -Sccf-consistency-proof >chk/consistency-proof.cddl
+consistency_dir="$script_dir/consistency-proofs"
+
+for f in "$consistency_dir"/valid/*.cbor; do
+    echo "Validating ${f#"$script_dir"/} against ccf-consistency-proof"
+    cddl chk/consistency-proof.cddl validate "$f"
+done
+
+for f in "$consistency_dir"/invalid/cddl-*.cbor; do
+    echo "Expecting ${f#"$script_dir"/} to be rejected by ccf-consistency-proof"
+    if cddl chk/consistency-proof.cddl validate "$f" 2>/dev/null; then
+        echo "error: $f unexpectedly validates" >&2
+        exit 1
+    fi
+done
+
+python3 "$consistency_dir/verify.py" "$consistency_dir"
