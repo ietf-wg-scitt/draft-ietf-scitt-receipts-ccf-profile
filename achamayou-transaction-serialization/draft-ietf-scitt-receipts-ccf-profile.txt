@@ -79,25 +79,25 @@ Table of Contents
 
 1.  Introduction
 
-   The COSE Receipts document [I-D.ietf-cose-merkle-tree-proofs] defines
-   a common framework for expressing different types of proofs about
-   verifiable data structures (VDS), providing a standardized way to
-   convey trust-relevant evidence.  For instance, inclusion proofs
-   guarantee to a verifier that a given serializable element is recorded
-   at a given state of the VDS, while consistency proofs are used to
-   establish that an inclusion proof is still consistent with the new
-   state of the VDS at a later time.
+   The COSE Receipts document [RFC9942] defines a common framework for
+   expressing different types of proofs about verifiable data structures
+   (VDS), providing a standardized way to convey trust-relevant
+   evidence.  For instance, inclusion proofs guarantee to a verifier
+   that a given serializable element is recorded at a given state of the
+   VDS, while consistency proofs are used to establish that an inclusion
+   proof is still consistent with the new state of the VDS at a later
+   time.
 
    In this document, we define a new type of VDS and inclusion proof
    associated with an application of the Confidential Consortium
    Framework (CCF) ledger that implements the SCITT Architecture defined
-   in [I-D.ietf-scitt-architecture].  This VDS carries indexed
-   transaction information in a binary Merkle Tree, where new
-   transactions are appended to the right, so that the binary
-   decomposition of the index of a transaction can be interpreted as the
-   position in the tree if 0 represents the left branch and 1 the right
-   branch.  Compared to [RFC9162], the leaves of CCF trees carry
-   additional internal information for the following purposes:
+   in [RFC9943].  This VDS carries indexed transaction information in a
+   binary Merkle Tree, where new transactions are appended to the right,
+   so that the binary decomposition of the index of a transaction can be
+   interpreted as the position in the tree if 0 represents the left
+   branch and 1 the right branch.  Compared to [RFC9162], the leaves of
+   CCF trees carry additional internal information for the following
+   purposes:
 
    1.  To bind the full details of the transaction executed, which is a
        superset of what is exposed in the proof and captures internal
@@ -239,10 +239,10 @@ Table of Contents
 
    data-hash summarizes the application data included in the ledger at
    this transaction, which is a Signed Statement as defined by
-   [I-D.ietf-scitt-architecture].  The hash function used for data-hash
-   is also the same hash function H as in the Merkle Tree construction
-   for the selected verifiable data structure algorithm.  For
-   CCF_LEDGER_SHA256, this function is SHA256.
+   [RFC9943].  The hash function used for data-hash is also the same
+   hash function H as in the Merkle Tree construction for the selected
+   verifiable data structure algorithm.  For CCF_LEDGER_SHA256, this
+   function is SHA256.
 
 3.  CCF Inclusion Proofs
 
@@ -274,10 +274,9 @@ Table of Contents
    The proof signature for a CCF inclusion proof is a COSE signature
    (encoded with the COSE_Sign1 CBOR type) which includes the following
    additional requirements for protected and unprotected headers.  These
-   follow the conventions of Section 5.2.1 of
-   [I-D.ietf-cose-merkle-tree-proofs]; the corresponding CDDL is given
-   in Section 4.  Please note that there may be additional header
-   parameters defined by the application.
+   follow the conventions of Section 5.2.1 of [RFC9942]; the
+   corresponding CDDL is given in Section 4.  Please note that there may
+   be additional header parameters defined by the application.
 
    The protected header parameters for the CCF inclusion proof signature
    MUST include the following:
@@ -337,17 +336,16 @@ Table of Contents
 
    VDP_LABEL is the vdp header parameter label (396) and
    INCLUSION_PROOF_LABEL is the inclusion-proof proof type label (-1),
-   both defined by [I-D.ietf-cose-merkle-tree-proofs].  Each element of
-   proofs is a ccf-inclusion-proof, i.e., a byte string wrapping a CBOR-
-   encoded map, which is decoded before compute_root is applied.
+   both defined by [RFC9942].  Each element of proofs is a ccf-
+   inclusion-proof, i.e., a byte string wrapping a CBOR-encoded map,
+   which is decoded before compute_root is applied.
 
    A description can also be found at [CCF-Receipt-Verification].
 
 4.  Usage in COSE Receipts
 
    A COSE Receipt with a CCF inclusion proof is described by the
-   following CDDL definition, which follows Section 5.2.1 of
-   [I-D.ietf-cose-merkle-tree-proofs]:
+   following CDDL definition, which follows Section 5.2.1 of [RFC9942]:
 
    protected-header-map = {
      &(alg: 1) => int
@@ -390,19 +388,17 @@ Table of Contents
       type: array of ccf-inclusion-proof.
 
    The proof type is conveyed by the key of the vdp map, as specified by
-   [I-D.ietf-cose-merkle-tree-proofs]; it is not carried in a separate
-   header parameter.
+   [RFC9942]; it is not carried in a separate header parameter.
 
 5.  Privacy Considerations
 
    See the privacy considerations section of:
 
-   *  [I-D.ietf-cose-merkle-tree-proofs]
+   *  [RFC9942]
 
 6.  Security Considerations
 
-   The security considerations of [I-D.ietf-cose-merkle-tree-proofs]
-   apply.
+   The security considerations of [RFC9942] apply.
 
 6.1.  Trusted Execution Environments
 
@@ -440,8 +436,7 @@ Table of Contents
 
 7.1.  Additions to Existing Registries
 
-   The registries in this section are defined by
-   [I-D.ietf-cose-merkle-tree-proofs].
+   The registries in this section are defined by [RFC9942].
 
 7.1.1.  COSE Verifiable Data Structure Algorithms
 
@@ -483,22 +478,6 @@ Table of Contents
 
 8.1.  Normative References
 
-   [I-D.ietf-cose-merkle-tree-proofs]
-              Steele, O., Birkholz, H., Delignat-Lavaud, A., and C.
-              Fournet, "COSE (CBOR Object Signing and Encryption)
-              Receipts", Work in Progress, Internet-Draft, draft-ietf-
-              cose-merkle-tree-proofs-18, 2 December 2025,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              merkle-tree-proofs-18>.
-
-   [I-D.ietf-scitt-architecture]
-              Birkholz, H., Delignat-Lavaud, A., Fournet, C., Deshpande,
-              Y., and S. Lasker, "An Architecture for Trustworthy and
-              Transparent Digital Supply Chains", Work in Progress,
-              Internet-Draft, draft-ietf-scitt-architecture-22, 10
-              October 2025, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-scitt-architecture-22>.
-
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -511,6 +490,17 @@ Table of Contents
    [RFC9162]  Laurie, B., Messeri, E., and R. Stradling, "Certificate
               Transparency Version 2.0", RFC 9162, DOI 10.17487/RFC9162,
               December 2021, <https://www.rfc-editor.org/rfc/rfc9162>.
+
+   [RFC9942]  Steele, O., Birkholz, H., Delignat-Lavaud, A., and C.
+              Fournet, "CBOR Object Signing and Encryption (COSE)
+              Receipts", RFC 9942, DOI 10.17487/RFC9942, June 2026,
+              <https://www.rfc-editor.org/rfc/rfc9942>.
+
+   [RFC9943]  Birkholz, H., Delignat-Lavaud, A., Fournet, C., Deshpande,
+              Y., and S. Lasker, "An Architecture for Trustworthy and
+              Transparent Digital Supply Chains", RFC 9943,
+              DOI 10.17487/RFC9943, June 2026,
+              <https://www.rfc-editor.org/rfc/rfc9943>.
 
 8.2.  Informative References
 
