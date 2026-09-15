@@ -47,8 +47,8 @@ author:
 
 normative:
   RFC9162:
-  I-D.ietf-cose-merkle-tree-proofs: cose-receipts
-  I-D.ietf-scitt-architecture: scitt-architecture
+  RFC9942: cose-receipts
+  RFC9943: scitt-architecture
 
 informative:
   CCF:
