@@ -185,18 +185,17 @@ Unlike some other tree algorithms, the index of the element in the tree is not e
 
 ## CCF Inclusion Proof Signature
 
-The proof signature for a CCF inclusion proof is a COSE signature (encoded with the `COSE_Sign1` CBOR type) which includes the following additional requirements for protected and unprotected headers. Please note that there may be additional header parameters defined by the application.
+The proof signature for a CCF inclusion proof is a COSE signature (encoded with the `COSE_Sign1` CBOR type) which includes the following additional requirements for protected and unprotected headers. These follow the conventions of {{Section 5.2.1 of -cose-receipts}}; the corresponding CDDL is given in {{receipt-usage}}. Please note that there may be additional header parameters defined by the application.
 
 The protected header parameters for the CCF inclusion proof signature MUST include the following:
 
-* `verifiable-data-structure: int/tstr`. This header MUST be set to the verifiable data structure algorithm identifier for `CCF_LEDGER_SHA256` (`TBD_1`).
-* `label: int`. This header MUST be set to the value of the `inclusion` proof type in the IANA "COSE Verifiable Data Structure Proofs" registry (-1).
+* `vds` (label 395): `int`. This header MUST be set to the verifiable data structure algorithm identifier for `CCF_LEDGER_SHA256` (`TBD_1`).
 
 The unprotected header for a CCF inclusion proof signature MUST include the following:
 
-* `inclusion-proof: bstr .cbor ccf-inclusion-proof`. This contains the serialized CCF inclusion proof, as defined above.
+* `vdp` (label 396): map. This header conveys the verifiable data structure proofs, keyed by proof type. It MUST contain the `inclusion-proof` (-1) key, whose value is an array of one or more `ccf-inclusion-proof` values as defined above. The proof type is identified solely by this key; no other header parameter is used to convey it.
 
-The payload of the signature is the CCF ledger Merkle root digest, and MUST be detached in order to force verifiers to recompute the root from the inclusion proof in the unprotected header. This provides a safeguard against implementation errors that use the payload of the signature but do not recompute the root from the inclusion proof.
+The payload of the signature is the CCF ledger Merkle root digest, and MUST be detached in order to force verifiers to recompute the root from the inclusion proofs in the unprotected header. This provides a safeguard against implementation errors that use the payload of the signature but do not recompute the root from the inclusion proof. When the array contains more than one inclusion proof, every proof MUST compute to the same root.
 
 ## Inclusion Proof Verification Algorithm
 
@@ -216,22 +215,28 @@ compute_root(proof):
   return h
 
 verify_inclusion_receipt(inclusion_receipt):
-  let label = INCLUSION_PROOF_LABEL
-  assert(label in inclusion_receipt.unprotected_header)
-  let proof = inclusion_receipt.unprotected_header[label]
+  assert(VDP_LABEL in inclusion_receipt.unprotected_header)
+  let vdp = inclusion_receipt.unprotected_header[VDP_LABEL]
+  assert(INCLUSION_PROOF_LABEL in vdp)
+  let proofs = vdp[INCLUSION_PROOF_LABEL]
+  assert(len(proofs) > 0)
   assert(inclusion_receipt.payload == nil)
-  let payload = compute_root(proof)
 
-  # Use the Merkle Root as the detached payload
-  return verify_cose(inclusion_receipt, payload)
+  for proof in proofs:
+      # Use the Merkle Root as the detached payload
+      let payload = compute_root(proof)
+      assert(verify_cose(inclusion_receipt, payload))
+  return true
 ~~~
 {: #ccf-inclusion-receipt-verification title="CCF Inclusion Receipt Verification"}
+
+`VDP_LABEL` is the `vdp` header parameter label (396) and `INCLUSION_PROOF_LABEL` is the `inclusion-proof` proof type label (-1), both defined by {{-cose-receipts}}. Each element of `proofs` is a `ccf-inclusion-proof`, i.e., a byte string wrapping a CBOR-encoded map, which is decoded before `compute_root` is applied.
 
 A description can also be found at {{CCF-Receipt-Verification}}.
 
 # Usage in COSE Receipts {#receipt-usage}
 
-A COSE Receipt with a CCF inclusion proof is described by the following CDDL definition:
+A COSE Receipt with a CCF inclusion proof is described by the following CDDL definition, which follows {{Section 5.2.1 of -cose-receipts}}:
 
 ~~~ cddl
 protected-header-map = {
@@ -264,6 +269,11 @@ unprotected-header-map = {
 }
 ~~~
 {: #unprotected-header-map-cddl title="Unprotected Header Map CDDL"}
+
+- vdp (label: 396): REQUIRED. Verifiable data structure proofs. Value type: map.
+- inclusion-proof (label: -1): REQUIRED. Inclusion proofs. Value type: array of `ccf-inclusion-proof`.
+
+The proof type is conveyed by the key of the `vdp` map, as specified by {{-cose-receipts}}; it is not carried in a separate header parameter.
 
 # Privacy Considerations
 
