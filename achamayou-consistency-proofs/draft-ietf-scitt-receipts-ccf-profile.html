@@ -1048,7 +1048,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Birkholz, et al.</td>
-<td class="center">Expires 19 March 2027</td>
+<td class="center">Expires 20 March 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1061,12 +1061,12 @@ svg {
 <dd class="internet-draft">draft-ietf-scitt-receipts-ccf-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-09-15" class="published">15 September 2026</time>
+<time datetime="2026-09-16" class="published">16 September 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-03-19">19 March 2027</time></dd>
+<dd class="expires"><time datetime="2027-03-20">20 March 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1112,7 +1112,7 @@ svg {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 19 March 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 20 March 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1241,8 +1241,8 @@ svg {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">The COSE Receipts document <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span> defines a common framework for expressing different types of proofs about verifiable data structures (VDS), providing a standardized way to convey trust-relevant evidence. For instance, inclusion proofs guarantee to a verifier that a given serializable element is recorded at a given state of the VDS, while consistency proofs are used to establish that an inclusion proof is still consistent with the new state of the VDS at a later time.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">In this document, we define a new type of VDS and the associated inclusion and consistency proofs for an application of the Confidential Consortium Framework (CCF) ledger that implements the SCITT Architecture defined in <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span>. This VDS carries indexed transaction information in a binary Merkle Tree, where new transactions are appended to the right, so that the binary decomposition of the index of a transaction can be interpreted as the position in the tree if 0 represents the left branch and 1 the right branch.
+<p id="section-1-1">The COSE Receipts document <span>[<a href="#RFC9942" class="cite xref">RFC9942</a>]</span> defines a common framework for expressing different types of proofs about verifiable data structures (VDS), providing a standardized way to convey trust-relevant evidence. For instance, inclusion proofs guarantee to a verifier that a given serializable element is recorded at a given state of the VDS, while consistency proofs are used to establish that an inclusion proof is still consistent with the new state of the VDS at a later time.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">In this document, we define a new type of VDS and the associated inclusion and consistency proofs for an application of the Confidential Consortium Framework (CCF) ledger that implements the SCITT Architecture defined in <span>[<a href="#RFC9943" class="cite xref">RFC9943</a>]</span>. This VDS carries indexed transaction information in a binary Merkle Tree, where new transactions are appended to the right, so that the binary decomposition of the index of a transaction can be interpreted as the position in the tree if 0 represents the left branch and 1 the right branch.
 Compared to <span>[<a href="#RFC9162" class="cite xref">RFC9162</a>]</span>, the leaves of CCF trees carry additional internal information for the following purposes:<a href="#section-1-2" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-1-3">
 <li id="section-1-3.1">
@@ -1373,7 +1373,7 @@ d[i] = internal-transaction-hash
 <p id="section-2.2-5">where HASH(internal-evidence) is the digest of the UTF-8 encoding of the <code>internal-evidence</code> text string. The leaf hash MTH({d[i]}) = HASH(d[i]) is therefore HASH(internal-transaction-hash || HASH(internal-evidence) || data-hash), which is the value computed by the first step of <code>compute_root</code> in <a href="#ccf-inclusion-receipt-verification" class="auto internal xref">Figure 7</a>. Note that the proof carries <code>internal-evidence</code> itself rather than its digest: revealing the evidence is what demonstrates that the transaction was committed (see below).<a href="#section-2.2-5" class="pilcrow">¶</a></p>
 <p id="section-2.2-6">The <code>internal-transaction-hash</code> and <code>internal-evidence</code> values are internal to the CCF implementation. They can be safely ignored by receipt Verifiers, but they commit the transparency service (TS) to the whole tree contents and may be used for additional, CCF-specific auditing.<a href="#section-2.2-6" class="pilcrow">¶</a></p>
 <p id="section-2.2-7"><code>internal-transaction-hash</code> is a hash over the complete entry in the <span>[<a href="#CCF-Ledger-Format" class="cite xref">CCF-Ledger-Format</a>]</span>, and <code>internal-evidence</code> is a revealable <span>[<a href="#CCF-Commit-Evidence" class="cite xref">CCF-Commit-Evidence</a>]</span> value that allows early persistence of ledger entries before distributed consensus can be established. This mechanism is useful to implement high-throughput transparency applications in Trusted Execution Environments (TEEs) that only provide a limited amount of memory, while maintaining high availability afforded by distributed consensus. Using a secure one-way function <code>f</code> to publish an <code>f(x)</code> commitment to an <code>x</code> value that can be revealed at a later time is a common feature of distributed protocols (<span>[<a href="#COIN-FLIPPING" class="cite xref">COIN-FLIPPING</a>]</span>). The hash function used for <code>internal-transaction-hash</code> is the same hash function <code>H</code> as in the Merkle Tree construction for the selected verifiable data structure algorithm. For <code>CCF_LEDGER_SHA256</code>, this function is <code>SHA256</code>.<a href="#section-2.2-7" class="pilcrow">¶</a></p>
-<p id="section-2.2-8"><code>data-hash</code> summarizes the application data included in the ledger at this transaction, which is a Signed Statement as defined by <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span>. The hash function used for <code>data-hash</code> is also the same hash function <code>H</code> as in the Merkle Tree construction for the selected verifiable data structure algorithm. For <code>CCF_LEDGER_SHA256</code>, this function is <code>SHA256</code>.<a href="#section-2.2-8" class="pilcrow">¶</a></p>
+<p id="section-2.2-8"><code>data-hash</code> summarizes the application data included in the ledger at this transaction, which is a Signed Statement as defined by <span>[<a href="#RFC9943" class="cite xref">RFC9943</a>]</span>. The hash function used for <code>data-hash</code> is also the same hash function <code>H</code> as in the Merkle Tree construction for the selected verifiable data structure algorithm. For <code>CCF_LEDGER_SHA256</code>, this function is <code>SHA256</code>.<a href="#section-2.2-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1412,7 +1412,7 @@ ccf-inclusion-proof = bstr .cbor {
         <h3 id="name-ccf-inclusion-proof-signatu">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-ccf-inclusion-proof-signatu" class="section-name selfRef">CCF Inclusion Proof Signature</a>
         </h3>
-<p id="section-3.1-1">The proof signature for a CCF inclusion proof is a COSE signature (encoded with the <code>COSE_Sign1</code> CBOR type) which includes the following additional requirements for protected and unprotected headers. These follow the conventions of <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-merkle-tree-proofs-18#section-5.2.1" class="relref">Section 5.2.1</a> of [<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span>; the corresponding CDDL is given in <a href="#receipt-usage" class="auto internal xref">Section 5</a>. Please note that there may be additional header parameters defined by the application.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">The proof signature for a CCF inclusion proof is a COSE signature (encoded with the <code>COSE_Sign1</code> CBOR type) which includes the following additional requirements for protected and unprotected headers. These follow the conventions of <span><a href="https://rfc-editor.org/rfc/rfc9942#section-5.2.1" class="relref">Section 5.2.1</a> of [<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>; the corresponding CDDL is given in <a href="#receipt-usage" class="auto internal xref">Section 5</a>. Please note that there may be additional header parameters defined by the application.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">The protected header parameters for the CCF inclusion proof signature <span class="bcp14">MUST</span> include the following:<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.1-3.1">
@@ -1469,7 +1469,7 @@ verify_inclusion_receipt(inclusion_receipt):
 <a href="#name-ccf-inclusion-receipt-verif" class="selfRef">CCF Inclusion Receipt Verification</a>
           </figcaption></figure>
 </div>
-<p id="section-3.2-3"><code>VDP_LABEL</code> is the <code>vdp</code> header parameter label (396) and <code>INCLUSION_PROOF_LABEL</code> is the <code>inclusion-proof</code> proof type label (-1), both defined by <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span>. Each element of <code>proofs</code> is a <code>ccf-inclusion-proof</code>, i.e., a byte string wrapping a CBOR-encoded map, which is decoded before <code>compute_root</code> is applied.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.2-3"><code>VDP_LABEL</code> is the <code>vdp</code> header parameter label (396) and <code>INCLUSION_PROOF_LABEL</code> is the <code>inclusion-proof</code> proof type label (-1), both defined by <span>[<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>. Each element of <code>proofs</code> is a <code>ccf-inclusion-proof</code>, i.e., a byte string wrapping a CBOR-encoded map, which is decoded before <code>compute_root</code> is applied.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
 <p id="section-3.2-4">A description can also be found at <span>[<a href="#CCF-Receipt-Verification" class="cite xref">CCF-Receipt-Verification</a>]</span>.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1553,7 +1553,7 @@ verify_consistency_receipt(consistency_receipt, older_root):
 <a href="#name-ccf-consistency-receipt-ver" class="selfRef">CCF Consistency Receipt Verification</a>
           </figcaption></figure>
 </div>
-<p id="section-4.2-3"><code>CONSISTENCY_PROOF_LABEL</code> is the <code>consistency-proof</code> proof type label (-2) defined by <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span>. The comparison with <code>older_root</code> binds the receipt to a state the verifier already trusts and validates the anchor: a receipt whose recomputed older root differs from <code>older_root</code> proves nothing about that state.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2-3"><code>CONSISTENCY_PROOF_LABEL</code> is the <code>consistency-proof</code> proof type label (-2) defined by <span>[<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>. The comparison with <code>older_root</code> binds the receipt to a state the verifier already trusts and validates the anchor: a receipt whose recomputed older root differs from <code>older_root</code> proves nothing about that state.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1563,7 +1563,7 @@ verify_consistency_receipt(consistency_receipt, older_root):
       <h2 id="name-usage-in-cose-receipts">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-usage-in-cose-receipts" class="section-name selfRef">Usage in COSE Receipts</a>
       </h2>
-<p id="section-5-1">A COSE Receipt with CCF inclusion or consistency proofs is described by the following CDDL definition, which follows <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-merkle-tree-proofs-18#section-5.2.1" class="relref">Section 5.2.1</a> of [<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span> and <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-merkle-tree-proofs-18#section-5.3.1" class="relref">Section 5.3.1</a> of [<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span>:<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-1">A COSE Receipt with CCF inclusion or consistency proofs is described by the following CDDL definition, which follows <span><a href="https://rfc-editor.org/rfc/rfc9942#section-5.2.1" class="relref">Section 5.2.1</a> of [<a href="#RFC9942" class="cite xref">RFC9942</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc9942#section-5.3.1" class="relref">Section 5.3.1</a> of [<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>:<a href="#section-5-1" class="pilcrow">¶</a></p>
 <span id="name-protected-header-map-cddl"></span><div id="protected-header-map-cddl">
 <figure id="figure-10">
         <div class="lang-cddl sourcecode" id="section-5-2.1">
@@ -1628,7 +1628,7 @@ unprotected-header-map = {
           <p id="section-5-6.3.1">consistency-proof (label: -2): Consistency proofs. Value type: array of <code>ccf-consistency-proof</code>.<a href="#section-5-6.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-5-7">At least one of <code>inclusion-proof</code> and <code>consistency-proof</code> <span class="bcp14">MUST</span> be present. All proofs in a receipt recompute the same root, which is the detached payload. The proof type is conveyed by the key of the <code>vdp</code> map, as specified by <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span>; it is not carried in a separate header parameter.<a href="#section-5-7" class="pilcrow">¶</a></p>
+<p id="section-5-7">At least one of <code>inclusion-proof</code> and <code>consistency-proof</code> <span class="bcp14">MUST</span> be present. All proofs in a receipt recompute the same root, which is the detached payload. The proof type is conveyed by the key of the <code>vdp</code> map, as specified by <span>[<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>; it is not carried in a separate header parameter.<a href="#section-5-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="privacy-considerations">
@@ -1639,7 +1639,7 @@ unprotected-header-map = {
 <p id="section-6-1">See the privacy considerations section of:<a href="#section-6-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-6-2.1">
-          <p id="section-6-2.1.1"><span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span><a href="#section-6-2.1.1" class="pilcrow">¶</a></p>
+          <p id="section-6-2.1.1"><span>[<a href="#RFC9942" class="cite xref">RFC9942</a>]</span><a href="#section-6-2.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
@@ -1649,7 +1649,7 @@ unprotected-header-map = {
       <h2 id="name-security-considerations">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-7-1">The security considerations of <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span> apply.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-1">The security considerations of <span>[<a href="#RFC9942" class="cite xref">RFC9942</a>]</span> apply.<a href="#section-7-1" class="pilcrow">¶</a></p>
 <div id="trusted-execution-environments">
 <section id="section-7.1">
         <h3 id="name-trusted-execution-environme">
@@ -1696,7 +1696,7 @@ Clients can mitigate this risk in two ways: by regularly auditing the consistenc
         <h3 id="name-additions-to-existing-regis">
 <a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-additions-to-existing-regis" class="section-name selfRef">Additions to Existing Registries</a>
         </h3>
-<p id="section-8.1-1">The registries in this section are defined by <span>[<a href="#I-D.ietf-cose-merkle-tree-proofs" class="cite xref">I-D.ietf-cose-merkle-tree-proofs</a>]</span>.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+<p id="section-8.1-1">The registries in this section are defined by <span>[<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 <div id="tree-alg-registry">
 <section id="section-8.1.1">
           <h4 id="name-cose-verifiable-data-struct">
@@ -1792,14 +1792,6 @@ Clients can mitigate this risk in two ways: by regularly auditing the consistenc
 <a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
-<dt id="I-D.ietf-cose-merkle-tree-proofs">[I-D.ietf-cose-merkle-tree-proofs]</dt>
-        <dd>
-<span class="refAuthor">Steele, O.</span>, <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Delignat-Lavaud, A.</span>, and <span class="refAuthor">C. Fournet</span>, <span class="refTitle">"COSE (CBOR Object Signing and Encryption) Receipts"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cose-merkle-tree-proofs-18</span>, <time datetime="2025-12-02" class="refDate">2 December 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-merkle-tree-proofs-18">https://datatracker.ietf.org/doc/html/draft-ietf-cose-merkle-tree-proofs-18</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="I-D.ietf-scitt-architecture">[I-D.ietf-scitt-architecture]</dt>
-        <dd>
-<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Delignat-Lavaud, A.</span>, <span class="refAuthor">Fournet, C.</span>, <span class="refAuthor">Deshpande, Y.</span>, and <span class="refAuthor">S. Lasker</span>, <span class="refTitle">"An Architecture for Trustworthy and Transparent Digital Supply Chains"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-scitt-architecture-22</span>, <time datetime="2025-10-10" class="refDate">10 October 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-scitt-architecture-22">https://datatracker.ietf.org/doc/html/draft-ietf-scitt-architecture-22</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
@@ -1809,8 +1801,16 @@ Clients can mitigate this risk in two ways: by regularly auditing the consistenc
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9162">[RFC9162]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Laurie, B.</span>, <span class="refAuthor">Messeri, E.</span>, and <span class="refAuthor">R. Stradling</span>, <span class="refTitle">"Certificate Transparency Version 2.0"</span>, <span class="seriesInfo">RFC 9162</span>, <span class="seriesInfo">DOI 10.17487/RFC9162</span>, <time datetime="2021-12" class="refDate">December 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9162">https://www.rfc-editor.org/rfc/rfc9162</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9942">[RFC9942]</dt>
+        <dd>
+<span class="refAuthor">Steele, O.</span>, <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Delignat-Lavaud, A.</span>, and <span class="refAuthor">C. Fournet</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE) Receipts"</span>, <span class="seriesInfo">RFC 9942</span>, <span class="seriesInfo">DOI 10.17487/RFC9942</span>, <time datetime="2026-06" class="refDate">June 2026</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9942">https://www.rfc-editor.org/rfc/rfc9942</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9943">[RFC9943]</dt>
+      <dd>
+<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Delignat-Lavaud, A.</span>, <span class="refAuthor">Fournet, C.</span>, <span class="refAuthor">Deshpande, Y.</span>, and <span class="refAuthor">S. Lasker</span>, <span class="refTitle">"An Architecture for Trustworthy and Transparent Digital Supply Chains"</span>, <span class="seriesInfo">RFC 9943</span>, <span class="seriesInfo">DOI 10.17487/RFC9943</span>, <time datetime="2026-06" class="refDate">June 2026</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9943">https://www.rfc-editor.org/rfc/rfc9943</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
