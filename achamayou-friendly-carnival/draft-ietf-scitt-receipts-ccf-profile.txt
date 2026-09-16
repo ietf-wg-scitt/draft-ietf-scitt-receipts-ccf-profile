@@ -5,10 +5,10 @@
 SCITT                                                        H. Birkholz
 Internet-Draft                                            Fraunhofer SIT
 Intended status: Standards Track                      A. Delignat-Lavaud
-Expires: 19 March 2027                                        C. Fournet
+Expires: 20 March 2027                                        C. Fournet
                                                              A. Chamayou
                                                       Microsoft Research
-                                                       15 September 2026
+                                                       16 September 2026
 
 
                      CCF Profile for COSE Receipts
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 March 2027.
+   This Internet-Draft will expire on 20 March 2027.
 
 Copyright Notice
 
@@ -139,9 +139,11 @@ Table of Contents
    bytes.
 
    The Merkle Tree encodes an ordered list of n transactions T_n =
-   {T[0], T[1], ..., T[n-1]}. We define the Merkle Tree Hash (MTH)
-   function, which takes as input a list of serialized transactions (as
-   byte strings), and outputs a single HASH_SIZE byte string called the
+   {T[0], T[1], ..., T[n-1]}. Each transaction T[i] is serialized to a
+   byte string d[i] as defined in Section 2.2, giving the list D_n =
+   {d[0], d[1], ..., d[n-1]}. We define the Merkle Tree Hash (MTH)
+   function, which takes as input such a list of serialized
+   transactions, and outputs a single HASH_SIZE byte string called the
    Merkle root hash, by induction on the list.
 
    This function is defined as follows:
@@ -192,6 +194,28 @@ Table of Contents
 
                           Figure 4: CCF Leaf CDDL
 
+   The ccf-leaf array is the representation of these components in an
+   inclusion proof (Section 3).  It is not what is hashed into the tree.
+   The serialized transaction d[i] that is input to MTH in Section 2.1
+   is the byte string of length 3 * HASH_SIZE obtained by concatenating
+   the internal transaction hash, the hash of the internal evidence, and
+   the data hash:
+
+   d[i] = internal-transaction-hash
+          || HASH(internal-evidence)
+          || data-hash
+
+                    Figure 5: Transaction Serialization
+
+   where HASH(internal-evidence) is the digest of the UTF-8 encoding of
+   the internal-evidence text string.  The leaf hash MTH({d[i]}) =
+   HASH(d[i]) is therefore HASH(internal-transaction-hash ||
+   HASH(internal-evidence) || data-hash), which is the value computed by
+   the first step of compute_root in Figure 7.  Note that the proof
+   carries internal-evidence itself rather than its digest: revealing
+   the evidence is what demonstrates that the transaction was committed
+   (see below).
+
    The internal-transaction-hash and internal-evidence values are
    internal to the CCF implementation.  They can be safely ignored by
    receipt Verifiers, but they commit the transparency service (TS) to
@@ -238,7 +262,7 @@ Table of Contents
      &(path: 2) => [+ ccf-proof-element]
    }
 
-                     Figure 5: CCF Inclusion Proof CDDL
+                     Figure 6: CCF Inclusion Proof CDDL
 
    Unlike some other tree algorithms, the index of the element in the
    tree is not explicit in the inclusion proof, but the list of left-or-
@@ -308,7 +332,7 @@ Table of Contents
          assert(verify_cose(inclusion_receipt, payload))
      return true
 
-                Figure 6: CCF Inclusion Receipt Verification
+                Figure 7: CCF Inclusion Receipt Verification
 
    VDP_LABEL is the vdp header parameter label (396) and
    INCLUSION_PROOF_LABEL is the inclusion-proof proof type label (-1),
@@ -331,7 +355,7 @@ Table of Contents
 
    TBD_1 = 2 ; Requested assignment for CCF_LEDGER_SHA256
 
-                    Figure 7: Protected Header Map CDDL
+                    Figure 8: Protected Header Map CDDL
 
    *  alg (label: 1): REQUIRED.  Signature algorithm identifier.  Value
       type: int.
@@ -355,7 +379,7 @@ Table of Contents
      * cose-label => cose-value
    }
 
-                   Figure 8: Unprotected Header Map CDDL
+                   Figure 9: Unprotected Header Map CDDL
 
    *  vdp (label: 396): REQUIRED.  Verifiable data structure proofs.
       Value type: map.
