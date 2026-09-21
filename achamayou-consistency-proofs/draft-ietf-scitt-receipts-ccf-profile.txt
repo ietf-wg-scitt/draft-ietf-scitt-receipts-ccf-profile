@@ -415,9 +415,11 @@ Table of Contents
      assert(VDP_LABEL in consistency_receipt.unprotected_header)
      let vdp = consistency_receipt.unprotected_header[VDP_LABEL]
      assert(CONSISTENCY_PROOF_LABEL in vdp)
+     let proofs = vdp[CONSISTENCY_PROOF_LABEL]
+     assert(len(proofs) > 0)
      assert(consistency_receipt.payload == nil)
 
-     for proof in vdp[CONSISTENCY_PROOF_LABEL]:
+     for proof in proofs:
          let older, newer = compute_roots(proof)
          if older == older_root:
              # Use the newer Merkle Root as the detached payload
@@ -427,10 +429,12 @@ Table of Contents
                Figure 9: CCF Consistency Receipt Verification
 
    CONSISTENCY_PROOF_LABEL is the consistency-proof proof type label
-   (-2) defined by [RFC9942].  The comparison with older_root binds the
-   receipt to a state the verifier already trusts and validates the
-   anchor: a receipt whose recomputed older root differs from older_root
-   proves nothing about that state.
+   (-2) defined by [RFC9942].  Each element of proofs is a ccf-
+   consistency-proof, i.e., a byte string wrapping a CBOR-encoded map,
+   which is decoded before compute_roots is applied.  The comparison
+   with older_root binds the receipt to a state the verifier already
+   trusts and validates the anchor: a receipt whose recomputed older
+   root differs from older_root proves nothing about that state.
 
 5.  Usage in COSE Receipts
 
