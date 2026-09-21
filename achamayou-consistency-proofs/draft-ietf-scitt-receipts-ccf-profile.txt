@@ -5,10 +5,10 @@
 SCITT                                                        H. Birkholz
 Internet-Draft                                            Fraunhofer SIT
 Intended status: Standards Track                      A. Delignat-Lavaud
-Expires: 20 March 2027                                        C. Fournet
+Expires: 25 March 2027                                        C. Fournet
                                                              A. Chamayou
                                                       Microsoft Research
-                                                       16 September 2026
+                                                       21 September 2026
 
 
                      CCF Profile for COSE Receipts
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 March 2027.
+   This Internet-Draft will expire on 25 March 2027.
 
 Copyright Notice
 
@@ -274,8 +274,8 @@ Table of Contents
    from the leaf up, the left-or-right bits are the binary decomposition
    of the index for the first k elements, where k is the largest power
    of two not greater than the tree size; for later elements the proof
-   has fewer elements than the depth of the index, and the index cannot
-   be read from the proof alone.
+   may have fewer elements than the depth of the index, and the index
+   cannot be read from the proof alone.
 
 3.1.  CCF Inclusion Proof Signature
 
