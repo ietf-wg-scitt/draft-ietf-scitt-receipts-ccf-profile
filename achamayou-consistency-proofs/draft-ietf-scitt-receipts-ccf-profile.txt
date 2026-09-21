@@ -322,8 +322,8 @@ Table of Contents
           )
 
      for [left, hash] in proof.path:
-         h := HASH(hash + h) if left
-              HASH(h + hash) else
+         h := HASH(hash || h) if left
+              HASH(h || hash) else
      return h
 
    verify_inclusion_receipt(inclusion_receipt):
@@ -408,10 +408,10 @@ Table of Contents
 
      for [left, hash] in proof.path:
          if left:
-             older := HASH(hash + older)
-             newer := HASH(hash + newer)
+             older := HASH(hash || older)
+             newer := HASH(hash || newer)
          else:
-             newer := HASH(newer + hash)
+             newer := HASH(newer || hash)
      return older, newer
 
    verify_consistency_receipt(consistency_receipt, older_root):
@@ -422,12 +422,18 @@ Table of Contents
      assert(len(proofs) > 0)
      assert(consistency_receipt.payload == nil)
 
+     let payloads = []
      for proof in proofs:
          let older, newer = compute_roots(proof)
          if older == older_root:
-             # Use the newer Merkle Root as the detached payload
-             return verify_cose(consistency_receipt, newer)
-     return false
+             payloads.append(newer)
+     # At least one proof must start from older_root
+     assert(len(payloads) > 0)
+
+     for payload in payloads:
+         # Use the newer Merkle Root as the detached payload
+         assert(verify_cose(consistency_receipt, payload))
+     return true
 
                Figure 9: CCF Consistency Receipt Verification
 
@@ -436,10 +442,10 @@ Table of Contents
    consistency-proof, i.e., a byte string wrapping a CBOR-encoded map,
    which is decoded before compute_roots is applied.  The comparison
    with older_root binds the receipt to a state the verifier already
-   trusts: a receipt whose recomputed older root differs from older_root
-   proves nothing about that state.  It also confirms that the anchor is
-   a node of that state, but not that it is the anchor required in
-   Section 4, which cannot be checked without knowing m.
+   trusts: a receipt in which no proof recomputes older_root proves
+   nothing about that state.  It also confirms that the anchor is a node
+   of that state, but not that it is the anchor required in Section 4,
+   which cannot be checked without knowing m.
 
 5.  Usage in COSE Receipts
 
