@@ -353,12 +353,13 @@ Table of Contents
 4.  CCF Consistency Proofs
 
    A CCF consistency proof establishes that the tree of m transactions
-   with root R_m is a prefix of the tree of n > m transactions with root
-   R_n: every transaction of the older tree is at the same position in
-   the newer tree.
+   with root R_m is a prefix of the tree of n transactions with root
+   R_n, where 0 < m < n: every transaction of the older tree is at the
+   same position in the newer tree.
 
    ccf-consistency-proof = bstr .cbor {
-     ; Root of the rightmost complete subtree of the older tree
+     ; Root of the largest complete subtree containing
+     ; the last transaction of the older tree
      &(anchor: 1) => bstr .size 32
 
      ; Siblings from the anchor to the newer root
@@ -435,8 +436,10 @@ Table of Contents
    consistency-proof, i.e., a byte string wrapping a CBOR-encoded map,
    which is decoded before compute_roots is applied.  The comparison
    with older_root binds the receipt to a state the verifier already
-   trusts and validates the anchor: a receipt whose recomputed older
-   root differs from older_root proves nothing about that state.
+   trusts: a receipt whose recomputed older root differs from older_root
+   proves nothing about that state.  It also confirms that the anchor is
+   a node of that state, but not that it is the anchor required in
+   Section 4, which cannot be checked without knowing m.
 
 5.  Usage in COSE Receipts
 
