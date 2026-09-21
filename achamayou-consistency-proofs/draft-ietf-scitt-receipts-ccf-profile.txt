@@ -389,10 +389,12 @@ Table of Contents
       key, whose value is an array of one or more ccf-consistency-proof
       values, each relating one older root to the newer root.
 
-   The payload is the newer root R_n, and MUST be detached.  The older
-   root R_m is not carried by the receipt: the verifier already holds
-   it, typically as the root recomputed from an inclusion receipt
-   (Figure 7), and checks that the proof recomputes it.
+   The payload is the newer root R_n, and MUST be detached.  When the
+   array contains more than one consistency proof, every proof MUST
+   compute to the same newer root.  The older root R_m is not carried by
+   the receipt: the verifier already holds it, typically as the root
+   recomputed from an inclusion receipt (Figure 7), and checks that the
+   proof recomputes it.
 
 4.2.  Consistency Proof Verification Algorithm
 
@@ -490,10 +492,10 @@ Table of Contents
       array of ccf-consistency-proof.
 
    At least one of inclusion-proof and consistency-proof MUST be
-   present.  All proofs in a receipt recompute the same root, which is
-   the detached payload.  The proof type is conveyed by the key of the
-   vdp map, as specified by [RFC9942]; it is not carried in a separate
-   header parameter.
+   present.  All proofs in a receipt recompute the same root (the newer
+   root, for consistency proofs), which is the detached payload.  The
+   proof type is conveyed by the key of the vdp map, as specified by
+   [RFC9942]; it is not carried in a separate header parameter.
 
 6.  Privacy Considerations
 
