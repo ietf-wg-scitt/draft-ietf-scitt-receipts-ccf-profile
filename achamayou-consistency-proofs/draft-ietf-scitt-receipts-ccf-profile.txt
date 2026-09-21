@@ -367,17 +367,17 @@ Table of Contents
 
                     Figure 8: CCF Consistency Proof CDDL
 
-   The anchor covers transactions T[m - 2^t], ..., T[m - 1], where 2^t
-   is the largest power of two dividing m; when m is a power of two, the
-   anchor is R_m.  The path lists the sibling of each node on the path
-   from the anchor to R_n, tagged as in inclusion proofs.  Left siblings
-   belong to both trees and right siblings only to the newer one, so
-   folding the anchor with the left siblings alone yields R_m, and with
-   all siblings R_n.  Neither tree size is needed for verification.
-   Apart from the tags, path holds the same digests in the same order as
-   the consistency proof of Section 2.1.4.1 of [RFC9162] for the same
-   sizes, with the anchor as the first element of that proof when m is
-   not a power of two.
+   The anchor MUST be the root of the subtree covering transactions T[m
+   - 2^t], ..., T[m - 1], where 2^t is the largest power of two dividing
+   m; when m is a power of two, the anchor is R_m.  The path lists the
+   sibling of each node on the path from the anchor to R_n, tagged as in
+   inclusion proofs.  Left siblings belong to both trees and right
+   siblings only to the newer one, so folding the anchor with the left
+   siblings alone yields R_m, and with all siblings R_n.  Neither tree
+   size is needed for verification.  Apart from the tags, path holds the
+   same digests in the same order as the consistency proof of
+   Section 2.1.4.1 of [RFC9162] for the same sizes, with the anchor as
+   the first element of that proof when m is not a power of two.
 
 4.1.  CCF Consistency Proof Signature
 
