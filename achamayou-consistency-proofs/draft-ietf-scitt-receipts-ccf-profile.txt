@@ -5,10 +5,10 @@
 SCITT                                                        H. Birkholz
 Internet-Draft                                            Fraunhofer SIT
 Intended status: Standards Track                      A. Delignat-Lavaud
-Expires: 25 March 2027                                        C. Fournet
+Expires: 26 March 2027                                        C. Fournet
                                                              A. Chamayou
                                                       Microsoft Research
-                                                       21 September 2026
+                                                       22 September 2026
 
 
                      CCF Profile for COSE Receipts
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 March 2027.
+   This Internet-Draft will expire on 26 March 2027.
 
 Copyright Notice
 
