@@ -78,7 +78,7 @@ entity:
 
 --- abstract
 
-This document defines a new verifiable data structure (VDS) type for COSE Receipts and inclusion proofs specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees.
+This document defines a new verifiable data structure (VDS) type for COSE Receipts and the associated inclusion and consistency proofs, specifically designed for append-only logs produced by the Confidential Consortium Framework (CCF) to provide stronger tamper-evidence guarantees.
 
 --- middle
 
@@ -86,7 +86,7 @@ This document defines a new verifiable data structure (VDS) type for COSE Receip
 
 The COSE Receipts document {{-cose-receipts}} defines a common framework for expressing different types of proofs about verifiable data structures (VDS), providing a standardized way to convey trust-relevant evidence. For instance, inclusion proofs guarantee to a verifier that a given serializable element is recorded at a given state of the VDS, while consistency proofs are used to establish that an inclusion proof is still consistent with the new state of the VDS at a later time.
 
-In this document, we define a new type of VDS and inclusion proof associated with an application of the Confidential Consortium Framework (CCF) ledger that implements the SCITT Architecture defined in {{-scitt-architecture}}. This VDS carries indexed transaction information in a binary Merkle Tree, where new transactions are appended to the right, so that the binary decomposition of the index of a transaction can be interpreted as the position in the tree if 0 represents the left branch and 1 the right branch.
+In this document, we define a new type of VDS and the associated inclusion and consistency proofs for an application of the Confidential Consortium Framework (CCF) ledger that implements the SCITT Architecture defined in {{-scitt-architecture}}. This VDS carries indexed transaction information in a binary Merkle Tree, where new transactions are appended to the right, so that the binary decomposition of the index of a transaction can be interpreted as the position in the tree if 0 represents the left branch and 1 the right branch.
 Compared to {{RFC9162}}, the leaves of CCF trees carry additional internal information for the following purposes:
 
 1. To bind the full details of the transaction executed, which is a superset of what is exposed in the proof and captures internal details useful for detailed system audit, but not for application purposes.
@@ -192,9 +192,9 @@ ccf-inclusion-proof = bstr .cbor {
 ~~~
 {: #ccf-inclusion-proof-cddl title="CCF Inclusion Proof CDDL"}
 
-Unlike some other tree algorithms, the index of the element in the tree is not explicit in the inclusion proof, but the list of left-or-right bits can be treated as the binary decomposition of the index, from the least significant (leaf) to the most significant (root).
+Unlike some other tree algorithms, neither the index of the element nor the size of the tree is explicit in the inclusion proof. Read from the leaf up, the left-or-right bits are the binary decomposition of the index for the first `k` elements, where `k` is the largest power of two not greater than the tree size; for later elements the proof may have fewer elements than the depth of the index, and the index cannot be read from the proof alone.
 
-## CCF Inclusion Proof Signature
+## CCF Inclusion Proof Signature {#ccf-inclusion-proof-signature}
 
 The proof signature for a CCF inclusion proof is a COSE signature (encoded with the `COSE_Sign1` CBOR type) which includes the following additional requirements for protected and unprotected headers. These follow the conventions of {{Section 5.2.1 of -cose-receipts}}; the corresponding CDDL is given in {{receipt-usage}}. Please note that there may be additional header parameters defined by the application.
 
@@ -221,8 +221,8 @@ compute_root(proof):
        )
 
   for [left, hash] in proof.path:
-      h := HASH(hash + h) if left
-           HASH(h + hash) else
+      h := HASH(hash || h) if left
+           HASH(h || hash) else
   return h
 
 verify_inclusion_receipt(inclusion_receipt):
@@ -245,9 +245,77 @@ verify_inclusion_receipt(inclusion_receipt):
 
 A description can also be found at {{CCF-Receipt-Verification}}.
 
+# CCF Consistency Proofs {#ccf-consistency-proofs}
+
+A CCF consistency proof establishes that the tree of `m` transactions with root `R_m` is a prefix of the tree of `n` transactions with root `R_n`, where `0 < m < n`: every transaction of the older tree is at the same position in the newer tree.
+
+~~~ cddl
+ccf-consistency-proof = bstr .cbor {
+  ; Root of the largest complete subtree containing
+  ; the last transaction of the older tree
+  &(anchor: 1) => bstr .size 32
+
+  ; Siblings from the anchor to the newer root
+  &(path: 2) => [+ ccf-proof-element]
+}
+~~~
+{: #ccf-consistency-proof-cddl title="CCF Consistency Proof CDDL"}
+
+The `anchor` MUST be the root of the subtree covering transactions `T[m - 2^t], ..., T[m - 1]`, where `2^t` is the largest power of two dividing `m`; when `m` is a power of two, the anchor is `R_m`. The `path` lists the sibling of each node on the path from the anchor to `R_n`, tagged as in inclusion proofs. Left siblings belong to both trees and right siblings only to the newer one, so folding the anchor with the left siblings alone yields `R_m`, and with all siblings `R_n`. Neither tree size is needed for verification. Apart from the tags, `path` holds the same digests in the same order as the consistency proof of {{Section 2.1.4.1 of RFC9162}} for the same sizes, with the anchor as the first element of that proof when `m` is not a power of two.
+
+## CCF Consistency Proof Signature
+
+The proof signature for a CCF consistency proof is a `COSE_Sign1` with the same protected header requirements as an inclusion proof signature ({{ccf-inclusion-proof-signature}}). Its unprotected header MUST include:
+
+* `vdp` (label 396): map. It MUST contain the `consistency-proof` (-2) key, whose value is an array of one or more `ccf-consistency-proof` values, each relating one older root to the newer root.
+
+The payload is the newer root `R_n`, and MUST be detached. When the array contains more than one consistency proof, every proof MUST compute to the same newer root. The older root `R_m` is not carried by the receipt: the verifier already holds it, typically as the root recomputed from an inclusion receipt ({{ccf-inclusion-receipt-verification}}), and checks that the proof recomputes it.
+
+## Consistency Proof Verification Algorithm
+
+A consistency receipt is verified against a trusted `older_root` as follows:
+
+~~~
+compute_roots(proof):
+  older := proof.anchor
+  newer := proof.anchor
+
+  for [left, hash] in proof.path:
+      if left:
+          older := HASH(hash || older)
+          newer := HASH(hash || newer)
+      else:
+          newer := HASH(newer || hash)
+  return older, newer
+
+verify_consistency_receipt(consistency_receipt, older_root):
+  assert(VDP_LABEL in consistency_receipt.unprotected_header)
+  let vdp = consistency_receipt.unprotected_header[VDP_LABEL]
+  assert(CONSISTENCY_PROOF_LABEL in vdp)
+  let proofs = vdp[CONSISTENCY_PROOF_LABEL]
+  assert(len(proofs) > 0)
+  assert(consistency_receipt.payload == nil)
+
+  let payloads = []
+  for proof in proofs:
+      let older, newer = compute_roots(proof)
+      if older == older_root:
+          payloads.append(newer)
+  # At least one proof must start from older_root
+  assert(len(payloads) > 0)
+
+  for payload in payloads:
+      # Use the newer Merkle Root as the detached payload
+      assert(verify_cose(consistency_receipt, payload))
+  return true
+~~~
+{: #ccf-consistency-receipt-verification title="CCF Consistency Receipt Verification"}
+
+`CONSISTENCY_PROOF_LABEL` is the `consistency-proof` proof type label (-2) defined by {{-cose-receipts}}. Each element of `proofs` is a `ccf-consistency-proof`, i.e., a byte string wrapping a CBOR-encoded map, which is decoded before `compute_roots` is applied. The comparison with `older_root` binds the receipt to a state the verifier already trusts: a receipt in which no proof recomputes `older_root` proves nothing about that state. It also confirms that the anchor is a node of that state, but not that it is the anchor required in {{ccf-consistency-proofs}}, which cannot be checked without knowing `m`.
+
 # Usage in COSE Receipts {#receipt-usage}
 
-A COSE Receipt with a CCF inclusion proof is described by the following CDDL definition, which follows {{Section 5.2.1 of -cose-receipts}}:
+A COSE Receipt with CCF inclusion or consistency proofs is described by the following CDDL definition, which follows {{Section 5.2.1 of -cose-receipts}} and {{Section 5.3.1 of -cose-receipts}}:
 
 ~~~ cddl
 protected-header-map = {
@@ -263,15 +331,20 @@ TBD_1 = 2 ; Requested assignment for CCF_LEDGER_SHA256
 - alg (label: 1): REQUIRED. Signature algorithm identifier. Value type: int.
 - vds (label: 395): REQUIRED. Verifiable data structure algorithm identifier. Value type: int.
 
-The unprotected header for an inclusion proof signature is described by the following CDDL definition:
+The unprotected header is described by the following CDDL definition:
 
 ~~~ cddl
 inclusion-proof = ccf-inclusion-proof
-
 inclusion-proofs = [ + inclusion-proof ]
+
+consistency-proof = ccf-consistency-proof
+consistency-proofs = [ + consistency-proof ]
 
 verifiable-proofs = {
   &(inclusion-proof: -1) => inclusion-proofs
+  ? &(consistency-proof: -2) => consistency-proofs
+  //
+  &(consistency-proof: -2) => consistency-proofs
 }
 
 unprotected-header-map = {
@@ -282,9 +355,10 @@ unprotected-header-map = {
 {: #unprotected-header-map-cddl title="Unprotected Header Map CDDL"}
 
 - vdp (label: 396): REQUIRED. Verifiable data structure proofs. Value type: map.
-- inclusion-proof (label: -1): REQUIRED. Inclusion proofs. Value type: array of `ccf-inclusion-proof`.
+- inclusion-proof (label: -1): Inclusion proofs. Value type: array of `ccf-inclusion-proof`.
+- consistency-proof (label: -2): Consistency proofs. Value type: array of `ccf-consistency-proof`.
 
-The proof type is conveyed by the key of the `vdp` map, as specified by {{-cose-receipts}}; it is not carried in a separate header parameter.
+At least one of `inclusion-proof` and `consistency-proof` MUST be present. All proofs in a receipt recompute the same root (the newer root, for consistency proofs), which is the detached payload. The proof type is conveyed by the key of the `vdp` map, as specified by {{-cose-receipts}}; it is not carried in a separate header parameter.
 
 # Privacy Considerations
 
@@ -304,11 +378,15 @@ CCF networks of nodes rely on executing in TEEs to secure their function, in par
 2. The creation and usage of receipt signing keys
 
 A compromise in the TEE platform used to execute the network may allow an attacker to produce invalid and divergent ledger branches.
-Clients can mitigate this risk in two ways: by regularly auditing the consistency of the CCF ledger; and by regularly fetching attestation information about the TEE instances, available in the ledger and from the network itself, and confirming that the nodes composing the network are running up-to-date, trusted platform components.
+Clients can mitigate this risk in two ways: by regularly auditing the consistency of the CCF ledger, for instance by verifying consistency receipts ({{ccf-consistency-receipt-verification}}) from roots they hold to the current root; and by regularly fetching attestation information about the TEE instances, available in the ledger and from the network itself, and confirming that the nodes composing the network are running up-to-date, trusted platform components.
 
 ## Operators
 
-An operator has the ability to start successor networks with a distinct identity. The operator of a CCF network can recover the service by starting a successor network, for example a new CCF network with its own service identity, that endorses the ledger state of the previous instance. This provides service continuity after a catastrophic failure of a majority of the nodes. However, a malicious operator could exploit this mechanism and truncate the ledger’s history by initializing the successor network from an earlier ledger prefix, thereby omitting some later entries. Clients can mitigate this risk by auditing the successor ledger and verifying that their latest known receipts from the prior service are included in the successor’s ledger.
+An operator has the ability to start successor networks with a distinct identity. The operator of a CCF network can recover the service by starting a successor network, for example a new CCF network with its own service identity, that endorses the ledger state of the previous instance. This provides service continuity after a catastrophic failure of a majority of the nodes. However, a malicious operator could exploit this mechanism and truncate the ledger’s history by initializing the successor network from an earlier ledger prefix, thereby omitting some later entries. Clients can mitigate this risk by auditing the successor ledger and verifying that their latest known receipts from the prior service are included in the successor’s ledger. Consistency receipts from the successor network for a root of the prior service make this check mechanical.
+
+## Consistency Receipts
+
+A consistency receipt relates two roots and establishes nothing about ledger contents on its own. Verifiers MUST compare the recomputed older root with a root they have already verified, not with one supplied alongside the receipt.
 
 # IANA Considerations
 
@@ -328,7 +406,7 @@ This document requests IANA to add the following new value to the "COSE Verifiab
 
 ### COSE Verifiable Data Structure Proofs {#tree-proof-registry}
 
-This document requests IANA to add the following new entry to the "COSE Verifiable Data Structure Proofs" registry:
+This document requests IANA to add the following new entries to the "COSE Verifiable Data Structure Proofs" registry:
 
 * Verifiable Data Structure: TBD_1 (requested assignment 2)
 * Name: inclusion proofs
@@ -336,6 +414,16 @@ This document requests IANA to add the following new entry to the "COSE Verifiab
 * CBOR Type: array (of bstr)
 * Description: Proof of inclusion
 * Reference: {{&SELF}}, {{ccf-inclusion-proofs}} and {{receipt-usage}}
+* Change Controller: IETF
+
+and:
+
+* Verifiable Data Structure: TBD_1 (requested assignment 2)
+* Name: consistency proofs
+* Label: -2
+* CBOR Type: array (of bstr)
+* Description: Proof of consistency
+* Reference: {{&SELF}}, {{ccf-consistency-proofs}} and {{receipt-usage}}
 * Change Controller: IETF
 
 --- back
