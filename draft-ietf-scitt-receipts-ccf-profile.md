@@ -382,11 +382,11 @@ Clients can mitigate this risk in two ways: by regularly auditing the consistenc
 
 ## Operators
 
-An operator has the ability to start successor networks with a distinct identity. The operator of a CCF network can recover the service by starting a successor network, for example a new CCF network with its own service identity, that endorses the ledger state of the previous instance. This provides service continuity after a catastrophic failure of a majority of the nodes. However, a malicious operator could exploit this mechanism and truncate the ledger’s history by initializing the successor network from an earlier ledger prefix, thereby omitting some later entries. Clients can mitigate this risk by auditing the successor ledger and verifying that their latest known receipts from the prior service are included in the successor’s ledger. Consistency receipts from the successor network for a root of the prior service make this check mechanical.
+An operator has the ability to start successor networks with a distinct identity. The operator of a CCF network can recover the service by starting a successor network, for example a new CCF network with its own service identity, that endorses the ledger state of the previous instance. This provides service continuity after a catastrophic failure of a majority of the nodes. However, a malicious operator could exploit this mechanism and truncate the ledger’s history by initializing the successor network from an earlier ledger prefix, thereby omitting some later entries. Clients can mitigate this risk by auditing the successor ledger and verifying that their latest known receipts from the prior service are included in the successor’s ledger.
 
 ## Consistency Receipts
 
-A consistency receipt relates two roots and establishes nothing about ledger contents on its own. Verifiers MUST compare the recomputed older root with a root they have already verified, not with one supplied alongside the receipt.
+A consistency receipt relates two roots and establishes nothing about ledger contents on its own. Verifiers MUST compare the recomputed older root with a root they have already verified, not with one supplied alongside the receipt. Consistency receipts also cannot provide guarantees about the correct application of Registration Policies, which requires additional material as outlined in {{Section 5.1.1.2 of -scitt-architecture}}.
 
 # IANA Considerations
 
