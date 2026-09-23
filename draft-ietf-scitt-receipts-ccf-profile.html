@@ -1682,7 +1682,7 @@ Clients can mitigate this risk in two ways: by regularly auditing the consistenc
         <h3 id="name-operators">
 <a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-operators" class="section-name selfRef">Operators</a>
         </h3>
-<p id="section-7.2-1">An operator has the ability to start successor networks with a distinct identity. The operator of a CCF network can recover the service by starting a successor network, for example a new CCF network with its own service identity, that endorses the ledger state of the previous instance. This provides service continuity after a catastrophic failure of a majority of the nodes. However, a malicious operator could exploit this mechanism and truncate the ledger’s history by initializing the successor network from an earlier ledger prefix, thereby omitting some later entries. Clients can mitigate this risk by auditing the successor ledger and verifying that their latest known receipts from the prior service are included in the successor’s ledger. Consistency receipts from the successor network for a root of the prior service make this check mechanical.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.2-1">An operator has the ability to start successor networks with a distinct identity. The operator of a CCF network can recover the service by starting a successor network, for example a new CCF network with its own service identity, that endorses the ledger state of the previous instance. This provides service continuity after a catastrophic failure of a majority of the nodes. However, a malicious operator could exploit this mechanism and truncate the ledger’s history by initializing the successor network from an earlier ledger prefix, thereby omitting some later entries. Clients can mitigate this risk by auditing the successor ledger and verifying that their latest known receipts from the prior service are included in the successor’s ledger.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="consistency-receipts">
@@ -1690,7 +1690,7 @@ Clients can mitigate this risk in two ways: by regularly auditing the consistenc
         <h3 id="name-consistency-receipts">
 <a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-consistency-receipts" class="section-name selfRef">Consistency Receipts</a>
         </h3>
-<p id="section-7.3-1">A consistency receipt relates two roots and establishes nothing about ledger contents on its own. Verifiers <span class="bcp14">MUST</span> compare the recomputed older root with a root they have already verified, not with one supplied alongside the receipt.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.3-1">A consistency receipt relates two roots and establishes nothing about ledger contents on its own. Verifiers <span class="bcp14">MUST</span> compare the recomputed older root with a root they have already verified, not with one supplied alongside the receipt. Consistency receipts also cannot provide guarantees about the correct application of Registration Policies, which requires additional material as outlined in <span><a href="https://rfc-editor.org/rfc/rfc9943#section-5.1.1.2" class="relref">Section 5.1.1.2</a> of [<a href="#RFC9943" class="cite xref">RFC9943</a>]</span>.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
