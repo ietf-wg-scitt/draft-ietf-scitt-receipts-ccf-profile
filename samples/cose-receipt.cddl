@@ -1,7 +1,10 @@
-; Generic COSE receipt envelope vendored for CI validation from:
+; COSE receipt envelope for CI validation, adapted from:
 ; https://github.com/cose-wg/draft-ietf-cose-merkle-tree-proofs/blob/df5113e94e6b6788de0bfb112db63726516b88ab/draft-ietf-cose-merkle-tree-proofs.md#fig-receipts-cddl
+; The source defines one envelope per proof type. A CCF receipt carries
+; inclusion proofs, consistency proofs or both in the same unprotected
+; header, so a single envelope covers every receipt the draft defines.
 
-CCF_Receipt = Receipt_For_Inclusion
+CCF_Receipt = #6.18(CCF_Signed_Proofs)
 
 cose.label = int / text
 cose.values = any
@@ -9,9 +12,7 @@ cose.values = any
 cose-label = cose.label
 cose-value = cose.values
 
-Receipt_For_Inclusion = #6.18(Signed_Inclusion_Proof)
-
-Signed_Inclusion_Proof = [
+CCF_Signed_Proofs = [
   protected   : bstr .cbor protected-header-map
   unprotected : unprotected-header-map
   payload     : nil
