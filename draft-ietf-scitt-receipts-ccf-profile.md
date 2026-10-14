@@ -46,6 +46,7 @@ author:
   country: UK
 
 normative:
+  RFC8949:
   RFC9162:
   RFC9942: cose-receipts
   RFC9943: scitt-architecture
@@ -170,7 +171,15 @@ The `internal-transaction-hash` and `internal-evidence` values are internal to t
 
 `internal-transaction-hash` is a hash over the complete entry in the {{CCF-Ledger-Format}}, and `internal-evidence` is a revealable {{CCF-Commit-Evidence}} value that allows early persistence of ledger entries before distributed consensus can be established. This mechanism is useful to implement high-throughput transparency applications in Trusted Execution Environments (TEEs) that only provide a limited amount of memory, while maintaining high availability afforded by distributed consensus. Using a secure one-way function `f` to publish an `f(x)` commitment to an `x` value that can be revealed at a later time is a common feature of distributed protocols ({{COIN-FLIPPING}}). The hash function used for `internal-transaction-hash` is the same hash function `H` as in the Merkle Tree construction for the selected verifiable data structure algorithm. For `CCF_LEDGER_SHA256`, this function is `SHA256`.
 
-`data-hash` summarizes the application data included in the ledger at this transaction, which is a Signed Statement as defined by {{-scitt-architecture}}. The hash function used for `data-hash` is also the same hash function `H` as in the Merkle Tree construction for the selected verifiable data structure algorithm. For `CCF_LEDGER_SHA256`, this function is `SHA256`.
+`data-hash` is the hash of the bytes of the Signed Statement as registered: the `COSE_Sign1` encoding with CBOR tag 18 retained ({{Section 6.1 of -scitt-architecture}}) and an empty unprotected header map ({{Section 6.3 of -scitt-architecture}}), other elements as submitted. The hash function used for `data-hash` is also the same hash function `H` as in the Merkle Tree construction for the selected verifiable data structure algorithm. For `CCF_LEDGER_SHA256`, this function is `SHA256`.
+
+This is the Signed Statement, not the Transparent Statement of {{Section 7 of -scitt-architecture}}, which adds Receipts to that unprotected header. A Verifier holding a Transparent Statement recovers the preimage as follows:
+
+1. Take the `COSE_Sign1` of the Transparent Statement.
+1. Replace its unprotected header with an empty map.
+1. Keep tag 18, and keep the encodings of the protected header, payload and signature byte for byte as received.
+1. Hash the resulting byte string with `H` (`SHA256` for `CCF_LEDGER_SHA256`).
+
 
 # CCF Inclusion Proofs {#ccf-inclusion-proofs}
 
@@ -192,7 +201,7 @@ ccf-inclusion-proof = bstr .cbor {
 ~~~
 {: #ccf-inclusion-proof-cddl title="CCF Inclusion Proof CDDL"}
 
-Unlike some other tree algorithms, neither the index of the element nor the size of the tree is explicit in the inclusion proof. Read from the leaf up, the left-or-right bits are the binary decomposition of the index for the first `k` elements, where `k` is the largest power of two not greater than the tree size; for later elements the proof may have fewer elements than the depth of the index, and the index cannot be read from the proof alone.
+Unlike some other tree algorithms, neither the index of the element nor the size of the tree is explicit in the inclusion proof. Read from the leaf up, the left-or-right bits are the binary decomposition of the index for the first `k` elements, where `k` is the largest power of two not greater than the tree size; for later elements the proof may have fewer elements than the depth of the index, and the index cannot be read from the proof alone. The `path` is never empty: single-transaction ledgers, that is trees of size 1 whose only inclusion proof would have an empty path, are out of scope for this profile.
 
 ## CCF Inclusion Proof Signature {#ccf-inclusion-proof-signature}
 
@@ -210,6 +219,17 @@ The payload of the signature is the CCF ledger Merkle root digest, and MUST be d
 
 ## Inclusion Proof Verification Algorithm
 
+After decoding each `ccf-inclusion-proof` byte string, the Verifier MUST validate that the decoded value is well constructed with regard to the schema defined in {{ccf-inclusion-proof-cddl}}, including {{ccf-leaf-cddl}} for the leaf, and MUST reject the proof before `compute_root` is called if any check fails. In particular:
+
+* the byte string is valid CBOR ({{Section 5.3.1 of RFC8949}}), in particular the map has no duplicate keys;
+* the map has the keys `leaf` (1) and `path` (2);
+* `internal-transaction-hash` is a byte string of exactly HASH_SIZE (32) bytes;
+* `internal-evidence` is a text string of 1 to 1024 bytes of valid UTF-8;
+* `data-hash` is a byte string of exactly HASH_SIZE (32) bytes;
+* `path` is a non-empty array, each element of which is an array of exactly two items: a boolean and a byte string of exactly HASH_SIZE (32) bytes.
+
+Without these checks, since leaf and interior node hashes are not domain separated, an oversized path element lets an existing leaf be recomputed as if it were an interior node, so that a proof for a leaf and `data-hash` of the attacker's choosing still recomputes a validly signed root (a second-preimage-style forgery).
+
 CCF uses the following algorithm to verify an inclusion receipt:
 
 ~~~
@@ -225,7 +245,7 @@ compute_root(proof):
            HASH(h || hash) else
   return h
 
-verify_inclusion_receipt(inclusion_receipt):
+verify_inclusion_receipt(inclusion_receipt, statement_digest):
   assert(VDP_LABEL in inclusion_receipt.unprotected_header)
   let vdp = inclusion_receipt.unprotected_header[VDP_LABEL]
   assert(INCLUSION_PROOF_LABEL in vdp)
@@ -234,6 +254,8 @@ verify_inclusion_receipt(inclusion_receipt):
   assert(inclusion_receipt.payload == nil)
 
   for proof in proofs:
+      assert(validate_ccf_inclusion_proof(proof))
+      assert(proof.leaf.data-hash == statement_digest)
       # Use the Merkle Root as the detached payload
       let payload = compute_root(proof)
       assert(verify_cose(inclusion_receipt, payload))
@@ -241,7 +263,9 @@ verify_inclusion_receipt(inclusion_receipt):
 ~~~
 {: #ccf-inclusion-receipt-verification title="CCF Inclusion Receipt Verification"}
 
-`VDP_LABEL` is the `vdp` header parameter label (396) and `INCLUSION_PROOF_LABEL` is the `inclusion-proof` proof type label (-1), both defined by {{-cose-receipts}}. Each element of `proofs` is a `ccf-inclusion-proof`, i.e., a byte string wrapping a CBOR-encoded map, which is decoded before `compute_root` is applied.
+`VDP_LABEL` is the `vdp` header parameter label (396) and `INCLUSION_PROOF_LABEL` is the `inclusion-proof` proof type label (-1), both defined by {{-cose-receipts}}. Each element of `proofs` is a `ccf-inclusion-proof`, i.e., a byte string wrapping a CBOR-encoded map, which is decoded and validated against the schema defined in {{ccf-inclusion-proof-cddl}} before `compute_root` is applied.
+
+`statement_digest` is the `data-hash` of the candidate Signed Statement, computed by the Verifier from the bytes of that Signed Statement as described in {{transaction-components}}; it MUST NOT be taken from the receipt. Every proof in the receipt MUST have a `data-hash` equal to `statement_digest`. This defines how the inclusion proofs of this profile are consumed ({{Section 4.4.1 of -cose-receipts}}), by applying them to the bytes of a candidate entry ({{Section 5.2.1 of -cose-receipts}}).
 
 A description can also be found at {{CCF-Receipt-Verification}}.
 
@@ -358,7 +382,7 @@ unprotected-header-map = {
 - inclusion-proof (label: -1): Inclusion proofs. Value type: array of `ccf-inclusion-proof`.
 - consistency-proof (label: -2): Consistency proofs. Value type: array of `ccf-consistency-proof`.
 
-At least one of `inclusion-proof` and `consistency-proof` MUST be present. All proofs in a receipt recompute the same root (the newer root, for consistency proofs), which is the detached payload. The proof type is conveyed by the key of the `vdp` map, as specified by {{-cose-receipts}}; it is not carried in a separate header parameter.
+At least one of `inclusion-proof` and `consistency-proof` MUST be present. All proofs in a receipt recompute the same root (the newer root, for consistency proofs), which is the detached payload. The proof type is conveyed by the key of the `vdp` map, as specified by {{-cose-receipts}}; it is not carried in a separate header parameter. A Verifier MUST reject a receipt whose `vdp` map is not valid CBOR ({{Section 5.3.1 of RFC8949}}) or does not match `verifiable-proofs` in {{unprotected-header-map-cddl}}, before applying either verification algorithm.
 
 # Privacy Considerations
 
@@ -383,6 +407,10 @@ Clients can mitigate this risk in two ways: by regularly auditing the consistenc
 ## Operators
 
 An operator has the ability to start successor networks with a distinct identity. The operator of a CCF network can recover the service by starting a successor network, for example a new CCF network with its own service identity, that endorses the ledger state of the previous instance. This provides service continuity after a catastrophic failure of a majority of the nodes. However, a malicious operator could exploit this mechanism and truncate the ledger’s history by initializing the successor network from an earlier ledger prefix, thereby omitting some later entries. Clients can mitigate this risk by auditing the successor ledger and verifying that their latest known receipts from the prior service are included in the successor’s ledger.
+
+## Inclusion Proof Validation
+
+An inclusion receipt only establishes the inclusion of a Signed Statement for a Verifier that computes `data-hash` from the bytes of the candidate Signed Statement itself, as described in {{transaction-components}}, and that validates every proof against the schema defined in {{ccf-inclusion-proof-cddl}} before recomputing its root, as required in {{ccf-inclusion-receipt-verification}}.
 
 ## Consistency Receipts
 
