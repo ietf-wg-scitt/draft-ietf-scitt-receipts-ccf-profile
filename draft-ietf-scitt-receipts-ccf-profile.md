@@ -289,7 +289,7 @@ The `anchor` MUST be the root of the subtree covering transactions `T[m - 2^t], 
 
 The first element of `path` MUST be a right sibling (`left` is `false`): the anchor is the last complete subtree of the older tree, so its first sibling can only hold transactions appended after `T[m - 1]`. A proof whose first element is a left sibling does not relate two distinct tree sizes and MUST be rejected. In particular, there is no consistency proof for `m == n`.
 
-Neither tree size is carried by the proof, and verification does not establish `m`, `n`, or that the anchor is the node required above. What verification establishes is that every transaction of the tree with root `R_m` is at the same position in the tree with root `R_n` ({{consistency-receipts-security}}); the anchor requirement fixes a canonical encoding of that fact, and a Verifier that accepts a non-canonical encoding accepts nothing more.
+Neither tree size is carried by the proof, and verification does not establish `m`, `n`, or that the anchor is the node required above. What verification establishes is that every transaction of the tree with root `R_m` is at the same position in the tree with root `R_n` ({{consistency-receipts-security}}); the anchor requirement fixes a canonical encoding of that fact.
 
 ## CCF Consistency Proof Signature
 
