@@ -454,8 +454,7 @@ Table of Contents
    verification establishes is that every transaction of the tree with
    root R_m is at the same position in the tree with root R_n
    (Section 7.3); the anchor requirement fixes a canonical encoding of
-   that fact, and a Verifier that accepts a non-canonical encoding
-   accepts nothing more.
+   that fact.
 
 4.1.  CCF Consistency Proof Signature
 
