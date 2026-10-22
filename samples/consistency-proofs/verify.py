@@ -8,7 +8,8 @@ Valid vectors are named NN-<case>-<m>-<n>.cbor and must use the anchor the
 draft requires. Tampered vectors derive from 10-doc-example-23-68 and are named
 by the check that catches them: older-root-* must not fold to R_23;
 newer-root-* must fold to R_23 but not to R_68. anchor-<case>-<m>-<n> vectors
-fold to (R_m, R_n) from an anchor other than the required one. cddl-* vectors
+fold to (R_m, R_n) from an anchor other than the required one and are caught
+by the first-sibling check. cddl-* vectors
 are checked by validate-cbor-examples.sh, not here.
 
   pip install cbor2
@@ -66,6 +67,11 @@ def compute_roots(proof):
     return older, newer
 
 
+def first_sibling_is_right(proof):
+    """The first-sibling check from the draft's verify_consistency_receipt."""
+    return proof[2][0][0] is False
+
+
 def load(path):
     with open(path, "rb") as f:
         return cbor2.loads(cbor2.loads(f.read()))
@@ -90,7 +96,11 @@ def main(root):
         m, n = sizes(path)
         proof = load(path)
         older, newer = compute_roots(proof)
-        failures += check(older == mth(0, m) and newer == mth(0, n) and proof[1] == anchor(m), path)
+        failures += check(
+            first_sibling_is_right(proof)
+            and older == mth(0, m) and newer == mth(0, n) and proof[1] == anchor(m),
+            path,
+        )
 
     r23, r68 = mth(0, 23), mth(0, 68)
     for path in vectors(root, "invalid", "older-root-*.cbor"):
@@ -103,7 +113,11 @@ def main(root):
         m, n = sizes(path)
         proof = load(path)
         older, newer = compute_roots(proof)
-        failures += check(older == mth(0, m) and newer == mth(0, n) and proof[1] != anchor(m), path)
+        failures += check(
+            not first_sibling_is_right(proof)
+            and older == mth(0, m) and newer == mth(0, n) and proof[1] != anchor(m),
+            path,
+        )
 
     print(f"{failures} failure(s)")
     return 1 if failures else 0

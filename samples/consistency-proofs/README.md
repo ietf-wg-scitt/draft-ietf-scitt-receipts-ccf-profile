@@ -17,7 +17,7 @@ node    = SHA-256(left || right)
 | `invalid/cddl-<case>.cbor` | 15 vectors that do not conform to the CDDL |
 | `invalid/older-root-<case>.cbor` | 5 tampered vectors whose recomputed older root differs from `R_m` |
 | `invalid/newer-root-<case>.cbor` | 3 tampered vectors whose older root still matches but whose newer root differs from `R_n` |
-| `invalid/anchor-<case>-<m>-<n>.cbor` | 1 vector that folds to `(R_m, R_n)` but whose anchor is not the one the draft requires |
+| `invalid/anchor-<case>-<m>-<n>.cbor` | 1 vector that folds to `(R_m, R_n)` but whose anchor is not the one the draft requires; rejected by the first-sibling check |
 | `verify.py` | Recomputes `R_m` and `R_n` from the leaf derivation and checks every non-`cddl-` vector |
 
 ## Checks
@@ -25,7 +25,7 @@ node    = SHA-256(left || right)
 `validate-cbor-examples.sh` in the parent directory runs both in CI:
 
 - CDDL: every `valid/*.cbor` and every other `invalid/*.cbor` conforms to `ccf-consistency-proof` as extracted from the draft; every `invalid/cddl-*.cbor` does not.
-- Roots: `verify.py` applies the draft's `compute_roots` to each vector. Valid vectors must yield `(R_m, R_n)` and use the anchor required by the draft; `older-root-*` must not yield `R_m`; `newer-root-*` must yield `R_m` but not `R_n`; `anchor-*` must yield `(R_m, R_n)` from a different anchor.
+- Roots: `verify.py` applies the draft's `compute_roots` to each vector. Valid vectors must start with a right sibling, yield `(R_m, R_n)` and use the anchor required by the draft; `older-root-*` must not yield `R_m`; `newer-root-*` must yield `R_m` but not `R_n`; `anchor-*` must yield `(R_m, R_n)` from a different anchor and start with a left sibling.
 
 
 ## Valid cases
@@ -66,7 +66,7 @@ The tampered vectors derive from case 10 (23 → 68); the anchor vector is const
 | `newer-root-extended-path` | Extra right sibling appended |
 | `newer-root-truncated-path` | Last element dropped: this is the valid proof 23 → 64, caught only by the signature over the detached payload |
 | `newer-root-zeroed-right-sibling` | A newer-only right sibling replaced by zeros |
-| `anchor-noncanonical-8-12` | 8 → 12 with anchor `[4,8)` and its shared sibling `[0,4)` prepended to the path (`LR`): folds to `R_8` and `R_12`, but the anchor of a proof from 8 MUST be `R_8`; a verifier can only tell if it knows `m` |
+| `anchor-noncanonical-8-12` | 8 → 12 with anchor `[4,8)` and its shared sibling `[0,4)` prepended to the path (`LR`): folds to `R_8` and `R_12`, but the anchor of a proof from 8 MUST be `R_8`. Rejected because the first sibling is a left one; a canonical anchor's first sibling is always on the right |
 | `cddl-anchor-31-bytes`, `cddl-anchor-33-bytes`, `cddl-anchor-text` | Anchor of the wrong size or type |
 | `cddl-element-hash-33-bytes`, `cddl-element-three-items`, `cddl-element-as-map`, `cddl-left-not-bool` | Malformed path element |
 | `cddl-missing-anchor`, `cddl-missing-path`, `cddl-empty-path` | Missing or empty required key |

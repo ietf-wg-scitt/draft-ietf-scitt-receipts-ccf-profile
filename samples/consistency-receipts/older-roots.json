@@ -1,0 +1,6 @@
+{
+  "invalid/newer-root-second-proof-anchor-bit-flipped.cbor": "16b49c67c4943baaeec85e2d7ac4cd1f9dbbab050cdd2480c8b1061c162430e2",
+  "invalid/newer-root-second-proof-other-roots.cbor": "16b49c67c4943baaeec85e2d7ac4cd1f9dbbab050cdd2480c8b1061c162430e2",
+  "invalid/first-sibling-unchanged-tree-24-24.cbor": "9a01dacdb56cd9835b4ce70b5f418d73bbbaa012d9e96800a0fcd11b53292e01",
+  "invalid/first-sibling-deeper-anchor-22-24.cbor": "5ca211b0c048e4a3eadc4ec67f196c8200dd3a77f087bebc85ae1250225dfb82"
+}

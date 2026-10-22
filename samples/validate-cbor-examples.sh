@@ -84,6 +84,15 @@ for f in "$consistency_dir"/invalid/*.cbor; do
     esac
 done
 
+receipts_dir="$script_dir/consistency-receipts"
+
+for f in "$receipts_dir"/invalid/*.cbor; do
+    echo "Validating ${f#"$script_dir"/} against CCF_Receipt"
+    cddl chk/all.cddl validate "$f"
+done
+
+python3 "$receipts_dir/verify.py" "$receipts_dir"
+
 python3 "$consistency_dir/verify.py" "$consistency_dir"
 
 inclusion_dir="$script_dir/inclusion-receipts"
