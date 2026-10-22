@@ -443,11 +443,11 @@ Table of Contents
    nodes differently.
 
    The first element of path MUST be a right sibling (left is false):
-   the anchor is the last complete subtree of the older tree, so its
-   first sibling can only hold transactions appended after T[m - 1].  A
-   proof whose first element is a left sibling does not relate two
-   distinct tree sizes and MUST be rejected.  In particular, there is no
-   consistency proof for m == n.
+   the anchor is the root of the last complete subtree of the older
+   tree, so its first sibling can only hold transactions appended after
+   T[m - 1].  A proof whose first element is a left sibling MUST be
+   rejected.  In particular, there is no consistency proof for m == n,
+   for which every sibling would be a left one.
 
    Neither tree size is carried by the proof, and verification does not
    establish m, n, or that the anchor is the node required above.  What
@@ -558,12 +558,9 @@ Table of Contents
    not needed for the guarantee the receipt provides (Section 7.3).
 
    The signature attests that payload is the root of a state of the
-   ledger.  Verification establishes that the state with root older_root
-   is a prefix of that signed state; it does not, and cannot without n,
-   establish that the signed value is the Merkle Tree Hash of
-   Section 2.1 of some list of transactions.  That is attested by the
-   signature of the Transparency Service, not checked by the Verifier
-   (Section 7.3).
+   ledger; verification establishes that the state with root older_root
+   is a prefix of it, not that the signed value is itself a Merkle Tree
+   Hash of Section 2.1 (Section 7.3).
 
 5.  Usage in COSE Receipts
 
