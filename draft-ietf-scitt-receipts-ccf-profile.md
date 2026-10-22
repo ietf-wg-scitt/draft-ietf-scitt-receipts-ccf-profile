@@ -308,7 +308,7 @@ Before applying this algorithm, the Verifier MUST have validated the `vdp` map a
 * `anchor` is a byte string of exactly HASH_SIZE (32) bytes;
 * `path` is a non-empty array, each element of which is an array of exactly two items: a boolean and a byte string of exactly HASH_SIZE (32) bytes.
 
-As for inclusion proofs ({{ccf-inclusion-receipt-verification}}), these checks prevent a digest of the wrong length from being folded as if it were a node of the tree.
+These checks ensure that `compute_roots` is only applied to well-formed proofs.
 
 A consistency receipt is verified against a trusted `older_root` as follows:
 
