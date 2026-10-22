@@ -495,8 +495,8 @@ Table of Contents
       exactly two items: a boolean and a byte string of exactly
       HASH_SIZE (32) bytes.
 
-   As for inclusion proofs (Figure 7), these checks prevent a digest of
-   the wrong length from being folded as if it were a node of the tree.
+   These checks ensure that compute_roots is only applied to well-formed
+   proofs.
 
    A consistency receipt is verified against a trusted older_root as
    follows:

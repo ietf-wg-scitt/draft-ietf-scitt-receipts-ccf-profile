@@ -1576,7 +1576,7 @@ ccf-consistency-proof = bstr .cbor {
             <p id="section-4.2-2.4.1"><code>path</code> is a non-empty array, each element of which is an array of exactly two items: a boolean and a byte string of exactly HASH_SIZE (32) bytes.<a href="#section-4.2-2.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.2-3">As for inclusion proofs (<a href="#ccf-inclusion-receipt-verification" class="auto internal xref">Figure 7</a>), these checks prevent a digest of the wrong length from being folded as if it were a node of the tree.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2-3">These checks ensure that <code>compute_roots</code> is only applied to well-formed proofs.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 <p id="section-4.2-4">A consistency receipt is verified against a trusted <code>older_root</code> as follows:<a href="#section-4.2-4" class="pilcrow">¶</a></p>
 <span id="name-ccf-consistency-receipt-ver"></span><div id="ccf-consistency-receipt-verification">
 <figure id="figure-9">
