@@ -17,18 +17,18 @@
 <meta content="draft-ietf-scitt-receipts-ccf-profile-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.34.1
-    Python 3.14.7
-    ConfigArgParse 1.7.7
+    Python 3.14.8
+    ConfigArgParse 1.8.0
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
     lxml 6.1.1
     natsort 8.4.0
-    platformdirs 4.11.10
+    platformdirs 4.13.4
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.8.4
+    wcwidth 0.9.2
 -->
 <link href="draft-ietf-scitt-receipts-ccf-profile.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1044,11 +1044,11 @@ svg {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">CCF Profile for COSE Receipts</td>
-<td class="right">September 2026</td>
+<td class="right">October 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Birkholz, et al.</td>
-<td class="center">Expires 27 March 2027</td>
+<td class="center">Expires 25 April 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1061,12 +1061,12 @@ svg {
 <dd class="internet-draft">draft-ietf-scitt-receipts-ccf-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-09-23" class="published">23 September 2026</time>
+<time datetime="2026-10-22" class="published">22 October 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-03-27">27 March 2027</time></dd>
+<dd class="expires"><time datetime="2027-04-25">25 April 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1112,7 +1112,7 @@ svg {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 27 March 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 25 April 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1373,7 +1373,22 @@ d[i] = internal-transaction-hash
 <p id="section-2.2-5">where HASH(internal-evidence) is the digest of the UTF-8 encoding of the <code>internal-evidence</code> text string. The leaf hash MTH({d[i]}) = HASH(d[i]) is therefore HASH(internal-transaction-hash || HASH(internal-evidence) || data-hash), which is the value computed by the first step of <code>compute_root</code> in <a href="#ccf-inclusion-receipt-verification" class="auto internal xref">Figure 7</a>. Note that the proof carries <code>internal-evidence</code> itself rather than its digest: revealing the evidence is what demonstrates that the transaction was committed (see below).<a href="#section-2.2-5" class="pilcrow">¶</a></p>
 <p id="section-2.2-6">The <code>internal-transaction-hash</code> and <code>internal-evidence</code> values are internal to the CCF implementation. They can be safely ignored by receipt Verifiers, but they commit the transparency service (TS) to the whole tree contents and may be used for additional, CCF-specific auditing.<a href="#section-2.2-6" class="pilcrow">¶</a></p>
 <p id="section-2.2-7"><code>internal-transaction-hash</code> is a hash over the complete entry in the <span>[<a href="#CCF-Ledger-Format" class="cite xref">CCF-Ledger-Format</a>]</span>, and <code>internal-evidence</code> is a revealable <span>[<a href="#CCF-Commit-Evidence" class="cite xref">CCF-Commit-Evidence</a>]</span> value that allows early persistence of ledger entries before distributed consensus can be established. This mechanism is useful to implement high-throughput transparency applications in Trusted Execution Environments (TEEs) that only provide a limited amount of memory, while maintaining high availability afforded by distributed consensus. Using a secure one-way function <code>f</code> to publish an <code>f(x)</code> commitment to an <code>x</code> value that can be revealed at a later time is a common feature of distributed protocols (<span>[<a href="#COIN-FLIPPING" class="cite xref">COIN-FLIPPING</a>]</span>). The hash function used for <code>internal-transaction-hash</code> is the same hash function <code>H</code> as in the Merkle Tree construction for the selected verifiable data structure algorithm. For <code>CCF_LEDGER_SHA256</code>, this function is <code>SHA256</code>.<a href="#section-2.2-7" class="pilcrow">¶</a></p>
-<p id="section-2.2-8"><code>data-hash</code> summarizes the application data included in the ledger at this transaction, which is a Signed Statement as defined by <span>[<a href="#RFC9943" class="cite xref">RFC9943</a>]</span>. The hash function used for <code>data-hash</code> is also the same hash function <code>H</code> as in the Merkle Tree construction for the selected verifiable data structure algorithm. For <code>CCF_LEDGER_SHA256</code>, this function is <code>SHA256</code>.<a href="#section-2.2-8" class="pilcrow">¶</a></p>
+<p id="section-2.2-8"><code>data-hash</code> is the hash of the bytes of the Signed Statement as registered: the <code>COSE_Sign1</code> encoding with CBOR tag 18 retained (<span><a href="https://rfc-editor.org/rfc/rfc9943#section-6.1" class="relref">Section 6.1</a> of [<a href="#RFC9943" class="cite xref">RFC9943</a>]</span>) and an empty unprotected header map (<span><a href="https://rfc-editor.org/rfc/rfc9943#section-6.3" class="relref">Section 6.3</a> of [<a href="#RFC9943" class="cite xref">RFC9943</a>]</span>), other elements as submitted. The hash function used for <code>data-hash</code> is also the same hash function <code>H</code> as in the Merkle Tree construction for the selected verifiable data structure algorithm. For <code>CCF_LEDGER_SHA256</code>, this function is <code>SHA256</code>.<a href="#section-2.2-8" class="pilcrow">¶</a></p>
+<p id="section-2.2-9"><code>data-hash</code> captures the Signed Statement, not the Transparent Statement of <span><a href="https://rfc-editor.org/rfc/rfc9943#section-7" class="relref">Section 7</a> of [<a href="#RFC9943" class="cite xref">RFC9943</a>]</span>, which adds Receipts to that unprotected header. A Verifier holding a Transparent Statement recovers the preimage as follows:<a href="#section-2.2-9" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-2.2-10">
+<li id="section-2.2-10.1">
+            <p id="section-2.2-10.1.1">Take the <code>COSE_Sign1</code> of the Transparent Statement.<a href="#section-2.2-10.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-2.2-10.2">
+            <p id="section-2.2-10.2.1">Replace its unprotected header with an empty map (<span><a href="https://rfc-editor.org/rfc/rfc9943#section-6.3" class="relref">Section 6.3</a> of [<a href="#RFC9943" class="cite xref">RFC9943</a>]</span>).<a href="#section-2.2-10.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-2.2-10.3">
+            <p id="section-2.2-10.3.1">Keep tag 18, and keep the encoded values of the protected header, payload and signature as received.<a href="#section-2.2-10.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-2.2-10.4">
+            <p id="section-2.2-10.4.1">Hash the resulting byte string with <code>H</code> (<code>SHA256</code> for <code>CCF_LEDGER_SHA256</code>).<a href="#section-2.2-10.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ol>
 </section>
 </div>
 </section>
@@ -1398,7 +1413,7 @@ ccf-proof-element = [
 
 ccf-inclusion-proof = bstr .cbor {
   &amp;(leaf: 1) =&gt; ccf-leaf
-  &amp;(path: 2) =&gt; [+ ccf-proof-element]
+  &amp;(path: 2) =&gt; [* ccf-proof-element]
 }
 </pre>
 </div>
@@ -1406,7 +1421,7 @@ ccf-inclusion-proof = bstr .cbor {
 <a href="#name-ccf-inclusion-proof-cddl" class="selfRef">CCF Inclusion Proof CDDL</a>
         </figcaption></figure>
 </div>
-<p id="section-3-3">Unlike some other tree algorithms, neither the index of the element nor the size of the tree is explicit in the inclusion proof. Read from the leaf up, the left-or-right bits are the binary decomposition of the index for the first <code>k</code> elements, where <code>k</code> is the largest power of two not greater than the tree size; for later elements the proof may have fewer elements than the depth of the index, and the index cannot be read from the proof alone.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-3">Unlike some other tree algorithms, neither the index of the element nor the size of the tree is explicit in the inclusion proof. Read from the leaf up, the left-or-right bits are the binary decomposition of the index for the first <code>k</code> elements, where <code>k</code> is the largest power of two not greater than the tree size; for later elements the proof may have fewer elements than the depth of the index, and the index cannot be read from the proof alone. The <code>path</code> is empty for a tree of size 1, whose root is the leaf hash.<a href="#section-3-3" class="pilcrow">¶</a></p>
 <div id="ccf-inclusion-proof-signature">
 <section id="section-3.1">
         <h3 id="name-ccf-inclusion-proof-signatu">
@@ -1433,10 +1448,32 @@ ccf-inclusion-proof = bstr .cbor {
         <h3 id="name-inclusion-proof-verificatio">
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-inclusion-proof-verificatio" class="section-name selfRef">Inclusion Proof Verification Algorithm</a>
         </h3>
-<p id="section-3.2-1">CCF uses the following algorithm to verify an inclusion receipt:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-1">After decoding each <code>ccf-inclusion-proof</code> byte string, the Verifier <span class="bcp14">MUST</span> validate that the decoded value is well constructed with regard to the schema defined in <a href="#ccf-inclusion-proof-cddl" class="auto internal xref">Figure 6</a>, including <a href="#ccf-leaf-cddl" class="auto internal xref">Figure 4</a> for the leaf, and <span class="bcp14">MUST</span> reject the proof before <code>compute_root</code> is called if any check fails. In particular:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2-2.1">
+            <p id="section-3.2-2.1.1">the byte string is valid CBOR (<span><a href="https://rfc-editor.org/rfc/rfc8949#section-5.3.1" class="relref">Section 5.3.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>), in particular the map has no duplicate keys;<a href="#section-3.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-2.2">
+            <p id="section-3.2-2.2.1">the map has the keys <code>leaf</code> (1) and <code>path</code> (2);<a href="#section-3.2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-2.3">
+            <p id="section-3.2-2.3.1"><code>internal-transaction-hash</code> is a byte string of exactly HASH_SIZE (32) bytes;<a href="#section-3.2-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-2.4">
+            <p id="section-3.2-2.4.1"><code>internal-evidence</code> is a text string of 1 to 1024 bytes of valid UTF-8;<a href="#section-3.2-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-2.5">
+            <p id="section-3.2-2.5.1"><code>data-hash</code> is a byte string of exactly HASH_SIZE (32) bytes;<a href="#section-3.2-2.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-2.6">
+            <p id="section-3.2-2.6.1"><code>path</code> is an array, each element of which is an array of exactly two items: a boolean and a byte string of exactly HASH_SIZE (32) bytes.<a href="#section-3.2-2.6.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-3.2-3">Without these checks, since leaf and interior node hashes are not domain separated, an oversized path element lets an existing leaf be recomputed as if it were an interior node, so that a proof for a leaf and <code>data-hash</code> of the attacker's choosing still recomputes a validly signed root (a second-preimage-style forgery).<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.2-4">CCF uses the following algorithm to verify an inclusion receipt:<a href="#section-3.2-4" class="pilcrow">¶</a></p>
 <span id="name-ccf-inclusion-receipt-verif"></span><div id="ccf-inclusion-receipt-verification">
 <figure id="figure-7">
-          <div class="alignLeft art-text artwork" id="section-3.2-2.1">
+          <div class="alignLeft art-text artwork" id="section-3.2-5.1">
 <pre>
 compute_root(proof):
   h := HASH(
@@ -1450,7 +1487,7 @@ compute_root(proof):
            HASH(h || hash) else
   return h
 
-verify_inclusion_receipt(inclusion_receipt):
+verify_inclusion_receipt(inclusion_receipt, statement_digest):
   assert(VDP_LABEL in inclusion_receipt.unprotected_header)
   let vdp = inclusion_receipt.unprotected_header[VDP_LABEL]
   assert(INCLUSION_PROOF_LABEL in vdp)
@@ -1459,6 +1496,8 @@ verify_inclusion_receipt(inclusion_receipt):
   assert(inclusion_receipt.payload == nil)
 
   for proof in proofs:
+      assert(validate_ccf_inclusion_proof(proof))
+      assert(proof.leaf.data-hash == statement_digest)
       # Use the Merkle Root as the detached payload
       let payload = compute_root(proof)
       assert(verify_cose(inclusion_receipt, payload))
@@ -1469,8 +1508,9 @@ verify_inclusion_receipt(inclusion_receipt):
 <a href="#name-ccf-inclusion-receipt-verif" class="selfRef">CCF Inclusion Receipt Verification</a>
           </figcaption></figure>
 </div>
-<p id="section-3.2-3"><code>VDP_LABEL</code> is the <code>vdp</code> header parameter label (396) and <code>INCLUSION_PROOF_LABEL</code> is the <code>inclusion-proof</code> proof type label (-1), both defined by <span>[<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>. Each element of <code>proofs</code> is a <code>ccf-inclusion-proof</code>, i.e., a byte string wrapping a CBOR-encoded map, which is decoded before <code>compute_root</code> is applied.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
-<p id="section-3.2-4">A description can also be found at <span>[<a href="#CCF-Receipt-Verification" class="cite xref">CCF-Receipt-Verification</a>]</span>.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.2-6"><code>VDP_LABEL</code> is the <code>vdp</code> header parameter label (396) and <code>INCLUSION_PROOF_LABEL</code> is the <code>inclusion-proof</code> proof type label (-1), both defined by <span>[<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>. Each element of <code>proofs</code> is a <code>ccf-inclusion-proof</code>, i.e., a byte string wrapping a CBOR-encoded map, which is decoded and validated against the schema defined in <a href="#ccf-inclusion-proof-cddl" class="auto internal xref">Figure 6</a> before <code>compute_root</code> is applied.<a href="#section-3.2-6" class="pilcrow">¶</a></p>
+<p id="section-3.2-7"><code>statement_digest</code> is the <code>data-hash</code> of the candidate Signed Statement, computed by the Verifier from the bytes of that Signed Statement as described in <a href="#transaction-components" class="auto internal xref">Section 2.2</a>; it <span class="bcp14">MUST NOT</span> be taken from the receipt. Every proof in the receipt <span class="bcp14">MUST</span> have a <code>data-hash</code> equal to <code>statement_digest</code>. This defines how the inclusion proofs of this profile are consumed (<span><a href="https://rfc-editor.org/rfc/rfc9942#section-4.4.1" class="relref">Section 4.4.1</a> of [<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>), by applying them to the bytes of a candidate entry (<span><a href="https://rfc-editor.org/rfc/rfc9942#section-5.2.1" class="relref">Section 5.2.1</a> of [<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>).<a href="#section-3.2-7" class="pilcrow">¶</a></p>
+<p id="section-3.2-8">A description can also be found at <span>[<a href="#CCF-Receipt-Verification" class="cite xref">CCF-Receipt-Verification</a>]</span>.<a href="#section-3.2-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1637,7 +1677,7 @@ unprotected-header-map = {
           <p id="section-5-6.3.1">consistency-proof (label: -2): Consistency proofs. Value type: array of <code>ccf-consistency-proof</code>.<a href="#section-5-6.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-5-7">At least one of <code>inclusion-proof</code> and <code>consistency-proof</code> <span class="bcp14">MUST</span> be present. All proofs in a receipt recompute the same root (the newer root, for consistency proofs), which is the detached payload. The proof type is conveyed by the key of the <code>vdp</code> map, as specified by <span>[<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>; it is not carried in a separate header parameter.<a href="#section-5-7" class="pilcrow">¶</a></p>
+<p id="section-5-7">At least one of <code>inclusion-proof</code> and <code>consistency-proof</code> <span class="bcp14">MUST</span> be present. All proofs in a receipt recompute the same root (the newer root, for consistency proofs), which is the detached payload. The proof type is conveyed by the key of the <code>vdp</code> map, as specified by <span>[<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>; it is not carried in a separate header parameter. A Verifier <span class="bcp14">MUST</span> reject a receipt whose <code>vdp</code> map is not valid CBOR (<span><a href="https://rfc-editor.org/rfc/rfc8949#section-5.3.1" class="relref">Section 5.3.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>) or does not match <code>verifiable-proofs</code> in <a href="#unprotected-header-map-cddl" class="auto internal xref">Figure 11</a>, before applying either verification algorithm.<a href="#section-5-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="privacy-considerations">
@@ -1808,6 +1848,10 @@ Clients can mitigate this risk in two ways: by regularly auditing the consistenc
 <dt id="RFC8174">[RFC8174]</dt>
         <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8949">[RFC8949]</dt>
+        <dd>
+<span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">P. Hoffman</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">STD 94</span>, <span class="seriesInfo">RFC 8949</span>, <span class="seriesInfo">DOI 10.17487/RFC8949</span>, <time datetime="2020-12" class="refDate">December 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8949">https://www.rfc-editor.org/rfc/rfc8949</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9162">[RFC9162]</dt>
         <dd>
