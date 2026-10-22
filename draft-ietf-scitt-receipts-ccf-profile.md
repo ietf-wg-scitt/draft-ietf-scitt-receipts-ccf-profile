@@ -265,7 +265,7 @@ verify_inclusion_receipt(inclusion_receipt, statement_digest):
 
 `VDP_LABEL` is the `vdp` header parameter label (396) and `INCLUSION_PROOF_LABEL` is the `inclusion-proof` proof type label (-1), both defined by {{-cose-receipts}}. Each element of `proofs` is a `ccf-inclusion-proof`, i.e., a byte string wrapping a CBOR-encoded map, which is decoded and validated against the schema defined in {{ccf-inclusion-proof-cddl}} before `compute_root` is applied.
 
-`statement_digest` is the `data-hash` of the candidate Signed Statement, computed by the Verifier from the bytes of that Signed Statement as described in {{transaction-components}}; it MUST NOT be taken from the receipt. Every proof in the receipt MUST have a `data-hash` equal to `statement_digest`. This defines how the inclusion proofs of this profile are consumed ({{Section 4.4.1 of -cose-receipts}}), by applying them to the bytes of a candidate entry ({{Section 5.2.1 of -cose-receipts}}).
+`statement_digest` is the `data-hash` of the candidate Signed Statement, computed by the Verifier from the bytes of that Signed Statement as described in {{transaction-components}}; it MUST NOT be taken from the receipt. Every proof in the receipt MUST have a `data-hash` equal to `statement_digest`. This defines how the inclusion proofs of this profile are consumed ({{Section 4.4.1 of -cose-receipts}}), by applying them to the bytes of a candidate entry ({{Section 5.2.1 of -cose-receipts}}). If the receipt also carries consistency proofs, they MUST recompute the same root ({{receipt-usage}}).
 
 A description can also be found at {{CCF-Receipt-Verification}}.
 
@@ -301,6 +301,15 @@ The payload is the newer root `R_n`, and MUST be detached. When the array contai
 
 ## Consistency Proof Verification Algorithm
 
+Before applying this algorithm, the Verifier MUST have validated the `vdp` map as required in {{receipt-usage}}. After decoding each `ccf-consistency-proof` byte string, the Verifier MUST validate that the decoded value is well constructed with regard to the schema defined in {{ccf-consistency-proof-cddl}}, and MUST reject the proof before `compute_roots` is called if any check fails. In particular:
+
+* the byte string is valid CBOR ({{Section 5.3.1 of RFC8949}}), in particular the map has no duplicate keys;
+* the map has the keys `anchor` (1) and `path` (2);
+* `anchor` is a byte string of exactly HASH_SIZE (32) bytes;
+* `path` is a non-empty array, each element of which is an array of exactly two items: a boolean and a byte string of exactly HASH_SIZE (32) bytes.
+
+As for inclusion proofs ({{ccf-inclusion-receipt-verification}}), these checks prevent a digest of the wrong length from being folded as if it were a node of the tree.
+
 A consistency receipt is verified against a trusted `older_root` as follows:
 
 ~~~
@@ -327,6 +336,7 @@ verify_consistency_receipt(consistency_receipt, older_root):
   let payload = nil
   let older_root_found = false
   for proof in proofs:
+      assert(validate_ccf_consistency_proof(proof))
       # The first sibling of the anchor is in the newer tree only
       assert(proof.path[0].left == false)
       let older, newer = compute_roots(proof)
@@ -344,7 +354,9 @@ verify_consistency_receipt(consistency_receipt, older_root):
 ~~~
 {: #ccf-consistency-receipt-verification title="CCF Consistency Receipt Verification"}
 
-`CONSISTENCY_PROOF_LABEL` is the `consistency-proof` proof type label (-2) defined by {{-cose-receipts}}. Each element of `proofs` is a `ccf-consistency-proof`, i.e., a byte string wrapping a CBOR-encoded map, which is decoded before `compute_roots` is applied. All proofs are folded before the signature is checked, so that a receipt in which any proof computes to a different newer root is rejected, whichever proof the Verifier is interested in. The comparison with `older_root` binds the receipt to a state the verifier already trusts: a receipt in which no proof recomputes `older_root` proves nothing about that state. It also confirms that the anchor is a node of that state, but not that it is the anchor required in {{ccf-consistency-proofs}}, which is not needed for the guarantee the receipt provides ({{consistency-receipts-security}}).
+`CONSISTENCY_PROOF_LABEL` is the `consistency-proof` proof type label (-2) defined by {{-cose-receipts}}. Each element of `proofs` is a `ccf-consistency-proof`, i.e., a byte string wrapping a CBOR-encoded map, which is decoded and validated against the schema defined in {{ccf-consistency-proof-cddl}} before `compute_roots` is applied. All proofs are folded before the signature is checked, so that a receipt in which any proof computes to a different newer root is rejected, whichever proof the Verifier is interested in. If the receipt also carries inclusion proofs, they MUST recompute the same root ({{receipt-usage}}). The comparison with `older_root` binds the receipt to a state the verifier already trusts: a receipt in which no proof recomputes `older_root` proves nothing about that state. It also confirms that the anchor is a node of that state, but not that it is the anchor required in {{ccf-consistency-proofs}}, which is not needed for the guarantee the receipt provides ({{consistency-receipts-security}}).
+
+The signature attests that `payload` is the root of a state of the ledger. Verification establishes that the state with root `older_root` is a prefix of that signed state; it does not, and cannot without `n`, establish that the signed value is the Merkle Tree Hash of {{merkle-tree-shape}} of some list of transactions. That is attested by the signature of the Transparency Service, not checked by the Verifier ({{consistency-receipts-security}}).
 
 # Usage in COSE Receipts {#receipt-usage}
 
@@ -391,7 +403,7 @@ unprotected-header-map = {
 - inclusion-proof (label: -1): Inclusion proofs. Value type: array of `ccf-inclusion-proof`.
 - consistency-proof (label: -2): Consistency proofs. Value type: array of `ccf-consistency-proof`.
 
-At least one of `inclusion-proof` and `consistency-proof` MUST be present. All proofs in a receipt recompute the same root (the newer root, for consistency proofs), which is the detached payload. The proof type is conveyed by the key of the `vdp` map, as specified by {{-cose-receipts}}; it is not carried in a separate header parameter. A Verifier MUST reject a receipt whose `vdp` map is not valid CBOR ({{Section 5.3.1 of RFC8949}}) or does not match `verifiable-proofs` in {{unprotected-header-map-cddl}}, before applying either verification algorithm.
+At least one of `inclusion-proof` and `consistency-proof` MUST be present. All proofs in a receipt, of either type, MUST recompute the same root (the newer root, for consistency proofs), which is the detached payload. A Verifier MUST reject a receipt in which any proof present in the `vdp` map recomputes a different root, including proofs of a type it does not otherwise use: the `vdp` map is in the unprotected header, so proofs can be added to a receipt without invalidating its signature. The proof type is conveyed by the key of the `vdp` map, as specified by {{-cose-receipts}}; it is not carried in a separate header parameter. A Verifier MUST reject a receipt whose `vdp` map is not valid CBOR ({{Section 5.3.1 of RFC8949}}) or does not match `verifiable-proofs` in {{unprotected-header-map-cddl}}, before applying either verification algorithm.
 
 # Privacy Considerations
 
@@ -403,7 +415,7 @@ See the privacy considerations section of:
 
 The security considerations of {{-cose-receipts}} apply.
 
-## Trusted Execution Environments
+## Trusted Execution Environments {#trusted-execution-environments}
 
 CCF networks of nodes rely on executing in TEEs to secure their function, in particular:
 
@@ -421,7 +433,9 @@ An operator has the ability to start successor networks with a distinct identity
 
 A consistency receipt relates two roots and establishes nothing about ledger contents on its own. Verifiers MUST compare the recomputed older root with a root they have already verified, not with one supplied alongside the receipt. Which signing key a Verifier accepts for a consistency receipt, including one issued by a successor network as described in {{operators}}, is determined by the Verifier's trust policy as for any Receipt of {{-cose-receipts}}, and is not constrained by this profile. Consistency receipts also cannot provide guarantees about the correct application of Registration Policies, which requires additional material as outlined in {{Section 5.1.1.2 of -scitt-architecture}}.
 
-A consistency proof carries no tree sizes, and the signature covers only the newer root, so sizes cannot be authenticated by the receipt. None is needed for the guarantee it provides. The older root is already trusted by the Verifier, so an anchor and left siblings that fold to it are, barring a second preimage of `H`, nodes of the older tree; the newer root is signed, so right siblings that fold to it are nodes of the newer tree. Since left siblings are shared by both foldings and right siblings only extend the newer one, a proof that passes {{ccf-consistency-receipt-verification}} shows that every transaction of the older tree is at the same position in the newer tree. This holds whether or not the anchor is the canonical node of {{ccf-consistency-proofs}}: a non-canonical anchor opens part of the older tree needlessly but does not change what is proved. A Verifier that needs the sizes `m` or `n` of the two trees, for instance to check the shape of the proof against {{Section 2.1.4.1 of RFC9162}}, MUST obtain them from a source it trusts independently of the receipt; this document does not define one.
+A consistency proof carries no tree sizes, and the signature covers only the newer root, so sizes cannot be authenticated by the receipt. None is needed for the guarantee it provides. The older root is already trusted by the Verifier, so an anchor and left siblings that fold to it are, barring a second preimage of `H`, nodes of the older tree; the newer root is signed, so right siblings that fold to it are nodes of the signed state. Since left siblings are shared by both foldings and right siblings only extend the newer one, a proof that passes {{ccf-consistency-receipt-verification}} shows that every transaction of the older tree is at the same position in the signed state. This holds whether or not the anchor is the canonical node of {{ccf-consistency-proofs}}: a non-canonical anchor opens part of the older tree needlessly but does not change what is proved.
+
+What the Verifier cannot check is that the signed state is itself a tree of {{merkle-tree-shape}}. A Transparency Service that signs a value which is not the Merkle Tree Hash of any list of transactions, for instance `HASH(R_m || HASH(d[m]))` for an `m` that is not a power of two, produces a receipt that passes {{ccf-consistency-receipt-verification}} against `R_m`. Such a value is not a prefix of any later canonical root, so no further consistency receipt can relate it to the ledger, and a Transparency Service able to sign it could equally sign a genuine but divergent tree; this is the misbehaviour that {{trusted-execution-environments}} and {{operators}} address. A Verifier that needs the sizes `m` or `n` of the two trees, for instance to check the shape of the proof against {{Section 2.1.4.1 of RFC9162}} or that the signed root is canonical, MUST obtain them from a source it trusts independently of the receipt; this document does not define one.
 
 # IANA Considerations
 
