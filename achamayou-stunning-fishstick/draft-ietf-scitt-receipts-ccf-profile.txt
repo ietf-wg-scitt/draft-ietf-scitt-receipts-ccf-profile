@@ -704,20 +704,13 @@ Table of Contents
    opens part of the older tree needlessly but does not change what is
    proved.
 
-   What the Verifier cannot check is that the signed state is itself a
-   tree of Section 2.1.  A Transparency Service that signs a value which
-   is not the Merkle Tree Hash of any list of transactions, for instance
-   HASH(R_m || HASH(d[m])) for an m that is not a power of two, produces
-   a receipt that passes Figure 9 against R_m.  Such a value is not a
-   prefix of any later canonical root, so no further consistency receipt
-   can relate it to the ledger, and a Transparency Service able to sign
-   it could equally sign a genuine but divergent tree; this is the
-   misbehaviour that Section 7.1 and Section 7.2 address.  A Verifier
-   that needs the sizes m or n of the two trees, for instance to check
-   the shape of the proof against Section 2.1.4.1 of [RFC9162] or that
-   the signed root is canonical, MUST obtain them from a source it
-   trusts independently of the receipt; this document does not define
-   one.
+   Verification does not establish that the signed value is itself a
+   Merkle Tree Hash of Section 2.1; that is attested by the Transparency
+   Service, and a Transparency Service signing values that are not roots
+   of its ledger is the misbehaviour addressed in Section 7.1 and
+   Section 7.2.  A Verifier that needs m or n MUST obtain them from a
+   source it trusts independently of the receipt; this document does not
+   define one.
 
 8.  IANA Considerations
 
