@@ -1509,7 +1509,7 @@ verify_inclusion_receipt(inclusion_receipt, statement_digest):
           </figcaption></figure>
 </div>
 <p id="section-3.2-6"><code>VDP_LABEL</code> is the <code>vdp</code> header parameter label (396) and <code>INCLUSION_PROOF_LABEL</code> is the <code>inclusion-proof</code> proof type label (-1), both defined by <span>[<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>. Each element of <code>proofs</code> is a <code>ccf-inclusion-proof</code>, i.e., a byte string wrapping a CBOR-encoded map, which is decoded and validated against the schema defined in <a href="#ccf-inclusion-proof-cddl" class="auto internal xref">Figure 6</a> before <code>compute_root</code> is applied.<a href="#section-3.2-6" class="pilcrow">¶</a></p>
-<p id="section-3.2-7"><code>statement_digest</code> is the <code>data-hash</code> of the candidate Signed Statement, computed by the Verifier from the bytes of that Signed Statement as described in <a href="#transaction-components" class="auto internal xref">Section 2.2</a>; it <span class="bcp14">MUST NOT</span> be taken from the receipt. Every proof in the receipt <span class="bcp14">MUST</span> have a <code>data-hash</code> equal to <code>statement_digest</code>. This defines how the inclusion proofs of this profile are consumed (<span><a href="https://rfc-editor.org/rfc/rfc9942#section-4.4.1" class="relref">Section 4.4.1</a> of [<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>), by applying them to the bytes of a candidate entry (<span><a href="https://rfc-editor.org/rfc/rfc9942#section-5.2.1" class="relref">Section 5.2.1</a> of [<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>).<a href="#section-3.2-7" class="pilcrow">¶</a></p>
+<p id="section-3.2-7"><code>statement_digest</code> is the <code>data-hash</code> of the candidate Signed Statement, computed by the Verifier from the bytes of that Signed Statement as described in <a href="#transaction-components" class="auto internal xref">Section 2.2</a>; it <span class="bcp14">MUST NOT</span> be taken from the receipt. Every proof in the receipt <span class="bcp14">MUST</span> have a <code>data-hash</code> equal to <code>statement_digest</code>. This defines how the inclusion proofs of this profile are consumed (<span><a href="https://rfc-editor.org/rfc/rfc9942#section-4.4.1" class="relref">Section 4.4.1</a> of [<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>), by applying them to the bytes of a candidate entry (<span><a href="https://rfc-editor.org/rfc/rfc9942#section-5.2.1" class="relref">Section 5.2.1</a> of [<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>). If the receipt also carries consistency proofs, they <span class="bcp14">MUST</span> recompute the same root (<a href="#receipt-usage" class="auto internal xref">Section 5</a>).<a href="#section-3.2-7" class="pilcrow">¶</a></p>
 <p id="section-3.2-8">A description can also be found at <span>[<a href="#CCF-Receipt-Verification" class="cite xref">CCF-Receipt-Verification</a>]</span>.<a href="#section-3.2-8" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1539,7 +1539,9 @@ ccf-consistency-proof = bstr .cbor {
 <a href="#name-ccf-consistency-proof-cddl" class="selfRef">CCF Consistency Proof CDDL</a>
         </figcaption></figure>
 </div>
-<p id="section-4-3">The <code>anchor</code> <span class="bcp14">MUST</span> be the root of the subtree covering transactions <code>T[m - 2^t], ..., T[m - 1]</code>, where <code>2^t</code> is the largest power of two dividing <code>m</code>; when <code>m</code> is a power of two, the anchor is <code>R_m</code>. The <code>path</code> lists the sibling of each node on the path from the anchor to <code>R_n</code>, tagged as in inclusion proofs. Left siblings belong to both trees and right siblings only to the newer one, so folding the anchor with the left siblings alone yields <code>R_m</code>, and with all siblings <code>R_n</code>. Neither tree size is needed for verification. Apart from the tags, <code>path</code> holds the same digests in the same order as the consistency proof of <span><a href="https://rfc-editor.org/rfc/rfc9162#section-2.1.4.1" class="relref">Section 2.1.4.1</a> of [<a href="#RFC9162" class="cite xref">RFC9162</a>]</span> for the same sizes, with the anchor as the first element of that proof when <code>m</code> is not a power of two.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-3">The <code>anchor</code> <span class="bcp14">MUST</span> be the root of the subtree covering transactions <code>T[m - 2^t], ..., T[m - 1]</code>, where <code>2^t</code> is the largest power of two dividing <code>m</code>; when <code>m</code> is a power of two, the anchor is <code>R_m</code>. The <code>path</code> lists the sibling of each node on the path from the anchor to <code>R_n</code>, tagged as in inclusion proofs. Left siblings belong to both trees and right siblings only to the newer one, so folding the anchor with the left siblings alone yields <code>R_m</code>, and with all siblings <code>R_n</code>. Apart from the tags, <code>path</code> holds the digests of the same subtrees, in the same order, as the consistency proof of <span><a href="https://rfc-editor.org/rfc/rfc9162#section-2.1.4.1" class="relref">Section 2.1.4.1</a> of [<a href="#RFC9162" class="cite xref">RFC9162</a>]</span> for the same sizes, with the anchor as the first element of that proof when <code>m</code> is not a power of two. The digests themselves are those of the Merkle Tree Hash of <a href="#merkle-tree-shape" class="auto internal xref">Section 2.1</a>, not of <span>[<a href="#RFC9162" class="cite xref">RFC9162</a>]</span>, which prefixes leaves and nodes differently.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-4">The first element of <code>path</code> <span class="bcp14">MUST</span> be a right sibling (<code>left</code> is <code>false</code>): the anchor is the root of the last complete subtree of the older tree, so its first sibling can only hold transactions appended after <code>T[m - 1]</code>. A proof whose first element is a left sibling <span class="bcp14">MUST</span> be rejected. In particular, there is no consistency proof for <code>m == n</code>, for which every sibling would be a left one.<a href="#section-4-4" class="pilcrow">¶</a></p>
+<p id="section-4-5">Neither tree size is carried by the proof, and verification does not establish <code>m</code>, <code>n</code>, or that the anchor is the node required above. What verification establishes is that every transaction of the tree with root <code>R_m</code> is at the same position in the tree with root <code>R_n</code> (<a href="#consistency-receipts-security" class="auto internal xref">Section 7.3</a>); the anchor requirement fixes a canonical encoding of that fact.<a href="#section-4-5" class="pilcrow">¶</a></p>
 <div id="ccf-consistency-proof-signature">
 <section id="section-4.1">
         <h3 id="name-ccf-consistency-proof-signa">
@@ -1551,7 +1553,7 @@ ccf-consistency-proof = bstr .cbor {
             <p id="section-4.1-2.1.1"><code>vdp</code> (label 396): map. It <span class="bcp14">MUST</span> contain the <code>consistency-proof</code> (-2) key, whose value is an array of one or more <code>ccf-consistency-proof</code> values, each relating one older root to the newer root.<a href="#section-4.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.1-3">The payload is the newer root <code>R_n</code>, and <span class="bcp14">MUST</span> be detached. When the array contains more than one consistency proof, every proof <span class="bcp14">MUST</span> compute to the same newer root. The older root <code>R_m</code> is not carried by the receipt: the verifier already holds it, typically as the root recomputed from an inclusion receipt (<a href="#ccf-inclusion-receipt-verification" class="auto internal xref">Figure 7</a>), and checks that the proof recomputes it.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1-3">The payload is the newer root <code>R_n</code>, and <span class="bcp14">MUST</span> be detached. When the array contains more than one consistency proof, every proof <span class="bcp14">MUST</span> compute to the same newer root, and a Verifier <span class="bcp14">MUST</span> reject the receipt if any proof computes to a different one. The older root <code>R_m</code> is not carried by the receipt: the verifier already holds it, typically as the root recomputed from an inclusion receipt (<a href="#ccf-inclusion-receipt-verification" class="auto internal xref">Figure 7</a>), and checks that at least one proof recomputes it. Other proofs in the same array may start from other older roots.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="consistency-proof-verification-algorithm">
@@ -1559,10 +1561,26 @@ ccf-consistency-proof = bstr .cbor {
         <h3 id="name-consistency-proof-verificat">
 <a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-consistency-proof-verificat" class="section-name selfRef">Consistency Proof Verification Algorithm</a>
         </h3>
-<p id="section-4.2-1">A consistency receipt is verified against a trusted <code>older_root</code> as follows:<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-1">Before applying this algorithm, the Verifier <span class="bcp14">MUST</span> have validated the <code>vdp</code> map as required in <a href="#receipt-usage" class="auto internal xref">Section 5</a>. After decoding each <code>ccf-consistency-proof</code> byte string, the Verifier <span class="bcp14">MUST</span> validate that the decoded value is well constructed with regard to the schema defined in <a href="#ccf-consistency-proof-cddl" class="auto internal xref">Figure 8</a>, and <span class="bcp14">MUST</span> reject the proof before <code>compute_roots</code> is called if any check fails. In particular:<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.2-2.1">
+            <p id="section-4.2-2.1.1">the byte string is valid CBOR (<span><a href="https://rfc-editor.org/rfc/rfc8949#section-5.3.1" class="relref">Section 5.3.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>), in particular the map has no duplicate keys;<a href="#section-4.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.2-2.2">
+            <p id="section-4.2-2.2.1">the map has the keys <code>anchor</code> (1) and <code>path</code> (2);<a href="#section-4.2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.2-2.3">
+            <p id="section-4.2-2.3.1"><code>anchor</code> is a byte string of exactly HASH_SIZE (32) bytes;<a href="#section-4.2-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.2-2.4">
+            <p id="section-4.2-2.4.1"><code>path</code> is a non-empty array, each element of which is an array of exactly two items: a boolean and a byte string of exactly HASH_SIZE (32) bytes.<a href="#section-4.2-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-4.2-3">These checks ensure that <code>compute_roots</code> is only applied to well-formed proofs.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2-4">A consistency receipt is verified against a trusted <code>older_root</code> as follows:<a href="#section-4.2-4" class="pilcrow">¶</a></p>
 <span id="name-ccf-consistency-receipt-ver"></span><div id="ccf-consistency-receipt-verification">
 <figure id="figure-9">
-          <div class="alignLeft art-text artwork" id="section-4.2-2.1">
+          <div class="alignLeft art-text artwork" id="section-4.2-5.1">
 <pre>
 compute_roots(proof):
   older := proof.anchor
@@ -1584,17 +1602,23 @@ verify_consistency_receipt(consistency_receipt, older_root):
   assert(len(proofs) &gt; 0)
   assert(consistency_receipt.payload == nil)
 
-  let payloads = []
+  let payload = nil
+  let older_root_found = false
   for proof in proofs:
+      assert(validate_ccf_consistency_proof(proof))
+      # The first sibling of the anchor is in the newer tree only
+      assert(proof.path[0].left == false)
       let older, newer = compute_roots(proof)
+      # Every proof must compute to the same newer root
+      assert(payload == nil or newer == payload)
+      payload := newer
       if older == older_root:
-          payloads.append(newer)
+          older_root_found := true
   # At least one proof must start from older_root
-  assert(len(payloads) &gt; 0)
+  assert(older_root_found)
 
-  for payload in payloads:
-      # Use the newer Merkle Root as the detached payload
-      assert(verify_cose(consistency_receipt, payload))
+  # Use the common newer Merkle Root as the detached payload
+  assert(verify_cose(consistency_receipt, payload))
   return true
 </pre>
 </div>
@@ -1602,7 +1626,8 @@ verify_consistency_receipt(consistency_receipt, older_root):
 <a href="#name-ccf-consistency-receipt-ver" class="selfRef">CCF Consistency Receipt Verification</a>
           </figcaption></figure>
 </div>
-<p id="section-4.2-3"><code>CONSISTENCY_PROOF_LABEL</code> is the <code>consistency-proof</code> proof type label (-2) defined by <span>[<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>. Each element of <code>proofs</code> is a <code>ccf-consistency-proof</code>, i.e., a byte string wrapping a CBOR-encoded map, which is decoded before <code>compute_roots</code> is applied. The comparison with <code>older_root</code> binds the receipt to a state the verifier already trusts: a receipt in which no proof recomputes <code>older_root</code> proves nothing about that state. It also confirms that the anchor is a node of that state, but not that it is the anchor required in <a href="#ccf-consistency-proofs" class="auto internal xref">Section 4</a>, which cannot be checked without knowing <code>m</code>.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2-6"><code>CONSISTENCY_PROOF_LABEL</code> is the <code>consistency-proof</code> proof type label (-2) defined by <span>[<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>. Each element of <code>proofs</code> is a <code>ccf-consistency-proof</code>, i.e., a byte string wrapping a CBOR-encoded map, which is decoded and validated against the schema defined in <a href="#ccf-consistency-proof-cddl" class="auto internal xref">Figure 8</a> before <code>compute_roots</code> is applied. All proofs are folded before the signature is checked, so that a receipt in which any proof computes to a different newer root is rejected, whichever proof the Verifier is interested in. If the receipt also carries inclusion proofs, they <span class="bcp14">MUST</span> recompute the same root (<a href="#receipt-usage" class="auto internal xref">Section 5</a>). The comparison with <code>older_root</code> binds the receipt to a state the verifier already trusts: a receipt in which no proof recomputes <code>older_root</code> proves nothing about that state. It also confirms that the anchor is a node of that state, but not that it is the anchor required in <a href="#ccf-consistency-proofs" class="auto internal xref">Section 4</a>, which is not needed for the guarantee the receipt provides (<a href="#consistency-receipts-security" class="auto internal xref">Section 7.3</a>).<a href="#section-4.2-6" class="pilcrow">¶</a></p>
+<p id="section-4.2-7">The signature attests that <code>payload</code> is the root of a state of the ledger; verification establishes that the state with root <code>older_root</code> is a prefix of it, not that the signed value is itself a Merkle Tree Hash of <a href="#merkle-tree-shape" class="auto internal xref">Section 2.1</a> (<a href="#consistency-receipts-security" class="auto internal xref">Section 7.3</a>).<a href="#section-4.2-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1677,7 +1702,7 @@ unprotected-header-map = {
           <p id="section-5-6.3.1">consistency-proof (label: -2): Consistency proofs. Value type: array of <code>ccf-consistency-proof</code>.<a href="#section-5-6.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-5-7">At least one of <code>inclusion-proof</code> and <code>consistency-proof</code> <span class="bcp14">MUST</span> be present. All proofs in a receipt recompute the same root (the newer root, for consistency proofs), which is the detached payload. The proof type is conveyed by the key of the <code>vdp</code> map, as specified by <span>[<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>; it is not carried in a separate header parameter. A Verifier <span class="bcp14">MUST</span> reject a receipt whose <code>vdp</code> map is not valid CBOR (<span><a href="https://rfc-editor.org/rfc/rfc8949#section-5.3.1" class="relref">Section 5.3.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>) or does not match <code>verifiable-proofs</code> in <a href="#unprotected-header-map-cddl" class="auto internal xref">Figure 11</a>, before applying either verification algorithm.<a href="#section-5-7" class="pilcrow">¶</a></p>
+<p id="section-5-7">At least one of <code>inclusion-proof</code> and <code>consistency-proof</code> <span class="bcp14">MUST</span> be present. All proofs in a receipt, of either type, <span class="bcp14">MUST</span> recompute the same root (the newer root, for consistency proofs), which is the detached payload. A Verifier <span class="bcp14">MUST</span> reject a receipt in which any proof present in the <code>vdp</code> map recomputes a different root, including proofs of a type it does not otherwise use: the <code>vdp</code> map is in the unprotected header, so proofs can be added to a receipt without invalidating its signature. The proof type is conveyed by the key of the <code>vdp</code> map, as specified by <span>[<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>; it is not carried in a separate header parameter. A Verifier <span class="bcp14">MUST</span> reject a receipt whose <code>vdp</code> map is not valid CBOR (<span><a href="https://rfc-editor.org/rfc/rfc8949#section-5.3.1" class="relref">Section 5.3.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>) or does not match <code>verifiable-proofs</code> in <a href="#unprotected-header-map-cddl" class="auto internal xref">Figure 11</a>, before applying either verification algorithm.<a href="#section-5-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="privacy-considerations">
@@ -1725,12 +1750,14 @@ Clients can mitigate this risk in two ways: by regularly auditing the consistenc
 <p id="section-7.2-1">An operator has the ability to start successor networks with a distinct identity. The operator of a CCF network can recover the service by starting a successor network, for example a new CCF network with its own service identity, that endorses the ledger state of the previous instance. This provides service continuity after a catastrophic failure of a majority of the nodes. However, a malicious operator could exploit this mechanism and truncate the ledger’s history by initializing the successor network from an earlier ledger prefix, thereby omitting some later entries. Clients can mitigate this risk by auditing the successor ledger and verifying that their latest known receipts from the prior service are included in the successor’s ledger.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="consistency-receipts">
+<div id="consistency-receipts-security">
 <section id="section-7.3">
         <h3 id="name-consistency-receipts">
 <a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-consistency-receipts" class="section-name selfRef">Consistency Receipts</a>
         </h3>
-<p id="section-7.3-1">A consistency receipt relates two roots and establishes nothing about ledger contents on its own. Verifiers <span class="bcp14">MUST</span> compare the recomputed older root with a root they have already verified, not with one supplied alongside the receipt. Consistency receipts also cannot provide guarantees about the correct application of Registration Policies, which requires additional material as outlined in <span><a href="https://rfc-editor.org/rfc/rfc9943#section-5.1.1.2" class="relref">Section 5.1.1.2</a> of [<a href="#RFC9943" class="cite xref">RFC9943</a>]</span>.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.3-1">A consistency receipt relates two roots and establishes nothing about ledger contents on its own. Verifiers <span class="bcp14">MUST</span> compare the recomputed older root with a root they have already verified; which signing key they accept, including that of a successor network (<a href="#operators" class="auto internal xref">Section 7.2</a>), is their trust policy as for any Receipt of <span>[<a href="#RFC9942" class="cite xref">RFC9942</a>]</span>. Consistency receipts also cannot provide guarantees about the correct application of Registration Policies, which requires additional material as outlined in <span><a href="https://rfc-editor.org/rfc/rfc9943#section-5.1.1.2" class="relref">Section 5.1.1.2</a> of [<a href="#RFC9943" class="cite xref">RFC9943</a>]</span>.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.3-2">The receipt carries no tree sizes and the signature covers only the newer root, so sizes cannot be authenticated; none is needed. Because the older root is trusted and the newer root is signed, every node a passing proof folds is, barring a second preimage of <code>H</code>, a node of one of the two states, and every transaction of the older state is at the same position in the signed one. This holds whether or not the anchor is the canonical node of <a href="#ccf-consistency-proofs" class="auto internal xref">Section 4</a>.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
+<p id="section-7.3-3">Verification does not establish that the signed value is itself a Merkle Tree Hash of <a href="#merkle-tree-shape" class="auto internal xref">Section 2.1</a>; that is attested by the Transparency Service, and a Transparency Service signing values that are not roots of its ledger is the misbehaviour addressed in <a href="#trusted-execution-environments" class="auto internal xref">Section 7.1</a> and <a href="#operators" class="auto internal xref">Section 7.2</a>. A Verifier that needs <code>m</code> or <code>n</code> <span class="bcp14">MUST</span> obtain them from a source it trusts independently of the receipt; this document does not define one.<a href="#section-7.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
