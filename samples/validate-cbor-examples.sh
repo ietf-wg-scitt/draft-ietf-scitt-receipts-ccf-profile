@@ -85,3 +85,23 @@ for f in "$consistency_dir"/invalid/*.cbor; do
 done
 
 python3 "$consistency_dir/verify.py" "$consistency_dir"
+
+inclusion_dir="$script_dir/inclusion-receipts"
+
+for f in "$inclusion_dir"/valid/*.cbor "$inclusion_dir"/invalid/*.cbor; do
+    case "$(basename "$f")" in
+        cddl-*|utf8-*)
+            echo "Expecting ${f#"$script_dir"/} to be rejected by CCF_Receipt"
+            if cddl chk/all.cddl validate "$f" 2>/dev/null; then
+                echo "error: $f unexpectedly validates" >&2
+                exit 1
+            fi
+            ;;
+        *)
+            echo "Validating ${f#"$script_dir"/} against CCF_Receipt"
+            cddl chk/all.cddl validate "$f"
+            ;;
+    esac
+done
+
+python3 "$inclusion_dir/verify.py" "$inclusion_dir"
