@@ -2,7 +2,7 @@
 
 Test vectors for the receipt-level checks of `verify_consistency_receipt` (Figure 9) that the consistency proof samples in `../consistency-proofs` do not exercise, because no proof there is signed. Each `.cbor` file is one consistency receipt, a tagged `COSE_Sign1` (`CCF_Receipt` in `../cose-receipt.cddl`) with its `ccf-consistency-proof` values in `vdp[-2]` and a detached payload. `older-roots.json` gives the older root each receipt is checked against.
 
-All four are signed with deterministic ECDSA (RFC 6979) under a fixed P-384 test key. `keys.cbor` holds its public key as a COSE_KeySet with one key, kid `sonde-kid-1`, and the receipts name ES384 in their protected header. The signed payload is the newer root `R_24`.
+All four are signed with deterministic ECDSA (RFC 6979) under a fixed P-384 test key. `keys.cbor` holds its public key as a COSE_KeySet with one key, kid `5a10e442182c331eee55fcc4c4c851bdc42e5e0d0d8070d594d9bc1d6ad6e71c`, the lowercase hex of SHA-256 over the DER SubjectPublicKeyInfo of the key as CCF forms it, and the receipts name ES384 in their protected header. The signed payload is the newer root `R_24`.
 
 The proofs come from one ledger of a local scitt-ccf-ledger instance (commit `00101f769d872711356e080fbb089ac48589c60a`, CCF 7.0.17, virtual mode, one node) with signed states at tree sizes 19, 22 and 24, computed from its leaves. That service signed `R_24`; the receipts here carry the test key's signature over the same root instead.
 
