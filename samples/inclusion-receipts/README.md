@@ -2,7 +2,7 @@
 
 Test vectors for inclusion receipts whose proof has an empty `path`, which the draft allows for a tree of size 1. Each `.cbor` file is one receipt, a tagged `COSE_Sign1` (`CCF_Receipt` in `../cose-receipt.cddl`) with one `ccf-inclusion-proof` in `vdp[-1]`.
 
-All receipts are signed with deterministic ECDSA (RFC 6979) under one fixed test key, whose public key is in `keys.cbor` (a COSE_KeySet with one P-384 key, kid `sonde-kid-1`; the receipts name ES384 in their protected header). Every receipt is checked against the statement digest `SHA-256("statement")` = `b111c6e1d318f203063e5c16bab43c108326af0aa2f7b65760c95547a43dbe52`; no Signed Statement is included.
+All receipts are signed with deterministic ECDSA (RFC 6979) under one fixed test key, whose public key is in `keys.cbor` (a COSE_KeySet with one P-384 key, kid `5a10e442182c331eee55fcc4c4c851bdc42e5e0d0d8070d594d9bc1d6ad6e71c`, the lowercase hex of SHA-256 over the DER SubjectPublicKeyInfo of the key as CCF forms it; the receipts name ES384 in their protected header). Every receipt is checked against the statement digest `SHA-256("statement")` = `b111c6e1d318f203063e5c16bab43c108326af0aa2f7b65760c95547a43dbe52`; no Signed Statement is included.
 
 The leaves:
 
