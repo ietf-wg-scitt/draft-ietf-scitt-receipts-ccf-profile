@@ -201,7 +201,7 @@ ccf-inclusion-proof = bstr .cbor {
 ~~~
 {: #ccf-inclusion-proof-cddl title="CCF Inclusion Proof CDDL"}
 
-Unlike some other tree algorithms, neither the index of the element nor the size of the tree is explicit in the inclusion proof. Read from the leaf up, the left-or-right bits are the binary decomposition of the index for the first `k` elements, where `k` is the largest power of two not greater than the tree size; for later elements the proof may have fewer elements than the depth of the index, and the index cannot be read from the proof alone. The `path` is empty for a tree of size 1, whose root is the leaf hash.
+Unlike some other tree algorithms, neither the index of the element nor the size of the tree is explicit in the inclusion proof. Read from the leaf up, the left-or-right bits are the binary decomposition of the index for the first `k` elements, where `k` is the largest power of two not greater than the tree size; for later elements the proof may have fewer elements than the depth of the index, and the index cannot be read from the proof alone. The `path` is empty for a tree of size 1, whose root is the leaf hash. A Verifier that needs the size of the tree, for example to derive the index of the element from the path, MUST obtain it from a source it trusts independently of the receipt; this document defines neither that source nor that derivation.
 
 ## CCF Inclusion Proof Signature {#ccf-inclusion-proof-signature}
 
